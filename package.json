@@ -2,5 +2,8 @@
   "devDependencies": {
     "conventional-changelog-conventionalcommits": "^7.0.2",
     "semantic-release": "^22.0.5"
+  },
+  "dependencies": {
+    "shiki": "^1.2.3"
   }
 }

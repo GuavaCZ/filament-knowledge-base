@@ -1,12 +1,12 @@
 <?php
 
-namespace VendorName\Skeleton\Commands;
+namespace Guava\FilamentKnowledgeBase\Commands;
 
 use Illuminate\Console\Command;
 
-class SkeletonCommand extends Command
+class FilamentKnowledgeBaseCommand extends Command
 {
-    public $signature = 'skeleton';
+    public $signature = 'filament-knowledge-base';
 
     public $description = 'My command';
 
