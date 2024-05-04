@@ -151,6 +151,9 @@ class UserResource extends Resource implements HasKnowledgeBase
     }
 }
 ```
+This will render a `Help menu` button at the end of the top navbar.
+
+[SCREENSHOT HERE]
 
 ### Accessing the documentation models
 We use the `sushi` package in the background to store the documentations. This way, they behave almost like regular `Eloquent models`.
