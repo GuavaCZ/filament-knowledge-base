@@ -5,7 +5,6 @@ namespace Guava\FilamentKnowledgeBase;
 use Filament\Facades\Filament;
 use Filament\Support\Facades\FilamentView;
 use Filament\View\PanelsRenderHook;
-use Guava\FilamentKnowledgeBase\Actions\HelpAction;
 use Guava\FilamentKnowledgeBase\Commands\MakeDocumentationCommand;
 use Guava\FilamentKnowledgeBase\Livewire\HelpMenu;
 use Guava\FilamentKnowledgeBase\Providers\KnowledgeBasePanelProvider;
