@@ -50,6 +50,9 @@ return [
 We register a separate panel for your entire Knowledge Base. This way you have a single place where you can in detail document your functionalities.
 
 ### Modal Previews
+Instead of redirecting the user to the documentation immediatelly, the package offers `modal previews`, which render the markdown in a customizable modal with an optional button to open the full documentation page.
+
+You can learn how to enable this feature in the `Customizations` section.
 
 ## Storage
 We currently support flat file (stored inside the source project) storage out of the box.
@@ -201,15 +204,40 @@ KnowledgeBase::model()::query()->where('title', 'Some title');
 // etc.
 ```
 
-### Customization
+## Customization
 A lot of the functionalities can be customized to a certain extent.
 
-#### Customize the help menu/button render hook
+### Customize the help menu/button render hook
 If you want to place the help menu / button someplace else, you can override the render hook:
 ```php
 use \Filament\View\PanelsRenderHook;
 
 $plugin->helpMenuRenderHook(PanelsRenderHook::TOPBAR_START);
+```
+
+### Enable modal previews
+If you want to open documentations in modal previews instead of immediatelly redirecting to the full pages, you can enable it like this:
+```php
+$plugin->modalPreviews();
+```
+
+#### Slide overs
+If you prefer to use slide overs, you can additionally also enable them:
+```php
+$plugin->slideOverPreviews();
+```
+
+### Guest Access
+By default, the panel is only accessible to authenticated users.
+
+If you want the knowledge base to be publicly accessible, simply configure it like so:
+```php
+use Guava\FilamentKnowledgeBase\Filament\Panels\KnowledgeBasePanel;
+
+KnowledgeBasePanel::configureUsing(
+    fn(KnowledgeBasePanel $panel) => $panel
+        ->guestAccess()
+);
 ```
 
 ## Markdown
