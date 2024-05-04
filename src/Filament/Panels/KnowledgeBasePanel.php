@@ -185,11 +185,12 @@ class KnowledgeBasePanel extends Panel
             $documentables
                 ->push(
                     ...collect(Discover::in(app_path('Docs'))
-                    ->extending(Documentation::class)
-                    ->get())
-                    ->map(fn($class) => new $class())
-                    ->all()
-                );
+                        ->extending(Documentation::class)
+                        ->get())
+                        ->map(fn ($class) => new $class())
+                        ->all()
+                )
+            ;
         }
 
         $documentables
