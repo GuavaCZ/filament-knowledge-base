@@ -17,12 +17,13 @@
     ],
     "require": {
         "php": "^8.1",
+        "calebporzio/sushi": "^2.5",
         "filament/filament": "^3.2",
         "illuminate/contracts": "^10.0|^11.0",
         "league/commonmark": "^2.4",
-        "spatie/laravel-markdown": "^2.5",
         "spatie/laravel-package-tools": "^1.14.0",
         "spatie/php-structure-discoverer": "^2.1",
+        "spatie/shiki-php": "^2.0",
         "symfony/yaml": "^6.4"
     },
     "require-dev": {

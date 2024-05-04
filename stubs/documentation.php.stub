@@ -1,0 +1,26 @@
+<?php
+
+namespace DummyNamespace;
+
+use Guava\FilamentKnowledgeBase\Documentation;
+use Guava\FilamentKnowledgeBase\Facades\FilamentKnowledgeBase;
+use Illuminate\Database\Eloquent\Model;
+
+class DummyClass extends Documentation
+{
+    public function content(): string
+    {
+        // Return the markdown / html content here
+    }
+
+    public function getTitle(): string
+    {
+        // Return the title here
+    }
+
+    public function getContent(): string
+    {
+        // Return the markdown / html content here
+    }
+
+}
