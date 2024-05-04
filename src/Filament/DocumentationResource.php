@@ -58,7 +58,7 @@ class DocumentationResource extends Resource
         ;
     }
 
-    public static function resolveRecordRouteBinding(int|string $key): ?Model
+    public static function resolveRecordRouteBinding(int | string $key): ?Model
     {
         // TODO: First try to load it from a standalone (App/Docs) class
         $record = parent::resolveRecordRouteBinding($key);

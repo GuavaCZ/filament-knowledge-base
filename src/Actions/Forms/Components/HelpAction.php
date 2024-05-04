@@ -41,7 +41,7 @@ class HelpAction extends Action
             ->when(
                 Filament::getPlugin('guava::filament-knowledge-base')->hasModalPreviews(),
                 fn (HelpAction $action) => $action
-                    ->modalContent(fn() => new HtmlString($documentable->getSimpleHtml()))
+                    ->modalContent(fn () => new HtmlString($documentable->getSimpleHtml()))
                     ->modalHeading($documentable->getTitle())
                     ->modalSubmitAction(false)
                     ->modalCancelActionLabel(__('filament-knowledge-base::translations.close'))

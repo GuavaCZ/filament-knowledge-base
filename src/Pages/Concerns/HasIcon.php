@@ -3,7 +3,6 @@
 namespace Guava\FilamentKnowledgeBase\Pages\Concerns;
 
 use Closure;
-use Illuminate\Support\Str;
 
 trait HasIcon
 {

@@ -71,7 +71,8 @@ class RelationalDocumentation extends Model
     public function getHtml(): RenderedContentInterface
     {
         $converter = app(MarkdownRenderer::class)
-        ->record($this);
+            ->record($this)
+        ;
 
         return $converter->convertToHtml(file_get_contents($this->path));
     }
@@ -83,7 +84,8 @@ class RelationalDocumentation extends Model
         return $converter->convertToHtml(file_get_contents($this->path));
     }
 
-    public function getPart(string $id) {
+    public function getPart(string $id)
+    {
         $walker = $this->getHtml()->getDocument()->walker();
 
         while ($event = $walker->next()) {

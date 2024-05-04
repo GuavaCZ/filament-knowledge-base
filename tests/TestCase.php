@@ -2,9 +2,9 @@
 
 namespace Guava\FilamentKnowledgeBase\Tests;
 
+use Guava\FilamentKnowledgeBase\FilamentKnowledgeBaseServiceProvider;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Orchestra\Testbench\TestCase as Orchestra;
-use Guava\FilamentKnowledgeBase\FilamentKnowledgeBaseServiceProvider;
 
 class TestCase extends Orchestra
 {

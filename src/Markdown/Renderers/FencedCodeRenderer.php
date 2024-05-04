@@ -77,7 +77,7 @@ final class FencedCodeRenderer implements NodeRendererInterface
             'github-dark',
         );
         $element->setContents(
-$code
+            $code
         );
 
         return view('filament-knowledge-base::code-block', [

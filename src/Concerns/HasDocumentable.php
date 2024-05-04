@@ -3,7 +3,6 @@
 namespace Guava\FilamentKnowledgeBase\Concerns;
 
 use Guava\FilamentKnowledgeBase\Contracts\Documentable;
-use PhpParser\Comment\Doc;
 
 trait HasDocumentable
 {

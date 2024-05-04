@@ -7,7 +7,6 @@ use Filament\View\PanelsRenderHook;
 use Guava\FilamentKnowledgeBase\Commands\MakeDocumentationCommand;
 use Guava\FilamentKnowledgeBase\Livewire\HelpMenu;
 use Guava\FilamentKnowledgeBase\Providers\KnowledgeBasePanelProvider;
-use Illuminate\Support\Facades\Blade;
 use Livewire\Livewire;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
