@@ -27,6 +27,7 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\HtmlString;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Spatie\StructureDiscoverer\Discover;
@@ -178,14 +179,20 @@ class KnowledgeBasePanel extends Panel
 
     protected function makeNavigation(NavigationBuilder $builder): NavigationBuilder
     {
-        KnowledgeBase::model()::all()
-            ->push(
-                ...collect(Discover::in(app_path('Docs'))
+        $documentables = KnowledgeBase::model()::all();
+
+        if (File::exists(app_path('Docs'))) {
+            $documentables
+                ->push(
+                    ...collect(Discover::in(app_path('Docs'))
                     ->extending(Documentation::class)
                     ->get())
-                    ->map(fn ($class) => new $class())
+                    ->map(fn($class) => new $class())
                     ->all()
-            )
+                );
+        }
+
+        $documentables
             ->filter(fn (Documentable $documentable) => $documentable->isRegistered())
             ->filter(fn (Documentable $documentable) => $documentable->getParent() === null)
             ->groupBy(fn (Documentable $documentable) => $documentable->getGroup())

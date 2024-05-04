@@ -79,6 +79,36 @@ public function panel(Panel $panel): Panel
 }
 ```
 
+### Make sure you have a custom filament theme
+Check [here](https://filamentphp.com/docs/3.x/panels/themes#creating-a-custom-theme) how to create one.
+
+You can create one specifically for the knowledge base panel or if you want to have the same design as your main panel(s), you can simply reuse the vite theme from your panel.
+
+Then in the register method of your `AppServiceProvider`, configure the vite theme of the knowledge base panel using:
+```php
+use Guava\FilamentKnowledgeBase\Filament\Panels\KnowledgeBasePanel;
+
+KnowledgeBasePanel::configureUsing(
+    fn(KnowledgeBasePanel $panel) => $panel
+        ->viteTheme('resources/css/filament/admin/theme.css') // your filament vite theme path here 
+);
+```
+
+### Build CSS
+In every filament theme, make sure to include the plugin's php and blade files in the `tailwind.config.js`, so the CSS is correctly built:
+
+```js
+{
+    content: [
+        //...
+        
+        './vendor/guava/filament-knowledge-base/src/**/*.php',
+        './vendor/guava/filament-knowledge-base/resources/**/*.blade.php',
+    ]
+}
+```
+
+
 ### Create documentation
 To create your first documentation, simply run the `docs:make`, such as:
 ```bash

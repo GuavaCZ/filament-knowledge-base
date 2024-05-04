@@ -5,6 +5,8 @@ namespace Guava\FilamentKnowledgeBase\Actions;
 use Filament\Actions\Action;
 use Filament\Facades\Filament;
 use Guava\FilamentKnowledgeBase\Contracts\Documentable;
+use Guava\FilamentKnowledgeBase\Facades\KnowledgeBase;
+use Guava\FilamentKnowledgeBase\Filament\Pages\ViewDocumentation;
 
 class HelpAction extends Action
 {
@@ -35,7 +37,9 @@ class HelpAction extends Action
                         Filament::getPlugin('guava::filament-knowledge-base')->hasSlideOverPreviews(),
                         fn (HelpAction $action) => $action->slideOver()
                     ),
-                fn (HelpAction $action) => $action->url('#'.$documentable->getId())//TODO: Change to real URL
+                fn (HelpAction $action) => $action->url(ViewDocumentation::getUrl([
+                    'record' => KnowledgeBase::documentable($documentable),
+                ], panel: 'knowledge-base'))
             )
         ;
     }
