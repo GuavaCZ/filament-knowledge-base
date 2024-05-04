@@ -17,9 +17,9 @@ use Filament\View\PanelsRenderHook;
 use Filament\Widgets\AccountWidget;
 use Guava\FilamentKnowledgeBase\Contracts\Documentable;
 use Guava\FilamentKnowledgeBase\Documentation;
-use Guava\FilamentKnowledgeBase\Facades\FilamentKnowledgeBase;
-use Guava\FilamentKnowledgeBase\Filament\DocumentationPage;
-use Guava\FilamentKnowledgeBase\Filament\DocumentationResource;
+use Guava\FilamentKnowledgeBase\Facades\KnowledgeBase;
+use Guava\FilamentKnowledgeBase\Filament\Pages\ViewDocumentation;
+use Guava\FilamentKnowledgeBase\Filament\Resources\DocumentationResource;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -31,7 +31,7 @@ use Illuminate\Support\HtmlString;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Spatie\StructureDiscoverer\Discover;
 
-class KnowledgeBase extends Panel
+class KnowledgeBasePanel extends Panel
 {
     protected bool $guestAccess = false;
 
@@ -158,7 +158,7 @@ class KnowledgeBase extends Panel
             ->icon($documentable->getIcon())
             ->sort($documentable->getOrder())
             ->childItems(
-                FilamentKnowledgeBase::model()::query()
+                KnowledgeBase::model()::query()
                     ->where('parent', $documentable->getTitle())
                     ->get()
                     ->filter(fn (Documentable $documentable) => $documentable->isRegistered())
@@ -167,10 +167,10 @@ class KnowledgeBase extends Panel
                     ->toArray()
             )
             ->parentItem($documentable->getParent())
-            ->url(DocumentationPage::getUrl([
+            ->url(ViewDocumentation::getUrl([
                 'record' => $documentable,
             ]))
-            ->isActiveWhen(fn () => url()->current() === DocumentationPage::getUrl([
+            ->isActiveWhen(fn () => url()->current() === ViewDocumentation::getUrl([
                 'record' => $documentable,
             ]))
         ;
@@ -178,7 +178,7 @@ class KnowledgeBase extends Panel
 
     protected function makeNavigation(NavigationBuilder $builder): NavigationBuilder
     {
-        FilamentKnowledgeBase::model()::all()
+        KnowledgeBase::model()::all()
             ->push(
                 ...collect(Discover::in(app_path('Docs'))
                     ->extending(Documentation::class)

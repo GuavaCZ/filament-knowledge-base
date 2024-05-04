@@ -9,7 +9,7 @@ use Illuminate\Support\Stringable;
 
 class MakeDocumentationCommand extends GeneratorCommand
 {
-    protected $signature = 'docs:make {name} {--class}';
+    protected $signature = 'docs:make {name} {--class} {--L|locale=*}';
 
     protected $aliases = [
         'kb:make',
@@ -77,7 +77,10 @@ class MakeDocumentationCommand extends GeneratorCommand
         if (! File::exists($path)) {
             File::makeDirectory($path);
         }
-        $locales = File::directories($path);
+        $locales = $this->option('locale');
+        $locales = empty($locales)
+            ? File::directories($path)
+            : $locales;
 
         if (empty($locales)) {
             $locales[] = App::getLocale();

@@ -12,7 +12,7 @@ use Filament\Resources\Pages\Page;
 use Guava\FilamentKnowledgeBase\Actions\HelpAction;
 use Guava\FilamentKnowledgeBase\Contracts\Documentable;
 use Guava\FilamentKnowledgeBase\Contracts\HasKnowledgeBase;
-use Guava\FilamentKnowledgeBase\Facades\FilamentKnowledgeBase;
+use Guava\FilamentKnowledgeBase\Facades\KnowledgeBase;
 use Livewire\Component;
 
 class HelpMenu extends Component implements HasActions, HasForms
@@ -33,10 +33,17 @@ class HelpMenu extends Component implements HasActions, HasForms
         });
     }
 
-    public function actions(): array
+    public function getDocumentation()
     {
         return collect($this->documentation)
-//            ->map(fn (string $class) => FilamentKnowledgeBase::getDocumentationAction($class))
+            ->map(fn ($documentable) => KnowledgeBase::documentable($documentable))
+        ;
+    }
+
+    public function actions(): array
+    {
+        return $this->getDocumentation()
+//            ->map(fn (string $class) => KnowledgeBasePanel::getDocumentationAction($class))
             ->map(
                 fn (Documentable $documentable) => HelpAction::forDocumentable($documentable)
             )
@@ -51,7 +58,7 @@ class HelpMenu extends Component implements HasActions, HasForms
 
     public function getSingleAction(): HelpAction
     {
-        return HelpAction::forDocumentable(Arr::first($this->documentation))->generic();
+        return HelpAction::forDocumentable($this->getDocumentation()->first())->generic();
     }
 
     public function getMenuAction(): ActionGroup

@@ -1,6 +1,6 @@
 <?php
 
-// config for Guava/FilamentKnowledgeBase
+// config for Guava/KnowledgeBasePanel
 return [
     'panel' => [
         'id' => env('FILAMENT_KB_ID', 'knowledge-base'),

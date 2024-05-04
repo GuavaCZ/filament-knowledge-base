@@ -3,8 +3,8 @@
 namespace Guava\FilamentKnowledgeBase\Models;
 
 use Guava\FilamentKnowledgeBase\Contracts\Documentable;
-use Guava\FilamentKnowledgeBase\Facades\FilamentKnowledgeBase;
-use Guava\FilamentKnowledgeBase\Filament\DocumentationPage;
+use Guava\FilamentKnowledgeBase\Facades\KnowledgeBase;
+use Guava\FilamentKnowledgeBase\Filament\Pages\ViewDocumentation;
 use Guava\FilamentKnowledgeBase\Markdown\MarkdownRenderer;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
@@ -32,7 +32,7 @@ class FlatfileDocumentation extends Model implements Documentable
 
         return collect(File::allFiles($path))
             ->map(function (\SplFileInfo $file) use ($path) {
-                $data = FilamentKnowledgeBase::parseMarkdown($file->getRealPath());
+                $data = KnowledgeBase::parseMarkdown($file->getRealPath());
 
                 $id = str($file->getPathname())
                     ->afterLast($path)
@@ -55,7 +55,7 @@ class FlatfileDocumentation extends Model implements Documentable
             })
             ->toArray()
         ;
-        collect(Discover::in(app_path('KnowledgeBase'))
+        collect(Discover::in(app_path('KnowledgeBasePanel'))
             ->extending(\Guava\FilamentKnowledgeBase\Pages\Documentation::class)
             ->get());
     }
@@ -99,7 +99,7 @@ class FlatfileDocumentation extends Model implements Documentable
 
     public function getUrl(): string
     {
-        return DocumentationPage::getUrl(parameters: [
+        return ViewDocumentation::getUrl(parameters: [
             'record' => $this,
         ], panel: config('filament-knowledge-base.panel.id'));
     }

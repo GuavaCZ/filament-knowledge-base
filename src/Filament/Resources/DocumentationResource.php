@@ -1,9 +1,10 @@
 <?php
 
-namespace Guava\FilamentKnowledgeBase\Filament;
+namespace Guava\FilamentKnowledgeBase\Filament\Resources;
 
 use Filament\Resources\Resource;
-use Guava\FilamentKnowledgeBase\Facades\FilamentKnowledgeBase;
+use Guava\FilamentKnowledgeBase\Facades\KnowledgeBase;
+use Guava\FilamentKnowledgeBase\Filament\Pages\ViewDocumentation;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Model;
 
@@ -11,7 +12,7 @@ class DocumentationResource extends Resource
 {
     public static function getModel(): string
     {
-        return FilamentKnowledgeBase::model();
+        return KnowledgeBase::model();
     }
 
     public static function getGloballySearchableAttributes(): array
@@ -29,7 +30,7 @@ class DocumentationResource extends Resource
     public static function getPages(): array
     {
         return [
-            'view' => DocumentationPage::route('/{record?}'),
+            'view' => ViewDocumentation::route('/{record?}'),
         ];
     }
 
@@ -48,7 +49,7 @@ class DocumentationResource extends Resource
 
     public static function getGlobalSearchResultUrl(Model $record): ?string
     {
-        return DocumentationPage::getUrl(['record' => $record]);
+        return ViewDocumentation::getUrl(['record' => $record]);
     }
 
     public static function getGlobalSearchResultTitle(Model $record): string | Htmlable

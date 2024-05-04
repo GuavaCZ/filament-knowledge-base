@@ -1,23 +1,20 @@
 <?php
 
-namespace Guava\FilamentKnowledgeBase\Filament;
+namespace Guava\FilamentKnowledgeBase\Filament\Pages;
 
 use Filament\Navigation\NavigationItem;
 use Filament\Pages\SubNavigationPosition;
 use Filament\Panel;
 use Filament\Resources\Pages\PageRegistration;
 use Filament\Resources\Pages\ViewRecord;
+use Guava\FilamentKnowledgeBase\Filament\Resources\DocumentationResource;
 use Illuminate\Contracts\Support\Htmlable;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Routing\Route;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Route as RouteFacade;
 use Livewire\Attributes\On;
 
-//use Illuminate\Support\Facades\Route;
-//use Illuminate\Support\Facades\Route;
-
-class DocumentationPage extends ViewRecord
+class ViewDocumentation extends ViewRecord
 {
     protected static string $resource = DocumentationResource::class;
 

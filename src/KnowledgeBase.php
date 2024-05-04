@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\HtmlString;
 use League\CommonMark\Extension\FrontMatter\Output\RenderedContentWithFrontMatter;
 
-class FilamentKnowledgeBase
+class KnowledgeBase
 {
     /**
      * @param  string|Documentation  $class

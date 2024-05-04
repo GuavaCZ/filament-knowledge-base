@@ -13,6 +13,20 @@ class KnowledgeBasePlugin implements Plugin
 
     protected bool $slideOverPreviews = false;
 
+    protected string $helpMenuRenderHook = PanelsRenderHook::TOPBAR_END;
+
+    public function helpMenuRenderHook(string $renderHook): static
+    {
+        $this->helpMenuRenderHook = $renderHook;
+
+        return $this;
+    }
+
+    public function getHelpMenuRenderHook(): string
+    {
+        return $this->helpMenuRenderHook;
+    }
+
     public function modalPreviews(bool $condition = true): static
     {
         $this->modalPreviews = $condition;
@@ -45,7 +59,7 @@ class KnowledgeBasePlugin implements Plugin
     public function register(Panel $panel): void
     {
         $panel->renderHook(
-            PanelsRenderHook::TOPBAR_END,
+            $this->getHelpMenuRenderHook(),
             fn (): string => Blade::render('@livewire(\'help-menu\')'),
         );
     }

@@ -2,17 +2,18 @@
 
 namespace Guava\FilamentKnowledgeBase;
 
+use Filament\Facades\Filament;
 use Filament\Support\Facades\FilamentView;
 use Filament\View\PanelsRenderHook;
+use Guava\FilamentKnowledgeBase\Actions\HelpAction;
 use Guava\FilamentKnowledgeBase\Commands\MakeDocumentationCommand;
 use Guava\FilamentKnowledgeBase\Livewire\HelpMenu;
 use Guava\FilamentKnowledgeBase\Providers\KnowledgeBasePanelProvider;
-use Illuminate\Support\Facades\Blade;
 use Livewire\Livewire;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
-class FilamentKnowledgeBaseServiceProvider extends PackageServiceProvider
+class KnowledgeBaseServiceProvider extends PackageServiceProvider
 {
     public function configurePackage(Package $package): void
     {
@@ -42,7 +43,10 @@ class FilamentKnowledgeBaseServiceProvider extends PackageServiceProvider
 
         FilamentView::registerRenderHook(
             PanelsRenderHook::SIDEBAR_FOOTER,
-            fn (): string => view('filament-knowledge-base::sidebar-footer')
+            fn (): string => view('filament-knowledge-base::sidebar-footer', [
+                'active' => Filament::getCurrentPanel()->getId() === 'knowledge-base',
+                'url' => Filament::getPanel('knowledge-base')->getUrl(),
+            ])
         );
     }
 }

@@ -20,7 +20,7 @@
 
     @push('scripts')
         @if($hasModalPreviews)
-            @foreach($documentation as $documentable)
+            @foreach($this->getDocumentation() as $documentable)
                 <x-filament::modal id="{{$documentable->getId()}}"
                                    :close-by-clicking-away="true"
                                    :close-button="true"

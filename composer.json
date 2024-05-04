@@ -81,10 +81,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Guava\\FilamentKnowledgeBase\\FilamentKnowledgeBaseServiceProvider"
+                "Guava\\FilamentKnowledgeBase\\KnowledgeBaseServiceProvider"
             ],
             "aliases": {
-                "FilamentKnowledgeBase": "Guava\\FilamentKnowledgeBase\\Facades\\FilamentKnowledgeBase"
+                "KnowledgeBase": "Guava\\FilamentKnowledgeBase\\Facades\\KnowledgeBase"
             }
         }
     },

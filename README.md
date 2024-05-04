@@ -160,14 +160,53 @@ We use the `sushi` package in the background to store the documentations. This w
 
 #### Get model using our helper
 To get the model, simply use our helper `FilamentKnowledgeBase::model()`:
+
 ```php
-use \Guava\FilamentKnowledgeBase\FilamentKnowledgeBase;
+use \Guava\FilamentKnowledgeBase\KnowledgeBase;
 
 // find specific model
-FilamentKnowledgeBase::model()::find('<id>');
+KnowledgeBase::model()::find('<id>');
 // query models
-FilamentKnowledgeBase::model()::query()->where('title', 'Some title');
+KnowledgeBase::model()::query()->where('title', 'Some title');
 // etc.
+```
+
+### Customization
+A lot of the functionalities can be customized to a certain extent.
+
+#### Customize the help menu/button render hook
+If you want to place the help menu / button someplace else, you can override the render hook:
+```php
+use \Filament\View\PanelsRenderHook;
+
+$plugin->helpMenuRenderHook(PanelsRenderHook::TOPBAR_START);
+```
+
+## Markdown
+We use CommonMark as the markdown parser and the league/commonmark php implementation. Check their respective websites for a reference on how to use markdown.
+- [CommonMark](https://commonmark.org/)
+- [League CommonMark](https://commonmark.thephpleague.com/)
+
+
+We also added some custom parsers/extensions to the Markdown Parser, described below.
+
+### Syntax Highlighting
+We offer syntax highlighting through shiki (requires NodeJS on the server)
+- [ShikiJS](https://shiki.style/)
+- [Spatie ShikiPHP](https://github.com/spatie/shiki-php)
+
+### Vite assets support
+You can use the default image syntax to include vite assets, as long as you provide the full path from your root project directory:
+```md
+![my image](/resources/img/my-image.png)
+```
+
+### Including other files
+We support including markdown files within other files. This is especially useful if you want to organize your markdown or display snippets of a whole documentation as a help button without duplicating your markdown files.
+
+The syntax is as follows:
+```md
+@include(prologue.getting-started)
 ```
 
 
