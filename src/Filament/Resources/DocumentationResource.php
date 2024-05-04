@@ -31,7 +31,6 @@ class DocumentationResource extends Resource
 
     protected static bool $shouldRegisterNavigation = false;
 
-
     public static function getRoutePrefix(): string
     {
         return '';

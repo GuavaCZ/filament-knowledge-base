@@ -10,7 +10,6 @@ use Filament\Resources\Pages\ViewRecord;
 use Guava\FilamentKnowledgeBase\Filament\Resources\DocumentationResource;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Routing\Route;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Route as RouteFacade;
 use Livewire\Attributes\On;
 
