@@ -19,4 +19,6 @@ interface Documentable
     public function getOrder(): int;
 
     public function getIcon(): ?string;
+
+    public function getBreadcrumbs(): array;
 }

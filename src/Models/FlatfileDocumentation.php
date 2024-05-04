@@ -7,8 +7,11 @@ use Guava\FilamentKnowledgeBase\Facades\KnowledgeBase;
 use Guava\FilamentKnowledgeBase\Filament\Pages\ViewDocumentation;
 use Guava\FilamentKnowledgeBase\Markdown\MarkdownRenderer;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\HtmlString;
+use Illuminate\Support\Str;
 use League\CommonMark\Extension\CommonMark\Node\Block\Heading;
 use League\CommonMark\Extension\FrontMatter\Output\RenderedContentWithFrontMatter;
 use League\CommonMark\Extension\HeadingPermalink\HeadingPermalink;
@@ -41,15 +44,25 @@ class FlatfileDocumentation extends Model implements Documentable
                     ->trim('.')
                 ;
 
+                $parts = $id->explode('.', 3);
+                $group = data_get($data, 'front-matter.group');
+                $parent = data_get($data, 'front-matter.parent');
+                if (count($parts) >= 2) {
+                    $group ??= Str::headline($parts[0]);
+                }
+                if (count($parts) >= 3) {
+                    $parent ??= Str::headline($parts[1]);
+                }
+
                 return [
                     'id' => $id,
                     'slug' => $id->replace('.', '/')->toString(),
                     'path' => $file->getRealPath(),
                     'content' => data_get($data, 'html'),
-                    'title' => data_get($data, 'front-matter.title'),
-                    'group' => data_get($data, 'front-matter.group'),
+                    'title' => data_get($data, 'front-matter.title', $id->afterLast('.')->headline()),
+                    'group' => $group,
                     'icon' => data_get($data, 'front-matter.icon'),
-                    'parent' => data_get($data, 'front-matter.parent'),
+                    'parent' => $parent,
                     'order' => data_get($data, 'front-matter.order'),
                 ];
             })
@@ -163,11 +176,31 @@ class FlatfileDocumentation extends Model implements Documentable
 
     public function getIcon(): ?string
     {
-        return $this->icon ?? 'heroicon-o-rectangle-stack';
+        return $this->icon ?? 'heroicon-o-document';
     }
 
     public function isRegistered(): bool
     {
         return ! empty($this->getTitle());
+    }
+
+    public function getBreadcrumbs(): array
+    {
+        return collect([
+            __('filament-knowledge-base::translations.knowledge-base'),
+        ])
+            ->when(
+                $group = $this->getGroup(),
+                fn (Collection $collection) => $collection->push($group)
+            )
+            ->when(
+                $parent = $this->getParent(),
+                fn (Collection $collection) => $collection->push($parent)
+            )
+            ->put(ViewDocumentation::getUrl([
+                'record' => $this,
+            ], panel: 'knowledge-base'), $this->getTitle())
+            ->toArray()
+        ;
     }
 }

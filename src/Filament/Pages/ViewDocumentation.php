@@ -28,24 +28,7 @@ class ViewDocumentation extends ViewRecord
 
     public function getBreadcrumbs(): array
     {
-
-        return collect([
-            'Documentation',
-        ])
-            ->when(
-                $group = $this->record->group,
-                //                fn (Collection $collection) => $collection->put(str($group)->slug()->toString(), $group)
-                fn (Collection $collection) => $collection->push($group)
-            )
-            ->when(
-                $parent = $this->record->parent,
-                fn (Collection $collection) => $collection->push($parent)
-            )
-            ->push($this->record->title)
-            ->toArray()
-        ;
-
-        return [];
+        return $this->record->getBreadcrumbs();
     }
 
     public function mount(int | string $record): void

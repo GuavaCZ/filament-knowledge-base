@@ -13,7 +13,6 @@ use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\Support\Assets\Theme;
 use Filament\Support\Enums\Platform;
-use Filament\View\PanelsRenderHook;
 use Filament\Widgets\AccountWidget;
 use Guava\FilamentKnowledgeBase\Contracts\Documentable;
 use Guava\FilamentKnowledgeBase\Documentation;
@@ -28,7 +27,6 @@ use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\HtmlString;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Spatie\StructureDiscoverer\Discover;
 
@@ -129,12 +127,6 @@ class KnowledgeBasePanel extends Panel
     protected function setUp(): void
     {
         $this
-            ->renderHook(PanelsRenderHook::BODY_END, function () {
-                return new HtmlString('
-<div class="flex flex-row items-start justify-center w-screen h-screen fixed top-0 left-0 border-4 z-20 border-danger-500 !pointer-events-none">
-</div>
-');
-            })
             ->when(
                 ! $this->hasGuestAccess(),
                 fn (Panel $panel) => $panel
@@ -185,11 +177,12 @@ class KnowledgeBasePanel extends Panel
             $documentables
                 ->push(
                     ...collect(Discover::in(app_path('Docs'))
-                    ->extending(Documentation::class)
-                    ->get())
-                    ->map(fn($class) => new $class())
-                    ->all()
-                );
+                        ->extending(Documentation::class)
+                        ->get())
+                        ->map(fn ($class) => new $class())
+                        ->all()
+                )
+            ;
         }
 
         $documentables

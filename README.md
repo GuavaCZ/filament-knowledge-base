@@ -220,12 +220,23 @@ If you want to open documentations in modal previews instead of immediatelly red
 ```php
 $plugin->modalPreviews();
 ```
+[SCREENSHOT HERE]
 
 #### Slide overs
 If you prefer to use slide overs, you can additionally also enable them:
 ```php
 $plugin->slideOverPreviews();
 ```
+[SCREENSHOT HERE]
+
+### Enable breadcrumbs in modal preview titles
+When using modal previews, by default the title shows just that, the title of the documentation page.
+
+If you'd rather show the full breadcrumb to the documentation page, you may enable it like so:
+```php
+$plugin->modalTitleBreadcrumbs();
+```
+[SCREENSHOT HERE]
 
 ### Guest Access
 By default, the panel is only accessible to authenticated users.

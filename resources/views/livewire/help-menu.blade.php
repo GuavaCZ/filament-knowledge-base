@@ -2,6 +2,7 @@
     use Filament\Facades\Filament;
     $hasModalPreviews = Filament::getPlugin('guava::filament-knowledge-base')->hasModalPreviews();
     $hasSlideOverPreviews = Filament::getPlugin('guava::filament-knowledge-base')->hasSlideOverPreviews();
+    $hasModalTitleBreadcrumbs = Filament::getPlugin('guava::filament-knowledge-base')->hasModalTitleBreadcrumbs();
 @endphp
 
 <div @class([
@@ -32,7 +33,11 @@
                                    :sticky-header="true">
 
                     <x-slot name="heading">
-                        {{ $documentable->getTitle() }}
+                        @if($hasModalTitleBreadcrumbs && !empty($documentable->getBreadcrumbs()))
+                            {{ KnowledgeBase::breadcrumbs($documentable) }}
+                        @else
+                            {{ $documentable->getTitle() }}
+                        @endif
                     </x-slot>
                     {!! $documentable->getSimpleHtml() !!}
                     <x-slot name="footerActions">

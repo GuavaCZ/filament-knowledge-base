@@ -109,4 +109,11 @@ class KnowledgeBase
 
         return $converter->convertToHtml(file_get_contents($fullPath));
     }
+
+    public function breadcrumbs(Documentable $documentable): HtmlString
+    {
+        return new HtmlString(view('filament::components.breadcrumbs', [
+            'breadcrumbs' => $documentable->getBreadcrumbs(),
+        ]));
+    }
 }

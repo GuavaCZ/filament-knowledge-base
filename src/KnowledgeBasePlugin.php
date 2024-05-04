@@ -13,6 +13,8 @@ class KnowledgeBasePlugin implements Plugin
 
     protected bool $slideOverPreviews = false;
 
+    protected bool $modalTitleBreadcrumbs = false;
+
     protected string $helpMenuRenderHook = PanelsRenderHook::TOPBAR_END;
 
     public function helpMenuRenderHook(string $renderHook): static
@@ -41,6 +43,13 @@ class KnowledgeBasePlugin implements Plugin
         return $this;
     }
 
+    public function modalTitleBreadcrumbs(bool $condition = true): static
+    {
+        $this->modalTitleBreadcrumbs = $condition;
+
+        return $this;
+    }
+
     public function hasModalPreviews(): bool
     {
         return $this->modalPreviews;
@@ -49,6 +58,11 @@ class KnowledgeBasePlugin implements Plugin
     public function hasSlideOverPreviews(): bool
     {
         return $this->slideOverPreviews;
+    }
+
+    public function hasModalTitleBreadcrumbs(): bool
+    {
+        return $this->modalTitleBreadcrumbs;
     }
 
     public function getId(): string
