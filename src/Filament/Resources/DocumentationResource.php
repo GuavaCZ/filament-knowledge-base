@@ -65,5 +65,4 @@ class DocumentationResource extends Resource
     {
         return __('filament-knowledge-base::translations.knowledge-base');
     }
-
 }
