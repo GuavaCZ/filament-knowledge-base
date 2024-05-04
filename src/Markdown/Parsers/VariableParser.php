@@ -46,6 +46,7 @@ class VariableParser implements InlineParserInterface
 
             return true;
         }
+
         return false;
     }
 }

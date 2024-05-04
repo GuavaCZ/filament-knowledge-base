@@ -114,11 +114,11 @@ class FlatfileDocumentation extends Model implements Documentable
             if ($event->isEntering() && $node instanceof HeadingPermalink) {
                 $slug = $node->getSlug();
                 $next = $node->next();
-                if (!method_exists($next, 'getLiteral')) {
+                if (! method_exists($next, 'getLiteral')) {
                     continue;
                 }
-//                    dd($node, $node->next());
-//                }
+                //                    dd($node, $node->next());
+                //                }
                 $anchors[$next->getLiteral()] = $slug;
             }
         }
@@ -168,6 +168,6 @@ class FlatfileDocumentation extends Model implements Documentable
 
     public function isRegistered(): bool
     {
-        return !empty($this->getTitle());
+        return ! empty($this->getTitle());
     }
 }

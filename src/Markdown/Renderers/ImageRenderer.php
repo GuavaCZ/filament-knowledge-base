@@ -52,10 +52,10 @@ final class ImageRenderer implements ConfigurationAwareInterface, NodeRendererIn
 
         if (str($node->getUrl())->endsWith('.mov')) {
             return new HtmlElement('video', ['muted' => 'muted', 'autoplay' => 'autoplay', 'loop' => 'loop',
-                'class' => 'rounded-md ring-1 ring-gray-950/5 dark:ring-white/10'
-                ], new HtmlElement('source', $attrs), true);
+                'class' => 'rounded-md ring-1 ring-gray-950/5 dark:ring-white/10',
+            ], new HtmlElement('source', $attrs), true);
         } else {
-        return new HtmlElement('img', $attrs, '', true);
+            return new HtmlElement('img', $attrs, '', true);
         }
     }
 
