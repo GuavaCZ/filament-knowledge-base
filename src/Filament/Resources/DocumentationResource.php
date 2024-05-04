@@ -70,4 +70,10 @@ class DocumentationResource extends Resource
 
         return $record;
     }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('filament-knowledge-base::translations.knowledge-base');
+    }
+
 }
