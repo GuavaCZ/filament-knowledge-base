@@ -5,6 +5,7 @@ namespace Guava\FilamentKnowledgeBase\Actions\Forms\Components;
 use Filament\Facades\Filament;
 use Filament\Forms\Components\Actions\Action;
 use Guava\FilamentKnowledgeBase\Contracts\Documentable;
+use Guava\FilamentKnowledgeBase\Facades\KnowledgeBase;
 use Illuminate\Support\HtmlString;
 
 class HelpAction extends Action
@@ -32,8 +33,10 @@ class HelpAction extends Action
         ;
     }
 
-    public static function forDocumentable(Documentable $documentable): static
+    public static function forDocumentable(Documentable | string $documentable): static
     {
+        $documentable = KnowledgeBase::documentable($documentable);
+
         return static::make("help.{$documentable->getId()}")
             ->label($documentable->getTitle())
 //            ->icon($documentable->getIcon())
