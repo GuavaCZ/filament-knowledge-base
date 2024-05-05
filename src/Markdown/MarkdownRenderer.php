@@ -5,7 +5,6 @@ namespace Guava\FilamentKnowledgeBase\Markdown;
 use Guava\FilamentKnowledgeBase\Markdown\Parsers\IncludeParser;
 use Guava\FilamentKnowledgeBase\Markdown\Renderers\FencedCodeRenderer;
 use Guava\FilamentKnowledgeBase\Markdown\Renderers\ImageRenderer;
-use Guava\FilamentKnowledgeBase\Markdown\Renderers\MarkerRenderer;
 use League\CommonMark\Environment\Environment;
 use League\CommonMark\Environment\EnvironmentBuilderInterface;
 use League\CommonMark\Environment\EnvironmentInterface;
@@ -46,6 +45,7 @@ final class MarkdownRenderer
                     'class' => static fn (Heading $node) => match ($node->getLevel()) {
                         1 => 'text-3xl mb-2 [&:first-child]:mt-0 mt-10',
                         2 => 'text-xl [&:first-child]:mt-0 mt-2',
+                        3 => 'text-lg [&:first-child]:mt-0 mt-2',
                         default => null,
                     } . ' relative',
                 ],
