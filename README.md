@@ -15,8 +15,7 @@ Filament Knowledge Base is here for exactly this reason!
 Using our Knowledge Base package, you can write markdown documentation files to document every feature of your package and give your users a comprehensive knowledge base tailored for your product. Right inside Filament!
 
 ## Showcase
-
-This is where your screenshots and videos should go. Remember to add them, so people see what your plugin does.
+![Showcase 01](docs/images/screenshot_01.jpeg)
 
 ## Support us
 
@@ -156,7 +155,7 @@ And that's it! You've created a simple knowledge base inside Filament.
 ### Accessing the knowledge base
 In every panel you registered the Knowlege Base plugin, we automatically inject a documentation button at the very bottom of the sidebar.
 
-[SCREENSHOT HERE]
+![Documentation button example](/docs/images/screenshot_documentation_button.png)
 
 But we offer a deeper integration to your panels.
 
@@ -186,7 +185,7 @@ class UserResource extends Resource implements HasKnowledgeBase
 ```
 This will render a `Help menu` button at the end of the top navbar.
 
-[SCREENSHOT HERE]
+![Documentation button example](/docs/images/screenshot_help_menu.png)
 
 ### Accessing the documentation models
 We use the `sushi` package in the background to store the documentations. This way, they behave almost like regular `Eloquent models`.
@@ -220,14 +219,15 @@ If you want to open documentations in modal previews instead of immediatelly red
 ```php
 $plugin->modalPreviews();
 ```
-[SCREENSHOT HERE]
+![Modal Previews Example](/docs/images/screenshot_modal_previews.jpeg)
 
 #### Slide overs
 If you prefer to use slide overs, you can additionally also enable them:
 ```php
 $plugin->slideOverPreviews();
 ```
-[SCREENSHOT HERE]
+![Modal Slideover Example](/docs/images/screenshot_modal_slideovers.jpeg)
+
 
 ### Enable breadcrumbs in modal preview titles
 When using modal previews, by default the title shows just that, the title of the documentation page.
@@ -236,7 +236,7 @@ If you'd rather show the full breadcrumb to the documentation page, you may enab
 ```php
 $plugin->modalTitleBreadcrumbs();
 ```
-[SCREENSHOT HERE]
+![Modal Breadcrumbs Example](/docs/images/screenshot_modal_breadcrumbs.jpeg)
 
 ### Guest Access
 By default, the panel is only accessible to authenticated users.
@@ -259,10 +259,29 @@ We use CommonMark as the markdown parser and the league/commonmark php implement
 
 We also added some custom parsers/extensions to the Markdown Parser, described below.
 
+### Markers support
+In order to mark some words with your primary theme color, you can use the following syntax:
+
+```
+In this example, ==this text== will be marked.
+```
+
+The result looks like this, depending on your primary color:
+
+![Marker example](/docs/images/screenshot_marker.png)
+
 ### Syntax Highlighting
 We offer syntax highlighting through shiki (requires NodeJS on the server)
 - [ShikiJS](https://shiki.style/)
 - [Spatie ShikiPHP](https://github.com/spatie/shiki-php)
+
+**Note:** You MUST have `shiki` installed in your project in order for syntax highlighting to work.
+
+You can install it via npm:
+
+```bash
+npm install shiki
+```
 
 ### Vite assets support
 You can use the default image syntax to include vite assets, as long as you provide the full path from your root project directory:
