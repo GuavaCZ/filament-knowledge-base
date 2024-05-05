@@ -5,6 +5,7 @@ namespace Guava\FilamentKnowledgeBase\Markdown;
 use Guava\FilamentKnowledgeBase\Markdown\Parsers\IncludeParser;
 use Guava\FilamentKnowledgeBase\Markdown\Renderers\FencedCodeRenderer;
 use Guava\FilamentKnowledgeBase\Markdown\Renderers\ImageRenderer;
+use Guava\FilamentKnowledgeBase\Markdown\Renderers\MarkerRenderer;
 use League\CommonMark\Environment\Environment;
 use League\CommonMark\Environment\EnvironmentBuilderInterface;
 use League\CommonMark\Environment\EnvironmentInterface;
@@ -18,6 +19,8 @@ use League\CommonMark\Extension\HeadingPermalink\HeadingPermalinkExtension;
 use League\CommonMark\MarkdownConverter;
 use League\CommonMark\Node\Block\Paragraph;
 use League\CommonMark\Output\RenderedContentInterface;
+use N0sz\CommonMark\Marker\Marker;
+use N0sz\CommonMark\Marker\MarkerExtension;
 
 final class MarkdownRenderer
 {
@@ -49,9 +52,9 @@ final class MarkdownRenderer
                 Paragraph::class => [
                     'class' => 'mb-4 leading-relaxed',
                 ],
-                //                Code::class => [
-                //                    'class' => 'bg-primary-500/20 dark:bg-primary-600/40 rounded-md py-0.5 px-1.5',
-                //                ],
+                Marker::class => [
+                    'class' => 'bg-primary-500/20 dark:bg-primary-400/40 text-inherit rounded-md py-0.5 px-1.5',
+                ],
             ],
             'heading_permalink' => [
                 'id_prefix' => '',
@@ -68,6 +71,7 @@ final class MarkdownRenderer
             ->addExtension(new CommonMarkCoreExtension())
             ->addExtension(new DefaultAttributesExtension())
             ->addExtension(new FrontMatterExtension())
+            ->addExtension(new MarkerExtension())
         ;
         if (! $this->isMinimal()) {
             $environment
