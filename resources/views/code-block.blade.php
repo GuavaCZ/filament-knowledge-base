@@ -12,7 +12,7 @@
 @endpushonce
 
 <div @class([
-    "bg-gray-900 text-gray-200 dark:bg-gray-800/80 rounded-lg p-2 pt-0 mb-4",
+    "bg-gray-900 text-gray-200 dark:bg-gray-900 rounded-lg p-2 pt-0 mb-4 ring-1 ring-gray-950/5 dark:ring-white/10",
 ])
      x-data
 >

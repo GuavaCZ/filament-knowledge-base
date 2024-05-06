@@ -17,6 +17,8 @@ Using our Knowledge Base package, you can write markdown documentation files to 
 ## Showcase
 ![Showcase 01](docs/images/screenshot_01.jpeg)
 
+![Video Showcase](docs/images/demo_preview.mov)
+
 ## Support us
 
 Your support is key to the continual advancement of our plugin. We appreciate every user who has contributed to our journey so far.
@@ -256,7 +258,6 @@ We use CommonMark as the markdown parser and the league/commonmark php implement
 - [CommonMark](https://commonmark.org/)
 - [League CommonMark](https://commonmark.thephpleague.com/)
 
-
 We also added some custom parsers/extensions to the Markdown Parser, described below.
 
 ### Markers support
@@ -270,6 +271,27 @@ The result looks like this, depending on your primary color:
 
 ![Marker example](/docs/images/screenshot_marker.png)
 
+### Tables support
+You can use the regular markdown syntax to render tables styled to match filament tables.
+
+```md
+| Syntax     |             Description (center)              |     Foo (right) | Bar (left)      |
+|------------|:---------------------------------------------:|----------------:|:----------------|
+| Header     |                     Title                     |       Something | Else            |
+| Paragraphs |  First paragraph. <br><br> Second paragraph.  | First paragraph | First paragraph |
+```
+
+![Tables example](docs/images/screenshot_tables.png)
+
+### Quotes support
+Using the regular markdown syntax for quotes, you can render neat banners such as:
+
+```md
+> ⚠️ **Warning:** Make sure that the slug is unique!
+```
+
+![Quotes example](docs/images/screenshot_quotes.png)
+
 ### Syntax Highlighting
 We offer syntax highlighting through shiki (requires NodeJS on the server)
 - [ShikiJS](https://shiki.style/)
@@ -282,6 +304,8 @@ You can install it via npm:
 ```bash
 npm install shiki
 ```
+
+![Syntax highlighting example](docs/images/screenshot_syntax_highlighting.png)
 
 ### Vite assets support
 You can use the default image syntax to include vite assets, as long as you provide the full path from your root project directory:
