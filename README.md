@@ -47,6 +47,14 @@ This is the contents of the published config file:
 
 ```php
 return [
+    'panel' => [
+        'id' => env('FILAMENT_KB_ID', 'knowledge-base'),
+        'path' => env('FILAMENT_KB_PATH', 'kb'),
+    ],
+
+    'docs-path' => env('FILAMENT_KB_DOCS_PATH', 'docs'),
+
+    'model' => \Guava\FilamentKnowledgeBase\Models\FlatfileDocumentation::class,
 ];
 ```
 
@@ -168,10 +176,10 @@ In every panel you registered the Knowlege Base plugin, we automatically inject 
 
 But we offer a deeper integration to your panels.
 
-#### Integrating into resources
+#### Integrating into resources or pages
 You will most likely have a section in your knowledge base dedicated to each of your resource (at least to the more complex ones).
 
-To integrate your resource with the documentation, all you need to do is implement the `HasKnowledgeBase` contract in your resource.
+To integrate your resource with the documentation, all you need to do is implement the `HasKnowledgeBase` contract in your resource or page.
 
 This will require you to implement the `getDocumentation` method, where you simply return the documentation pages you want to integrate. You can either return the `IDs` as strings (dot-separated path inside `/docs/{locale}/`) or use the helper to retrieve the model:
 ```php
@@ -194,13 +202,27 @@ class UserResource extends Resource implements HasKnowledgeBase
 ```
 This will render a `Help menu` button at the end of the top navbar.
 
+If you added more than one documentation files, it will render a dropdown menu, otherwise the `help` button will directly reference the documentation you linked.
+
 ![Documentation button example](https://github.com/GuavaCZ/filament-knowledge-base/raw/main/docs/images/screenshot_help_menu.png)
+
+### Help Actions
+The plugin comes with a neat `HelpAction`, which can be linked to a specific markdown file or even a partial markdown file.
+
+For example, the `What is a slug?` help was added using the following:
+```php
+use Guava\FilamentKnowledgeBase\Actions\Forms\Components\HelpAction;
+->hintAction(HelpAction::forDocumentable('projects.creating-projects.slug')
+    ->label('What is a slug?')
+    ->slideOver(false)
+),
+```
 
 ### Accessing the documentation models
 We use the `sushi` package in the background to store the documentations. This way, they behave almost like regular `Eloquent models`.
 
 #### Get model using our helper
-To get the model, simply use our helper `FilamentKnowledgeBase::model()`:
+To get the model, simply use our helper `KnowledgeBase::model()`:
 
 ```php
 use \Guava\FilamentKnowledgeBase\KnowledgeBase;
@@ -327,6 +349,9 @@ The syntax is as follows:
 @include(prologue.getting-started)
 ```
 
+This is extremely helpful when you want to display help buttons for a concrete component or field, but don't want to deal with duplicated information.
+
+You can simply extract parts of your markdown into smaller markdown files and include them in your main file. That way you can only display the partials in your `Help Actions`.
 
 ## Testing
 
