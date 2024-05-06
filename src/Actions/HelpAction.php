@@ -39,7 +39,7 @@ class HelpAction extends Action
                     ),
                 fn (HelpAction $action) => $action->url(ViewDocumentation::getUrl([
                     'record' => KnowledgeBase::documentable($documentable),
-                ], panel: 'knowledge-base'))
+                ], panel: config('filament-knowledge-base.panel.id', 'knowledge-base')))
             )
         ;
     }

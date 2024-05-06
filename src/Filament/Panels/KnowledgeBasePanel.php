@@ -36,7 +36,9 @@ class KnowledgeBasePanel extends Panel
 
     public function __construct()
     {
-        $this->id('knowledge-base');
+        $this->id(
+            config('filament-knowledge-base.panel.id', 'knowledge-base')
+        );
     }
 
     public function guestAccess(bool $condition = true): static

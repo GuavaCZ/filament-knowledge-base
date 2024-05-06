@@ -6,6 +6,7 @@ use Filament\Facades\Filament;
 use Filament\Support\Facades\FilamentView;
 use Filament\View\PanelsRenderHook;
 use Guava\FilamentKnowledgeBase\Commands\MakeDocumentationCommand;
+use Guava\FilamentKnowledgeBase\Filament\Panels\KnowledgeBasePanel;
 use Guava\FilamentKnowledgeBase\Livewire\HelpMenu;
 use Guava\FilamentKnowledgeBase\Providers\KnowledgeBasePanelProvider;
 use Livewire\Livewire;
@@ -43,8 +44,8 @@ class KnowledgeBaseServiceProvider extends PackageServiceProvider
         FilamentView::registerRenderHook(
             PanelsRenderHook::SIDEBAR_FOOTER,
             fn (): string => view('filament-knowledge-base::sidebar-footer', [
-                'active' => Filament::getCurrentPanel()->getId() === 'knowledge-base',
-                'url' => Filament::getPanel('knowledge-base')->getUrl(),
+                'active' => Filament::getCurrentPanel()->getId() === config('filament-knowledge-base.panel.id', 'knowledge-base'),
+                'url' => Filament::getPanel(config('filament-knowledge-base.panel.id', 'knowledge-base'))->getUrl(),
             ])
         );
     }

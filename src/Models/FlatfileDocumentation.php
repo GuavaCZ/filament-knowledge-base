@@ -198,7 +198,7 @@ class FlatfileDocumentation extends Model implements Documentable
             )
             ->put(ViewDocumentation::getUrl([
                 'record' => $this,
-            ], panel: 'knowledge-base'), $this->getTitle())
+            ], panel: config('filament-knowledge-base.panel.id', 'knowledge-base')), $this->getTitle())
             ->toArray()
         ;
     }
