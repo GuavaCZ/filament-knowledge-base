@@ -234,6 +234,13 @@ KnowledgeBase::model()::query()->where('title', 'Some title');
 // etc.
 ```
 
+## Cache
+By default, the package caches all markdown files to ensure a smooth and fast user experience. If you don't see your changes, make sure to clear the cache:
+
+```bash
+php artisan cache:clear
+```
+
 ## Customization
 A lot of the functionalities can be customized to a certain extent.
 
