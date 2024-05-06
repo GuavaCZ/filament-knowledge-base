@@ -15,7 +15,12 @@ Using our Knowledge Base package, you can write markdown documentation files to 
 
 ## Showcase
 ![Showcase 01](https://github.com/GuavaCZ/filament-knowledge-base/raw/main/docs/images/screenshot_01.jpeg)
+![Showcase 02](https://github.com/GuavaCZ/filament-knowledge-base/raw/main/docs/images/screenshot_02.jpeg)
+![Showcase 03](https://github.com/GuavaCZ/filament-knowledge-base/raw/main/docs/images/screenshot_03.png)
+![Modal Slideover Example](https://github.com/GuavaCZ/filament-knowledge-base/raw/main/docs/images/screenshot_modal_slideovers.jpeg)
+![Modal Previews Example](https://github.com/GuavaCZ/filament-knowledge-base/raw/main/docs/images/screenshot_modal_previews.jpeg)
 
+For a better understanding of how it works, please have a look at the video showcase:
 ![Video Showcase](https://github.com/GuavaCZ/filament-knowledge-base/raw/main/docs/images/demo_preview.mov)
 
 ## Support us
@@ -228,7 +233,6 @@ If you prefer to use slide overs, you can additionally also enable them:
 $plugin->slideOverPreviews();
 ```
 ![Modal Slideover Example](/docs/images/screenshot_modal_slideovers.jpeg)
-
 
 ### Enable breadcrumbs in modal preview titles
 When using modal previews, by default the title shows just that, the title of the documentation page.
