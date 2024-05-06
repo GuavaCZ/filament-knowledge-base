@@ -1,11 +1,10 @@
-![filament-knowledge-base Banner](docs/images/banner.jpg)
-
+![filament-knowledge-base Banner](https://github.com/GuavaCZ/filament-knowledge-base/raw/main/docs/images/banner.jpg)
 
 # A filament plugin that adds a knowledge base and documentation to your filament panel(s).
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/guava/filament-knowledge-base.svg?style=flat-square)](https://packagist.org/packages/guava/filament-knowledge-base)
-[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/guava/filament-knowledge-base/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/guava/filament-knowledge-base/actions?query=workflow%3Arun-tests+branch%3Amain)
-[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/guava/filament-knowledge-base/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/guava/filament-knowledge-base/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
+[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/guavaCZ/filament-knowledge-base/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/guavaCZ/filament-knowledge-base/actions?query=workflow%3Arun-tests+branch%3Amain)
+[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/guavaCZ/filament-knowledge-base/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/guavaCZ/filament-knowledge-base/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/guava/filament-knowledge-base.svg?style=flat-square)](https://packagist.org/packages/guava/filament-knowledge-base)
 
 Did your filament panel ever get complex real quick? Ever needed to a place to document all your features in one place?
@@ -15,9 +14,9 @@ Filament Knowledge Base is here for exactly this reason!
 Using our Knowledge Base package, you can write markdown documentation files to document every feature of your package and give your users a comprehensive knowledge base tailored for your product. Right inside Filament!
 
 ## Showcase
-![Showcase 01](docs/images/screenshot_01.jpeg)
+![Showcase 01](https://github.com/GuavaCZ/filament-knowledge-base/raw/main/docs/images/screenshot_01.jpeg)
 
-![Video Showcase](docs/images/demo_preview.mov)
+![Video Showcase](https://github.com/GuavaCZ/filament-knowledge-base/raw/main/docs/images/demo_preview.mov)
 
 ## Support us
 
@@ -157,7 +156,7 @@ And that's it! You've created a simple knowledge base inside Filament.
 ### Accessing the knowledge base
 In every panel you registered the Knowlege Base plugin, we automatically inject a documentation button at the very bottom of the sidebar.
 
-![Documentation button example](/docs/images/screenshot_documentation_button.png)
+![Documentation button example](https://github.com/GuavaCZ/filament-knowledge-base/raw/main/docs/images/screenshot_documentation_button.png)
 
 But we offer a deeper integration to your panels.
 
@@ -187,7 +186,7 @@ class UserResource extends Resource implements HasKnowledgeBase
 ```
 This will render a `Help menu` button at the end of the top navbar.
 
-![Documentation button example](/docs/images/screenshot_help_menu.png)
+![Documentation button example](https://github.com/GuavaCZ/filament-knowledge-base/raw/main/docs/images/screenshot_help_menu.png)
 
 ### Accessing the documentation models
 We use the `sushi` package in the background to store the documentations. This way, they behave almost like regular `Eloquent models`.
@@ -221,7 +220,7 @@ If you want to open documentations in modal previews instead of immediatelly red
 ```php
 $plugin->modalPreviews();
 ```
-![Modal Previews Example](/docs/images/screenshot_modal_previews.jpeg)
+![Modal Previews Example](https://github.com/GuavaCZ/filament-knowledge-base/raw/main/docs/images/screenshot_modal_previews.jpeg)
 
 #### Slide overs
 If you prefer to use slide overs, you can additionally also enable them:
@@ -238,7 +237,7 @@ If you'd rather show the full breadcrumb to the documentation page, you may enab
 ```php
 $plugin->modalTitleBreadcrumbs();
 ```
-![Modal Breadcrumbs Example](/docs/images/screenshot_modal_breadcrumbs.jpeg)
+![Modal Breadcrumbs Example](https://github.com/GuavaCZ/filament-knowledge-base/raw/main/docs/images/screenshot_modal_breadcrumbs.jpeg)
 
 ### Guest Access
 By default, the panel is only accessible to authenticated users.
@@ -269,7 +268,7 @@ In this example, ==this text== will be marked.
 
 The result looks like this, depending on your primary color:
 
-![Marker example](/docs/images/screenshot_marker.png)
+![Marker example](https://github.com/GuavaCZ/filament-knowledge-base/raw/main/docs/images/screenshot_marker.png)
 
 ### Tables support
 You can use the regular markdown syntax to render tables styled to match filament tables.
@@ -281,7 +280,7 @@ You can use the regular markdown syntax to render tables styled to match filamen
 | Paragraphs |  First paragraph. <br><br> Second paragraph.  | First paragraph | First paragraph |
 ```
 
-![Tables example](docs/images/screenshot_tables.png)
+![Tables example](https://github.com/GuavaCZ/filament-knowledge-base/raw/main/docs/images/screenshot_tables.png)
 
 ### Quotes support
 Using the regular markdown syntax for quotes, you can render neat banners such as:
@@ -290,7 +289,7 @@ Using the regular markdown syntax for quotes, you can render neat banners such a
 > ⚠️ **Warning:** Make sure that the slug is unique!
 ```
 
-![Quotes example](docs/images/screenshot_quotes.png)
+![Quotes example](https://github.com/GuavaCZ/filament-knowledge-base/raw/main/docs/images/screenshot_quotes.png)
 
 ### Syntax Highlighting
 We offer syntax highlighting through shiki (requires NodeJS on the server)
@@ -305,7 +304,7 @@ You can install it via npm:
 npm install shiki
 ```
 
-![Syntax highlighting example](docs/images/screenshot_syntax_highlighting.png)
+![Syntax highlighting example](https://github.com/GuavaCZ/filament-knowledge-base/raw/main/docs/images/screenshot_syntax_highlighting.png)
 
 ### Vite assets support
 You can use the default image syntax to include vite assets, as long as you provide the full path from your root project directory:
