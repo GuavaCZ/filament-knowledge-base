@@ -34,6 +34,8 @@ class KnowledgeBasePanel extends Panel
 {
     protected bool $guestAccess = false;
 
+    protected static bool $syntaxHighlighting = false;
+
     public function __construct()
     {
         $this->id(
@@ -51,6 +53,18 @@ class KnowledgeBasePanel extends Panel
     public function hasGuestAccess(): bool
     {
         return $this->evaluate($this->guestAccess);
+    }
+
+    public function syntaxHighlighting(bool $condition = true): static
+    {
+        static::$syntaxHighlighting = $condition;
+
+        return $this;
+    }
+
+    public static function hasSyntaxHighlighting(): bool
+    {
+        return static::$syntaxHighlighting;
     }
 
     public function getTheme(): Theme

@@ -3,6 +3,7 @@
 namespace Guava\FilamentKnowledgeBase\Markdown;
 
 use Arr;
+use Guava\FilamentKnowledgeBase\Filament\Panels\KnowledgeBasePanel;
 use Guava\FilamentKnowledgeBase\Markdown\Parsers\IncludeParser;
 use Guava\FilamentKnowledgeBase\Markdown\Renderers\FencedCodeRenderer;
 use Guava\FilamentKnowledgeBase\Markdown\Renderers\ImageRenderer;
@@ -116,8 +117,13 @@ final class MarkdownRenderer
         // Renderers
         $environment
             ->addRenderer(Image::class, new ImageRenderer(), 5)
-            ->addRenderer(FencedCode::class, new FencedCodeRenderer(), 5)
         ;
+
+        if (KnowledgeBasePanel::hasSyntaxHighlighting()) {
+            $environment
+                ->addRenderer(FencedCode::class, new FencedCodeRenderer(), 5)
+            ;
+        }
 
         return $environment;
     }

@@ -325,12 +325,25 @@ We offer syntax highlighting through shiki (requires NodeJS on the server)
 - [ShikiJS](https://shiki.style/)
 - [Spatie ShikiPHP](https://github.com/spatie/shiki-php)
 
-**Note:** You MUST have `shiki` installed in your project in order for syntax highlighting to work.
+**Note:** Because of the additional installation steps, syntax highlighting is disabled by default.
+
+To enable it, you MUST have `shiki` installed in your project in order for syntax highlighting to work.
 
 You can install it via npm:
 
 ```bash
 npm install shiki
+```
+
+Then you can enable syntax highlighting using:
+
+```php
+use Guava\FilamentKnowledgeBase\Filament\Panels\KnowledgeBasePanel;
+
+KnowledgeBasePanel::configureUsing(
+    fn(KnowledgeBasePanel $panel) => $panel
+        ->syntaxHighlighting()
+);
 ```
 
 ![Syntax highlighting example](https://github.com/GuavaCZ/filament-knowledge-base/raw/main/docs/images/screenshot_syntax_highlighting.png)
