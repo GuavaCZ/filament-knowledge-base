@@ -59,6 +59,9 @@ Instead of redirecting the user to the documentation immediatelly, the package o
 
 You can learn how to enable this feature in the `Customizations` section.
 
+### Global Search
+Knowledge base supports global search for all your markdown files and by default looks through the `title` and the `content` of the markdown file. This way your users can quickly find what they are looking for.
+
 ## Storage
 We currently support flat file (stored inside the source project) storage out of the box.
 
