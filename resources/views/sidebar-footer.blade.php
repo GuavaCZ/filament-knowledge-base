@@ -3,7 +3,8 @@
         :active="$active"
         icon="heroicon-o-book-open"
         class="ring-1 ring-gray-950/10 dark:ring-white/20 rounded-lg"
-        :url="$url">
+        :url="$url"
+        :should-open-url-in-new-tab="$shouldOpenDocumentationInNewTab">
         <x-filament::button
             class="!font-medium !text-gray-700 dark:!text-gray-200"
             style="box-shadow: none; background: none; padding:0;"

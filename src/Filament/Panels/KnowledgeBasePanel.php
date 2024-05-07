@@ -160,6 +160,7 @@ class KnowledgeBasePanel extends Panel
                 fn (): string => view('filament-knowledge-base::sidebar-footer', [
                     'active' => Filament::getCurrentPanel()->getId() === config('filament-knowledge-base.panel.id', 'knowledge-base'),
                     'url' => Filament::getPanel(config('filament-knowledge-base.panel.id', 'knowledge-base'))->getUrl(),
+                    'shouldOpenDocumentationInNewTab' => false,
                 ])
             )
 

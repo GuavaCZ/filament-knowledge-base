@@ -1,8 +1,10 @@
 @php
     use Filament\Facades\Filament;
+
     $hasModalPreviews = Filament::getPlugin('guava::filament-knowledge-base')->hasModalPreviews();
     $hasSlideOverPreviews = Filament::getPlugin('guava::filament-knowledge-base')->hasSlideOverPreviews();
     $hasModalTitleBreadcrumbs = Filament::getPlugin('guava::filament-knowledge-base')->hasModalTitleBreadcrumbs();
+    $target = Filament::getPlugin('guava::filament-knowledge-base')->shouldOpenDocumentationInNewTab() ? '_blank' : '_self';
 @endphp
 
 <div @class([
@@ -43,7 +45,8 @@
                         {!! $documentable->getSimpleHtml() !!}
                         <x-slot name="footerActions">
                             <x-filament::button tag="a"
-                                                :href="$documentable->getUrl()">
+                                                :href="$documentable->getUrl()"
+                                                :target="$target">
                                 {{ __('filament-knowledge-base::translations.open-documentation') }}
                             </x-filament::button>
                             <x-filament::button color="gray"

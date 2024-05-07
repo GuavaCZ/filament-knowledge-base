@@ -6,6 +6,7 @@ use Arr;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\Concerns\InteractsWithActions;
 use Filament\Actions\Contracts\HasActions;
+use Filament\Facades\Filament;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Resources\Pages\Page;
@@ -22,9 +23,13 @@ class HelpMenu extends Component implements HasActions, HasForms
 
     public array $documentation;
 
+    protected bool $shouldOpenDocumentationInNewTab;
+
     public function mount(): void
     {
         $controller = request()->route()->controller;
+
+        $this->shouldOpenDocumentationInNewTab = Filament::getPlugin('guava::filament-knowledge-base')->shouldOpenDocumentationInNewTab();
 
         $this->documentation = Arr::wrap(match (true) {
             $controller instanceof HasKnowledgeBase => $controller::getDocumentation(),
@@ -46,6 +51,7 @@ class HelpMenu extends Component implements HasActions, HasForms
 //            ->map(fn (string $class) => KnowledgeBasePanel::getDocumentationAction($class))
             ->map(
                 fn (Documentable $documentable) => HelpAction::forDocumentable($documentable)
+                    ->openUrlInNewTab($this->shouldOpenDocumentationInNewTab)
             )
             ->toArray()
         ;
@@ -58,7 +64,10 @@ class HelpMenu extends Component implements HasActions, HasForms
 
     public function getSingleAction(): HelpAction
     {
-        return HelpAction::forDocumentable($this->getDocumentation()->first())->generic();
+        return HelpAction::forDocumentable($this->getDocumentation()->first())
+            ->generic()
+            ->openUrlInNewTab($this->shouldOpenDocumentationInNewTab)
+        ;
     }
 
     public function getMenuAction(): ActionGroup

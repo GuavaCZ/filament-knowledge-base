@@ -16,6 +16,8 @@ class KnowledgeBasePlugin implements Plugin
 
     protected bool $modalTitleBreadcrumbs = false;
 
+    protected bool $openDocumentationInNewTab = false;
+
     protected string $helpMenuRenderHook = PanelsRenderHook::TOPBAR_END;
 
     public function helpMenuRenderHook(string $renderHook): static
@@ -51,6 +53,13 @@ class KnowledgeBasePlugin implements Plugin
         return $this;
     }
 
+    public function openDocumentationInNewTab(bool $condition = true): static
+    {
+        $this->openDocumentationInNewTab = $condition;
+
+        return $this;
+    }
+
     public function hasModalPreviews(): bool
     {
         return $this->modalPreviews;
@@ -64,6 +73,11 @@ class KnowledgeBasePlugin implements Plugin
     public function hasModalTitleBreadcrumbs(): bool
     {
         return $this->modalTitleBreadcrumbs;
+    }
+
+    public function shouldOpenDocumentationInNewTab(): bool
+    {
+        return $this->openDocumentationInNewTab;
     }
 
     public function getId(): string
@@ -83,6 +97,7 @@ class KnowledgeBasePlugin implements Plugin
                 fn (): string => view('filament-knowledge-base::sidebar-footer', [
                     'active' => Filament::getCurrentPanel()->getId() === config('filament-knowledge-base.panel.id', 'knowledge-base'),
                     'url' => Filament::getPanel(config('filament-knowledge-base.panel.id', 'knowledge-base'))->getUrl(),
+                    'shouldOpenDocumentationInNewTab' => $this->shouldOpenDocumentationInNewTab(),
                 ])
             )
         ;
