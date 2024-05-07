@@ -2,6 +2,7 @@
 
 namespace Guava\FilamentKnowledgeBase\Filament\Panels;
 
+use Composer\InstalledVersions;
 use Exception;
 use Filament\Facades\Filament;
 use Filament\Http\Middleware\Authenticate;
@@ -60,6 +61,13 @@ class KnowledgeBasePanel extends Panel
     public function syntaxHighlighting(bool $condition = true): static
     {
         static::$syntaxHighlighting = $condition;
+
+        if (static::$syntaxHighlighting) {
+            if (! InstalledVersions::isInstalled('spatie/shiki-php')
+                || version_compare(InstalledVersions::getVersion('spatie/shiki-php'), '2.0', '<')) {
+                throw new Exception('You need to install shiki and spatie/shiki-php:^2.0 in order to use the syntax highlighting feature. Please check the documentation for installation instructions.');
+            }
+        }
 
         return $this;
     }

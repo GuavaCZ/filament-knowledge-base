@@ -343,13 +343,20 @@ We offer syntax highlighting through shiki (requires NodeJS on the server)
 
 **Note:** Because of the additional installation steps, syntax highlighting is disabled by default.
 
-To enable it, you MUST have `shiki` installed in your project in order for syntax highlighting to work.
+To enable it, you MUST have both the npm package `shiki` and `spatie/shiki-php:^2.0` installed. 
 
-You can install it via npm:
+To install spatie/shiki-php:
+```bash
+composer require spatie/shiki-php:"^2.0"
+```
+
+To install shiki:
 
 ```bash
 npm install shiki
 ```
+
+If you use Herd or another NVM, you will most likely need to create a symlink to your node version. Please follow the instructions [here](https://github.com/spatie/shiki-php?tab=readme-ov-file#using-node-version-manager).
 
 Then you can enable syntax highlighting using:
 

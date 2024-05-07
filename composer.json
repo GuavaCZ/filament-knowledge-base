@@ -24,8 +24,10 @@
         "n0sz/commonmark-marker-extension": "^1.0",
         "spatie/laravel-package-tools": "^1.14.0",
         "spatie/php-structure-discoverer": "^2.1",
-        "spatie/shiki-php": "^2.0",
         "symfony/yaml": "^7.0"
+    },
+    "suggest": {
+        "spatie/shiki-php": "Required to support syntax highlighting"
     },
     "require-dev": {
         "laravel/pint": "^1.0",
