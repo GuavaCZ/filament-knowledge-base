@@ -7,13 +7,15 @@
 [![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/guavaCZ/filament-knowledge-base/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/guavaCZ/filament-knowledge-base/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/guava/filament-knowledge-base.svg?style=flat-square)](https://packagist.org/packages/guava/filament-knowledge-base)
 
-Did your filament panel ever get complex real quick? Ever needed to a place to document all your features in one place?
+Did your filament panel ever get complex real quick? Ever needed a place to document all your features in one place?
 
 Filament Knowledge Base is here for exactly this reason!
 
-Using our Knowledge Base package, you can write markdown documentation files to document every feature of your package and give your users a comprehensive knowledge base tailored for your product. Right inside Filament!
+Using our Knowledge Base package, you can write markdown documentation files to document every feature of your package
+and give your users a comprehensive knowledge base tailored for your product. Right inside Filament!
 
 ## Showcase
+
 ![Showcase 01](https://github.com/GuavaCZ/filament-knowledge-base/raw/main/docs/images/screenshot_01.jpeg)
 ![Showcase 02](https://github.com/GuavaCZ/filament-knowledge-base/raw/main/docs/images/screenshot_02.jpeg)
 ![Showcase 03](https://github.com/GuavaCZ/filament-knowledge-base/raw/main/docs/images/screenshot_03.png)
@@ -25,9 +27,14 @@ For a better understanding of how it works, please have a look at the video show
 
 ## Support us
 
-Your support is key to the continual advancement of our plugin. We appreciate every user who has contributed to our journey so far.
+Your support is key to the continual advancement of our plugin. We appreciate every user who has contributed to our
+journey so far.
 
-While our plugin is available for all to use, if you are utilizing it for commercial purposes and believe it adds significant value to your business, we kindly ask you to consider supporting us through GitHub Sponsors. This sponsorship will assist us in continuous development and maintenance to keep our plugin robust and up-to-date. Any amount you contribute will greatly help towards reaching our goals. Join us in making this plugin even better and driving further innovation.
+While our plugin is available for all to use, if you are utilizing it for commercial purposes and believe it adds
+significant value to your business, we kindly ask you to consider supporting us through GitHub Sponsors. This
+sponsorship will assist us in continuous development and maintenance to keep our plugin robust and up-to-date. Any
+amount you contribute will greatly help towards reaching our goals. Join us in making this plugin even better and
+driving further innovation.
 
 ## Installation
 
@@ -59,30 +66,41 @@ return [
 ```
 
 ## Introduction
+
 ### Knowledge Base Panel
-We register a separate panel for your entire Knowledge Base. This way you have a single place where you can in detail document your functionalities.
+
+We register a separate panel for your entire Knowledge Base. This way you have a single place where you can in detail
+document your functionalities.
 
 ### Modal Previews
-Instead of redirecting the user to the documentation immediately, the package offers `modal previews`, which render the markdown in a customizable modal with an optional button to open the full documentation page.
+
+Instead of redirecting the user to the documentation immediately, the package offers `modal previews`, which render the
+markdown in a customizable modal with an optional button to open the full documentation page.
 
 You can learn how to enable this feature in the `Customizations` section.
 
 ### Global Search
-Knowledge base supports global search for all your markdown files and by default looks through the `title` and the `content` of the markdown file. This way your users can quickly find what they are looking for.
+
+Knowledge base supports global search for all your markdown files and by default looks through the `title` and
+the `content` of the markdown file. This way your users can quickly find what they are looking for.
 
 ## Storage
+
 We currently support flat file (stored inside the source project) storage out of the box.
 
 You can choose to store your documentation in:
- - Markdown files (Preferred method)
- - PHP classes (for complex cases)
+
+- Markdown files (Preferred method)
+- PHP classes (for complex cases)
 
 In the future, we plan to also ship a Database Driver so you can store your documentation in the database.
 
 ## Usage
 
 ### Register plugin
-To begin, register the `KnowledgeBasePlugin` in all your Filament Panels from which you want to access your Knowledge Base / Documentation.
+
+To begin, register the `KnowledgeBasePlugin` in all your Filament Panels from which you want to access your Knowledge
+Base / Documentation.
 
 ```php
 use Filament\Panel;
@@ -99,11 +117,14 @@ public function panel(Panel $panel): Panel
 ```
 
 ### Make sure you have a custom filament theme
+
 Check [here](https://filamentphp.com/docs/3.x/panels/themes#creating-a-custom-theme) how to create one.
 
-You can create one specifically for the knowledge base panel or if you want to have the same design as your main panel(s), you can simply reuse the vite theme from your panel.
+You can create one specifically for the knowledge base panel or if you want to have the same design as your main panel(
+s), you can simply reuse the vite theme from your panel.
 
 Then in the register method of your `AppServiceProvider`, configure the vite theme of the knowledge base panel using:
+
 ```php
 use Guava\FilamentKnowledgeBase\Filament\Panels\KnowledgeBasePanel;
 
@@ -114,42 +135,53 @@ KnowledgeBasePanel::configureUsing(
 ```
 
 ### Build CSS
-In every filament theme, make sure to include the plugin's php and blade files in the `tailwind.config.js`, so the CSS is correctly built:
+
+In every filament theme, make sure to include the plugin's php and blade files in the `tailwind.config.js`, so the CSS
+is correctly built:
 
 ```js
 {
     content: [
         //...
-        
+
         './vendor/guava/filament-knowledge-base/src/**/*.php',
         './vendor/guava/filament-knowledge-base/resources/**/*.blade.php',
     ]
 }
 ```
 
-
 ### Create documentation
+
 To create your first documentation, simply run the `docs:make`, such as:
+
 ```bash
 php artisan docs:make prologue.getting-started
 ```
+
 This will create a file in `/docs/en/prologue/getting-started.md`.
 
-If you want to create the file for a specific locale, you can do so using the `--locale` option (can be repeated for multiple locales):
+If you want to create the file for a specific locale, you can do so using the `--locale` option (can be repeated for
+multiple locales):
+
 ```bash
 php artisan docs:make prologue.getting-started --locale=de --locale=en
 ```
+
 This would create the file for both the `de` and `en` locale.
 
-If you **don't** pass any locale, it will automatically create the documentation file for every locale in `/docs/{locale}`.
+If you **don't** pass any locale, it will automatically create the documentation file for every locale
+in `/docs/{locale}`.
 
 ### Markdown
+
 After you generate your documentation file, it's time to edit it.
 
 A markdown file consists of two sections, the `Front Matter` and `Content`.
 
 #### Front Matter
+
 In the front matter, you can customize the documentation page, such as the title, the icon and so on:
+
 ```md
 ---
 // Anything between these dashes is the front matter
@@ -159,29 +191,42 @@ icon: heroicon-o-book-open
 ```
 
 #### Content
+
 Anything after the front matter is your content, written in markdown:
+
 ```md
 ---
 // Front matter ... 
 ---
+
 # Introduction
+
 Lorem ipsum dolor ....
 ```
+
 And that's it! You've created a simple knowledge base inside Filament.
 
 ### Accessing the knowledge base
-In every panel you registered the Knowlege Base plugin, we automatically inject a documentation button at the very bottom of the sidebar.
+
+In every panel you registered the Knowlege Base plugin, we automatically inject a documentation button at the very
+bottom of the sidebar.
 
 ![Documentation button example](https://github.com/GuavaCZ/filament-knowledge-base/raw/main/docs/images/screenshot_documentation_button.png)
 
 But we offer a deeper integration to your panels.
 
 #### Integrating into resources or pages
-You will most likely have a section in your knowledge base dedicated to each of your resources (at least to the more complex ones).
 
-To integrate your resource with the documentation, all you need to do is implement the `HasKnowledgeBase` contract in your resource or page.
+You will most likely have a section in your knowledge base dedicated to each of your resources (at least to the more
+complex ones).
 
-This will require you to implement the `getDocumentation` method, where you simply return the documentation pages you want to integrate. You can either return the `IDs` as strings (dot-separated path inside `/docs/{locale}/`) or use the helper to retrieve the model:
+To integrate your resource with the documentation, all you need to do is implement the `HasKnowledgeBase` contract in
+your resource or page.
+
+This will require you to implement the `getDocumentation` method, where you simply return the documentation pages you
+want to integrate. You can either return the `IDs` as strings (dot-separated path inside `/docs/{locale}/`) or use the
+helper to retrieve the model:
+
 ```php
 use use Guava\FilamentKnowledgeBase\Contracts\HasKnowledgeBase;
 
@@ -200,16 +245,21 @@ class UserResource extends Resource implements HasKnowledgeBase
     }
 }
 ```
+
 This will render a `Help menu` button at the end of the top navbar.
 
-If you add more than one documentation file, it will render a dropdown menu, otherwise the `help` button will directly reference the documentation you linked.
+If you add more than one documentation file, it will render a dropdown menu, otherwise the `help` button will directly
+reference the documentation you linked.
 
 ![Documentation button example](https://github.com/GuavaCZ/filament-knowledge-base/raw/main/docs/images/screenshot_help_menu.png)
 
 ### Help Actions
-The plugin comes with a neat `HelpAction`, which can be linked to a specific markdown file or even a partial markdown file.
+
+The plugin comes with a neat `HelpAction`, which can be linked to a specific markdown file or even a partial markdown
+file.
 
 For example, the `What is a slug?` help was added using the following:
+
 ```php
 use Guava\FilamentKnowledgeBase\Actions\Forms\Components\HelpAction;
 ->hintAction(HelpAction::forDocumentable('projects.creating-projects.slug')
@@ -219,9 +269,12 @@ use Guava\FilamentKnowledgeBase\Actions\Forms\Components\HelpAction;
 ```
 
 ### Accessing the documentation models
-We use the `sushi` package in the background to store the documentations. This way, they behave almost like regular `Eloquent models`.
+
+We use the `sushi` package in the background to store the documentations. This way, they behave almost like
+regular `Eloquent models`.
 
 #### Get model using our helper
+
 To get the model, simply use our helper `KnowledgeBase::model()`:
 
 ```php
@@ -235,17 +288,22 @@ KnowledgeBase::model()::query()->where('title', 'Some title');
 ```
 
 ## Cache
-By default, the package caches all markdown files to ensure a smooth and fast user experience. If you don't see your changes, make sure to clear the cache:
+
+By default, the package caches all markdown files to ensure a smooth and fast user experience. If you don't see your
+changes, make sure to clear the cache:
 
 ```bash
 php artisan cache:clear
 ```
 
 ## Customization
+
 A lot of the functionalities can be customized to a certain extent.
 
 ### Customize the help menu/button render hook
+
 If you want to place the help menu / button someplace else, you can override the render hook:
+
 ```php
 use \Filament\View\PanelsRenderHook;
 
@@ -253,30 +311,41 @@ $plugin->helpMenuRenderHook(PanelsRenderHook::TOPBAR_START);
 ```
 
 ### Enable modal previews
-If you want to open documentations in modal previews instead of immediately redirecting to the full pages, you can enable it like this:
+
+If you want to open documentations in modal previews instead of immediately redirecting to the full pages, you can
+enable it like this:
+
 ```php
 $plugin->modalPreviews();
 ```
+
 ![Modal Previews Example](https://github.com/GuavaCZ/filament-knowledge-base/raw/main/docs/images/screenshot_modal_previews.jpeg)
 
 #### Slide overs
+
 If you prefer to use slide overs, you can additionally also enable them:
+
 ```php
 $plugin->slideOverPreviews();
 ```
+
 ![Modal Slideover Example](/docs/images/screenshot_modal_slideovers.jpeg)
 
 ### Enable breadcrumbs in modal preview titles
+
 When using modal previews, by default the title shows just that, the title of the documentation page.
 
 If you'd rather show the full breadcrumb to the documentation page, you may enable it like so:
+
 ```php
 $plugin->modalTitleBreadcrumbs();
 ```
+
 ![Modal Breadcrumbs Example](https://github.com/GuavaCZ/filament-knowledge-base/raw/main/docs/images/screenshot_modal_breadcrumbs.jpeg)
 
 ### Open documentation links in new tab
-When you open a documentation, by default it will be opened in a new tab.
+
+When you open a documentation, by default it will be opened in the same tab.
 
 To change this, you can customize your plugin:
 
@@ -285,9 +354,11 @@ $plugin->openDocumentationInNewTab()
 ```
 
 ### Guest Access
+
 By default, the panel is only accessible to authenticated users.
 
 If you want the knowledge base to be publicly accessible, simply configure it like so:
+
 ```php
 use Guava\FilamentKnowledgeBase\Filament\Panels\KnowledgeBasePanel;
 
@@ -298,13 +369,17 @@ KnowledgeBasePanel::configureUsing(
 ```
 
 ## Markdown
-We use CommonMark as the markdown parser and the league/commonmark php implementation. Check their respective websites for a reference on how to use markdown.
+
+We use CommonMark as the markdown parser and the league/commonmark php implementation. Check their respective websites
+for a reference on how to use markdown.
+
 - [CommonMark](https://commonmark.org/)
 - [League CommonMark](https://commonmark.thephpleague.com/)
 
 We also added some custom parsers/extensions to the Markdown Parser, described below.
 
 ### Markers support
+
 In order to mark some words with your primary theme color, you can use the following syntax:
 
 ```
@@ -316,6 +391,7 @@ The result looks like this, depending on your primary color:
 ![Marker example](https://github.com/GuavaCZ/filament-knowledge-base/raw/main/docs/images/screenshot_marker.png)
 
 ### Tables support
+
 You can use the regular markdown syntax to render tables styled to match filament tables.
 
 ```md
@@ -328,6 +404,7 @@ You can use the regular markdown syntax to render tables styled to match filamen
 ![Tables example](https://github.com/GuavaCZ/filament-knowledge-base/raw/main/docs/images/screenshot_tables.png)
 
 ### Quotes support
+
 Using the regular markdown syntax for quotes, you can render neat banners such as:
 
 ```md
@@ -337,26 +414,42 @@ Using the regular markdown syntax for quotes, you can render neat banners such a
 ![Quotes example](https://github.com/GuavaCZ/filament-knowledge-base/raw/main/docs/images/screenshot_quotes.png)
 
 ### Syntax Highlighting
+
 We offer syntax highlighting through shiki (requires NodeJS on the server)
+
 - [ShikiJS](https://shiki.style/)
 - [Spatie ShikiPHP](https://github.com/spatie/shiki-php)
 
 **Note:** Because of the additional installation steps, syntax highlighting is disabled by default.
 
-To enable it, you MUST have both the npm package `shiki` and `spatie/shiki-php:^2.0` installed. 
+To enable it, you MUST have both the npm package `shiki` and `spatie/shiki-php` installed.
 
-To install spatie/shiki-php:
+Which versions of the shiki packages to choose depends on you. I **highly recommend going with the latest versions**,
+but if you encounter some issues due to incompatibility with other packages, you might need to downgrade.
+
+Check the table below for compatible versions.
+
+| Shiki PHP Version | Shiki JS Version |
+|-------------------|------------------|
+| ^2.0              | ^1.0             |
+| ^1.3              | ^0.14            |
+
+#### Installing spatie/shiki-php:
+
 ```bash
 composer require spatie/shiki-php:"^2.0"
 ```
 
-To install shiki:
+#### Installing shiki:
 
 ```bash
-npm install shiki
+npm install shiki@^1.0
 ```
 
-If you use Herd or another NVM, you will most likely need to create a symlink to your node version. Please follow the instructions [here](https://github.com/spatie/shiki-php?tab=readme-ov-file#using-node-version-manager).
+#### When using a Node Version Manager:
+
+If you use Herd or another NVM, you will most likely need to create a symlink to your node version. Please follow the
+instructions [here](https://github.com/spatie/shiki-php?tab=readme-ov-file#using-node-version-manager).
 
 Then you can enable syntax highlighting using:
 
@@ -372,22 +465,30 @@ KnowledgeBasePanel::configureUsing(
 ![Syntax highlighting example](https://github.com/GuavaCZ/filament-knowledge-base/raw/main/docs/images/screenshot_syntax_highlighting.png)
 
 ### Vite assets support
-You can use the default image syntax to include vite assets, as long as you provide the full path from your root project directory:
+
+You can use the default image syntax to include vite assets, as long as you provide the full path from your root project
+directory:
+
 ```md
 ![my image](/resources/img/my-image.png)
 ```
 
 ### Including other files
-We support including markdown files within other files. This is especially useful if you want to organize your markdown or display snippets of a whole documentation as a help button without duplicating your markdown files.
+
+We support including markdown files within other files. This is especially useful if you want to organize your markdown
+or display snippets of a whole documentation as a help button without duplicating your markdown files.
 
 The syntax is as follows:
+
 ```md
 @include(prologue.getting-started)
 ```
 
-This is extremely helpful when you want to display help buttons for a concrete component or field, but don't want to deal with duplicated information.
+This is extremely helpful when you want to display help buttons for a concrete component or field, but don't want to
+deal with duplicated information.
 
-You can simply extract parts of your markdown into smaller markdown files and include them in your main file. That way you can only display the partials in your `Help Actions`.
+You can simply extract parts of your markdown into smaller markdown files and include them in your main file. That way
+you can only display the partials in your `Help Actions`.
 
 ## Testing
 
@@ -411,7 +512,8 @@ Please review [our security policy](../../security/policy) on how to report secu
 
 - [Lukas Frey](https://github.com/GuavaCZ)
 - [All Contributors](../../contributors)
-- Spatie - Our package skeleton is a modified version of [Spatie's Package Tools](https://github.com/spatie/laravel-package-tools)
+- Spatie - Our package skeleton is a modified version
+  of [Spatie's Package Tools](https://github.com/spatie/laravel-package-tools)
 - Spatie shiki and markdown packages
 
 ## License

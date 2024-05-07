@@ -63,9 +63,8 @@ class KnowledgeBasePanel extends Panel
         static::$syntaxHighlighting = $condition;
 
         if (static::$syntaxHighlighting) {
-            if (! InstalledVersions::isInstalled('spatie/shiki-php')
-                || version_compare(InstalledVersions::getVersion('spatie/shiki-php'), '2.0', '<')) {
-                throw new Exception('You need to install shiki and spatie/shiki-php:^2.0 in order to use the syntax highlighting feature. Please check the documentation for installation instructions.');
+            if (! InstalledVersions::isInstalled('spatie/shiki-php')) {
+                throw new Exception('You need to install shiki and spatie/shiki-php in order to use the syntax highlighting feature. Please check the documentation for installation instructions.');
             }
         }
 
