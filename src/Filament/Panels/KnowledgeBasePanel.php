@@ -4,7 +4,6 @@ namespace Guava\FilamentKnowledgeBase\Filament\Panels;
 
 use Composer\InstalledVersions;
 use Exception;
-use Filament\Facades\Filament;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -15,13 +14,13 @@ use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\Support\Assets\Theme;
 use Filament\Support\Enums\Platform;
-use Filament\View\PanelsRenderHook;
 use Filament\Widgets\AccountWidget;
 use Guava\FilamentKnowledgeBase\Contracts\Documentable;
 use Guava\FilamentKnowledgeBase\Documentation;
 use Guava\FilamentKnowledgeBase\Facades\KnowledgeBase;
 use Guava\FilamentKnowledgeBase\Filament\Pages\ViewDocumentation;
 use Guava\FilamentKnowledgeBase\Filament\Resources\DocumentationResource;
+use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -74,6 +73,13 @@ class KnowledgeBasePanel extends Panel
     public static function hasSyntaxHighlighting(): bool
     {
         return static::$syntaxHighlighting;
+    }
+
+    public function getBrandName(): string | Htmlable
+    {
+        return $this->evaluate($this->brandName)
+            ?? __('filament-knowledge-base::translations.knowledge-base')
+            ?? config('app.name');
     }
 
     public function getTheme(): Theme
@@ -161,14 +167,6 @@ class KnowledgeBasePanel extends Panel
                     ->authMiddleware([
                         Authenticate::class,
                     ])
-            )
-            ->renderHook(
-                PanelsRenderHook::SIDEBAR_FOOTER,
-                fn (): string => view('filament-knowledge-base::sidebar-footer', [
-                    'active' => Filament::getCurrentPanel()->getId() === config('filament-knowledge-base.panel.id', 'knowledge-base'),
-                    'url' => Filament::getPanel(config('filament-knowledge-base.panel.id', 'knowledge-base'))->getUrl(),
-                    'shouldOpenDocumentationInNewTab' => false,
-                ])
             )
 
             // TODO: Replace with ->navigationItems and ->navigationGroups to support custom pages
