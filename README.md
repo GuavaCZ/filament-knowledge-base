@@ -300,6 +300,30 @@ php artisan cache:clear
 
 A lot of the functionalities can be customized to a certain extent.
 
+### Customize the knowledge base panel
+You can customize the knowledge base panel to your liking using:
+
+```php
+use Guava\FilamentKnowledgeBase\Filament\Panels\KnowledgeBasePanel;
+
+KnowledgeBasePanel::configureUsing(
+    fn(KnowledgeBasePanel $panel) => $panel
+        // Your options here
+);
+```
+
+#### Change brand name
+For example to change the default brand name/title (displayed in the top left) of the panel, you can do:
+
+```php
+use Guava\FilamentKnowledgeBase\Filament\Panels\KnowledgeBasePanel;
+
+KnowledgeBasePanel::configureUsing(
+    fn(KnowledgeBasePanel $panel) => $panel
+        ->brandName('My Docs')
+);
+```
+
 ### Customize the help menu/button render hook
 
 If you want to place the help menu / button someplace else, you can override the render hook:
