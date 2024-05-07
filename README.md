@@ -63,7 +63,7 @@ return [
 We register a separate panel for your entire Knowledge Base. This way you have a single place where you can in detail document your functionalities.
 
 ### Modal Previews
-Instead of redirecting the user to the documentation immediatelly, the package offers `modal previews`, which render the markdown in a customizable modal with an optional button to open the full documentation page.
+Instead of redirecting the user to the documentation immediately, the package offers `modal previews`, which render the markdown in a customizable modal with an optional button to open the full documentation page.
 
 You can learn how to enable this feature in the `Customizations` section.
 
@@ -144,7 +144,7 @@ This would create the file for both the `de` and `en` locale.
 If you **don't** pass any locale, it will automatically create the documentation file for every locale in `/docs/{locale}`.
 
 ### Markdown
-After you generated your documentation file, it's time to edit it.
+After you generate your documentation file, it's time to edit it.
 
 A markdown file consists of two sections, the `Front Matter` and `Content`.
 
@@ -177,7 +177,7 @@ In every panel you registered the Knowlege Base plugin, we automatically inject 
 But we offer a deeper integration to your panels.
 
 #### Integrating into resources or pages
-You will most likely have a section in your knowledge base dedicated to each of your resource (at least to the more complex ones).
+You will most likely have a section in your knowledge base dedicated to each of your resources (at least to the more complex ones).
 
 To integrate your resource with the documentation, all you need to do is implement the `HasKnowledgeBase` contract in your resource or page.
 
@@ -202,7 +202,7 @@ class UserResource extends Resource implements HasKnowledgeBase
 ```
 This will render a `Help menu` button at the end of the top navbar.
 
-If you added more than one documentation files, it will render a dropdown menu, otherwise the `help` button will directly reference the documentation you linked.
+If you add more than one documentation file, it will render a dropdown menu, otherwise the `help` button will directly reference the documentation you linked.
 
 ![Documentation button example](https://github.com/GuavaCZ/filament-knowledge-base/raw/main/docs/images/screenshot_help_menu.png)
 
@@ -253,7 +253,7 @@ $plugin->helpMenuRenderHook(PanelsRenderHook::TOPBAR_START);
 ```
 
 ### Enable modal previews
-If you want to open documentations in modal previews instead of immediatelly redirecting to the full pages, you can enable it like this:
+If you want to open documentations in modal previews instead of immediately redirecting to the full pages, you can enable it like this:
 ```php
 $plugin->modalPreviews();
 ```
