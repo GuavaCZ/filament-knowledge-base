@@ -275,6 +275,15 @@ $plugin->modalTitleBreadcrumbs();
 ```
 ![Modal Breadcrumbs Example](https://github.com/GuavaCZ/filament-knowledge-base/raw/main/docs/images/screenshot_modal_breadcrumbs.jpeg)
 
+### Open documentation links in new tab
+When you open a documentation, by default it will be opened in a new tab.
+
+To change this, you can customize your plugin:
+
+```php
+$plugin->openDocumentationInNewTab()
+```
+
 ### Guest Access
 By default, the panel is only accessible to authenticated users.
 
