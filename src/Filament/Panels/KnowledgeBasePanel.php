@@ -3,6 +3,7 @@
 namespace Guava\FilamentKnowledgeBase\Filament\Panels;
 
 use Exception;
+use Filament\Facades\Filament;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -13,6 +14,7 @@ use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\Support\Assets\Theme;
 use Filament\Support\Enums\Platform;
+use Filament\View\PanelsRenderHook;
 use Filament\Widgets\AccountWidget;
 use Guava\FilamentKnowledgeBase\Contracts\Documentable;
 use Guava\FilamentKnowledgeBase\Documentation;
@@ -152,6 +154,13 @@ class KnowledgeBasePanel extends Panel
                     ->authMiddleware([
                         Authenticate::class,
                     ])
+            )
+            ->renderHook(
+                PanelsRenderHook::SIDEBAR_FOOTER,
+                fn (): string => view('filament-knowledge-base::sidebar-footer', [
+                    'active' => Filament::getCurrentPanel()->getId() === config('filament-knowledge-base.panel.id', 'knowledge-base'),
+                    'url' => Filament::getPanel(config('filament-knowledge-base.panel.id', 'knowledge-base'))->getUrl(),
+                ])
             )
 
             // TODO: Replace with ->navigationItems and ->navigationGroups to support custom pages

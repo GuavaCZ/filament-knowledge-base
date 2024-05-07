@@ -3,6 +3,7 @@
 namespace Guava\FilamentKnowledgeBase;
 
 use Filament\Contracts\Plugin;
+use Filament\Facades\Filament;
 use Filament\Panel;
 use Filament\View\PanelsRenderHook;
 use Illuminate\Support\Facades\Blade;
@@ -72,10 +73,19 @@ class KnowledgeBasePlugin implements Plugin
 
     public function register(Panel $panel): void
     {
-        $panel->renderHook(
-            $this->getHelpMenuRenderHook(),
-            fn (): string => Blade::render('@livewire(\'help-menu\')'),
-        );
+        $panel
+            ->renderHook(
+                $this->getHelpMenuRenderHook(),
+                fn (): string => Blade::render('@livewire(\'help-menu\')'),
+            )
+            ->renderHook(
+                PanelsRenderHook::SIDEBAR_FOOTER,
+                fn (): string => view('filament-knowledge-base::sidebar-footer', [
+                    'active' => Filament::getCurrentPanel()->getId() === config('filament-knowledge-base.panel.id', 'knowledge-base'),
+                    'url' => Filament::getPanel(config('filament-knowledge-base.panel.id', 'knowledge-base'))->getUrl(),
+                ])
+            )
+        ;
     }
 
     public function boot(Panel $panel): void

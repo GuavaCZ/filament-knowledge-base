@@ -39,13 +39,5 @@ class KnowledgeBaseServiceProvider extends PackageServiceProvider
     public function packageBooted(): void
     {
         Livewire::component('help-menu', HelpMenu::class);
-
-        FilamentView::registerRenderHook(
-            PanelsRenderHook::SIDEBAR_FOOTER,
-            fn (): string => view('filament-knowledge-base::sidebar-footer', [
-                'active' => Filament::getCurrentPanel()->getId() === config('filament-knowledge-base.panel.id', 'knowledge-base'),
-                'url' => Filament::getPanel(config('filament-knowledge-base.panel.id', 'knowledge-base'))->getUrl(),
-            ])
-        );
     }
 }
