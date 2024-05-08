@@ -1,0 +1,23 @@
+<?php
+
+namespace Guava\FilamentKnowledgeBase\Enums;
+
+use Filament\Pages\SubNavigationPosition;
+
+enum TableOfContentsPosition
+{
+    case Start;
+
+    case End;
+
+    case Top;
+
+    public function toSubNavigationPosition(): SubNavigationPosition
+    {
+        return match ($this) {
+            self::Start => SubNavigationPosition::Start,
+            self::End => SubNavigationPosition::End,
+            self::Top => SubNavigationPosition::Top,
+        };
+    }
+}

@@ -7,6 +7,7 @@ use Filament\Pages\SubNavigationPosition;
 use Filament\Panel;
 use Filament\Resources\Pages\PageRegistration;
 use Filament\Resources\Pages\ViewRecord;
+use Guava\FilamentKnowledgeBase\Facades\KnowledgeBase;
 use Guava\FilamentKnowledgeBase\Filament\Resources\DocumentationResource;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Routing\Route;
@@ -22,7 +23,7 @@ class ViewDocumentation extends ViewRecord
 
     public function getSubNavigationPosition(): SubNavigationPosition
     {
-        return SubNavigationPosition::End;
+        return KnowledgeBase::panel()->getTableOfContentsPosition()->toSubNavigationPosition();
     }
 
     public function getBreadcrumbs(): array
@@ -87,6 +88,10 @@ class ViewDocumentation extends ViewRecord
 
     public function getSubNavigation(): array
     {
+        if (KnowledgeBase::panel()->shouldDisableTableOfContents()) {
+            return [];
+        }
+
         $pages = [];
         foreach ($this->record->getAnchors() as $label => $anchor) {
             $pages[] = NavigationItem::make($anchor)

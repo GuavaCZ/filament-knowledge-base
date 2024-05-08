@@ -17,6 +17,7 @@ use Filament\Support\Enums\Platform;
 use Filament\Widgets\AccountWidget;
 use Guava\FilamentKnowledgeBase\Contracts\Documentable;
 use Guava\FilamentKnowledgeBase\Documentation;
+use Guava\FilamentKnowledgeBase\Enums\TableOfContentsPosition;
 use Guava\FilamentKnowledgeBase\Facades\KnowledgeBase;
 use Guava\FilamentKnowledgeBase\Filament\Pages\ViewDocumentation;
 use Guava\FilamentKnowledgeBase\Filament\Resources\DocumentationResource;
@@ -38,6 +39,10 @@ class KnowledgeBasePanel extends Panel
 
     protected static bool $syntaxHighlighting = false;
 
+    protected bool $disableTableOfContents = false;
+
+    protected TableOfContentsPosition $tableOfContentsPosition = TableOfContentsPosition::End;
+
     public function __construct()
     {
         $this->id(
@@ -55,6 +60,30 @@ class KnowledgeBasePanel extends Panel
     public function hasGuestAccess(): bool
     {
         return $this->evaluate($this->guestAccess);
+    }
+
+    public function disableTableOfContents(bool $condition = true): static
+    {
+        $this->disableTableOfContents = $condition;
+
+        return $this;
+    }
+
+    public function shouldDisableTableOfContents(): bool
+    {
+        return $this->evaluate($this->disableTableOfContents);
+    }
+
+    public function tableOfContentsPosition(TableOfContentsPosition $position): static
+    {
+        $this->tableOfContentsPosition = $position;
+
+        return $this;
+    }
+
+    public function getTableOfContentsPosition(): TableOfContentsPosition
+    {
+        return $this->evaluate($this->tableOfContentsPosition);
     }
 
     public function syntaxHighlighting(bool $condition = true): static

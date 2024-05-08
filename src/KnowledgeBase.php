@@ -4,7 +4,9 @@ namespace Guava\FilamentKnowledgeBase;
 
 use Exception;
 use Filament\Actions\Action;
+use Filament\Facades\Filament;
 use Guava\FilamentKnowledgeBase\Contracts\Documentable;
+use Guava\FilamentKnowledgeBase\Filament\Panels\KnowledgeBasePanel;
 use Guava\FilamentKnowledgeBase\Markdown\MarkdownRenderer;
 use Guava\FilamentKnowledgeBase\Pages\Documentation;
 use Illuminate\Database\Eloquent\Model;
@@ -32,6 +34,11 @@ class KnowledgeBase
     public function model(): Documentable | string
     {
         return config('filament-knowledge-base.model');
+    }
+
+    public function panel(): KnowledgeBasePanel
+    {
+        return Filament::getPanel(config('filament-knowledge-base.panel.id'));
     }
 
     public function parseMarkdown(string $path): array
