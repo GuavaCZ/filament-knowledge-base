@@ -73,9 +73,11 @@ class KnowledgeBasePlugin implements Plugin
                 fn (Panel $panel) => $panel
                     ->renderHook(
                         PanelsRenderHook::SIDEBAR_FOOTER,
-                        fn (): string => view('filament-knowledge-base::sidebar-footer', [
+                        fn (): string => view('filament-knowledge-base::sidebar-action', [
+                            'label' => __('filament-knowledge-base::translations.knowledge-base'),
+                            'icon' => 'heroicon-o-book-open',
                             'url' => \Guava\FilamentKnowledgeBase\Facades\KnowledgeBase::panel()->getUrl(),
-                            'shouldOpenDocumentationInNewTab' => $this->shouldOpenDocumentationInNewTab(),
+                            'shouldOpenUrlInNewTab' => $this->shouldOpenDocumentationInNewTab(),
                         ])
                     )
             )

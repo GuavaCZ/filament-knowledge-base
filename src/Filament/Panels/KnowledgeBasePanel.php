@@ -4,6 +4,7 @@ namespace Guava\FilamentKnowledgeBase\Filament\Panels;
 
 use Composer\InstalledVersions;
 use Exception;
+use Filament\Facades\Filament;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -14,7 +15,9 @@ use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\Support\Assets\Theme;
 use Filament\Support\Enums\Platform;
+use Filament\View\PanelsRenderHook;
 use Filament\Widgets\AccountWidget;
+use Guava\FilamentKnowledgeBase\Concerns\CanDisableBackToDefaultPanelButton;
 use Guava\FilamentKnowledgeBase\Contracts\Documentable;
 use Guava\FilamentKnowledgeBase\Documentation;
 use Guava\FilamentKnowledgeBase\Enums\TableOfContentsPosition;
@@ -35,6 +38,8 @@ use Spatie\StructureDiscoverer\Discover;
 
 class KnowledgeBasePanel extends Panel
 {
+    use CanDisableBackToDefaultPanelButton;
+
     protected bool $guestAccess = false;
 
     protected static bool $syntaxHighlighting = false;
@@ -196,6 +201,20 @@ class KnowledgeBasePanel extends Panel
                     ->authMiddleware([
                         Authenticate::class,
                     ])
+            )
+
+            ->when(
+                ! $this->shouldDisableBackToDefaultPanelButton(),
+                fn (Panel $panel) => $panel
+                    ->renderHook(
+                        PanelsRenderHook::SIDEBAR_FOOTER,
+                        fn (): string => view('filament-knowledge-base::sidebar-action', [
+                            'label' => __('filament-knowledge-base::translations.back-to-default-panel'),
+                            'icon' => 'heroicon-o-arrow-uturn-left',
+                            'url' => KnowledgeBase::defaultPanelUrl(),
+                            'shouldOpenUrlInNewTab' => false,
+                        ])
+                    )
             )
 
             // TODO: Replace with ->navigationItems and ->navigationGroups to support custom pages

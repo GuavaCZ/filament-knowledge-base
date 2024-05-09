@@ -52,6 +52,17 @@ class KnowledgeBase
         return config('filament-knowledge-base.panel.id', 'knowledge-base');
     }
 
+    public function defaultPanelUrl(): string
+    {
+        $panel = Filament::getDefaultPanel();
+
+        Filament::setCurrentPanel($panel);
+        $url = $panel->getUrl();
+        Filament::setCurrentPanel($this->panel());
+
+        return $url;
+    }
+
     public function parseMarkdown(string $path): array
     {
         $converter = app(MarkdownRenderer::class);
