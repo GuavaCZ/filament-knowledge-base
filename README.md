@@ -388,6 +388,30 @@ KnowledgeBasePanel::configureUsing(
 );
 ```
 
+### Anchors
+
+#### Customizing the anchor symbol
+By default we use the `#` symbol. You can customize the symbol using:
+```php
+use Guava\FilamentKnowledgeBase\Filament\Panels\KnowledgeBasePanel;
+
+KnowledgeBasePanel::configureUsing(
+    fn(KnowledgeBasePanel $panel) => $panel
+        ->anchorSymbol('¶')
+);
+```
+
+#### Disabling anchors
+We render an anchor prefix (#) in front of every heading. To disable it, you can do:
+```php
+use Guava\FilamentKnowledgeBase\Filament\Panels\KnowledgeBasePanel;
+
+KnowledgeBasePanel::configureUsing(
+    fn(KnowledgeBasePanel $panel) => $panel
+        ->disableAnchors()
+);
+```
+
 ### Enable modal previews
 
 If you want to open documentations in modal previews instead of immediately redirecting to the full pages, you can
