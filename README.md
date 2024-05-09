@@ -433,7 +433,20 @@ $plugin->slideOverPreviews();
 
 ![Modal Slideover Example](/docs/images/screenshot_modal_slideovers.jpeg)
 
-### Enable breadcrumbs in modal preview titles
+### Breadcrubs
+#### Disable breadcrumbs
+
+By default on each documentation page, there is a breadcrumb at the top. You can disable it if you wish:
+
+```php
+use Guava\FilamentKnowledgeBase\Filament\Panels\KnowledgeBasePanel;
+
+KnowledgeBasePanel::configureUsing(
+    fn(KnowledgeBasePanel $panel) => $panel
+        ->disableBreadcrumbs()
+);
+```
+#### Enable breadcrumbs in modal preview titles
 
 When using modal previews, by default the title shows just that, the title of the documentation page.
 

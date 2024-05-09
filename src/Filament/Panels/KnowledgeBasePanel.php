@@ -19,6 +19,7 @@ use Filament\View\PanelsRenderHook;
 use Filament\Widgets\AccountWidget;
 use Guava\FilamentKnowledgeBase\Concerns\CanDisableAnchors;
 use Guava\FilamentKnowledgeBase\Concerns\CanDisableBackToDefaultPanelButton;
+use Guava\FilamentKnowledgeBase\Concerns\CanDisableBreadcrumbs;
 use Guava\FilamentKnowledgeBase\Concerns\HasAnchorSymbol;
 use Guava\FilamentKnowledgeBase\Concerns\HasArticleClass;
 use Guava\FilamentKnowledgeBase\Contracts\Documentable;
@@ -42,6 +43,7 @@ use Spatie\StructureDiscoverer\Discover;
 class KnowledgeBasePanel extends Panel
 {
     use CanDisableBackToDefaultPanelButton;
+    use CanDisableBreadcrumbs;
     use HasAnchorSymbol;
     use HasArticleClass;
 

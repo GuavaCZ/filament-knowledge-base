@@ -28,6 +28,10 @@ class ViewDocumentation extends ViewRecord
 
     public function getBreadcrumbs(): array
     {
+        if (KnowledgeBase::panel()->shouldDisableBreadcrumbs()) {
+            return [];
+        }
+
         return $this->record->getBreadcrumbs();
     }
 

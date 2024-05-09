@@ -2,6 +2,8 @@
 
 namespace Guava\FilamentKnowledgeBase\Models;
 
+use Arr;
+use Filament\Navigation\NavigationGroup;
 use Guava\FilamentKnowledgeBase\Contracts\Documentable;
 use Guava\FilamentKnowledgeBase\Facades\KnowledgeBase;
 use Guava\FilamentKnowledgeBase\Filament\Pages\ViewDocumentation;
@@ -15,7 +17,6 @@ use League\CommonMark\Extension\CommonMark\Node\Block\Heading;
 use League\CommonMark\Extension\FrontMatter\Output\RenderedContentWithFrontMatter;
 use League\CommonMark\Extension\HeadingPermalink\HeadingPermalink;
 use League\CommonMark\Output\RenderedContentInterface;
-use Spatie\StructureDiscoverer\Discover;
 use Sushi\Sushi;
 
 class FlatfileDocumentation extends Model implements Documentable
@@ -67,9 +68,6 @@ class FlatfileDocumentation extends Model implements Documentable
             })
             ->toArray()
         ;
-        collect(Discover::in(app_path('KnowledgeBasePanel'))
-            ->extending(\Guava\FilamentKnowledgeBase\Pages\Documentation::class)
-            ->get());
     }
 
     public function getFrontMatter(): array
@@ -163,6 +161,16 @@ class FlatfileDocumentation extends Model implements Documentable
         return $this->parent;
     }
 
+    public function getParentId(): ?string
+    {
+        $parts = str($this->getId())->explode('.', 3);
+        if (count($parts) >= 3) {
+            return $parts[0] . '.' . $parts[1];
+        }
+
+        return null;
+    }
+
     public function getGroup(): ?string
     {
         return $this->group;
@@ -186,20 +194,40 @@ class FlatfileDocumentation extends Model implements Documentable
     public function getBreadcrumbs(): array
     {
         return collect([
-            __('filament-knowledge-base::translations.knowledge-base'),
+            KnowledgeBase::panel()->getUrl() => __('filament-knowledge-base::translations.knowledge-base'),
         ])
             ->when(
                 $group = $this->getGroup(),
-                fn (Collection $collection) => $collection->push($group)
+                fn (Collection $collection) => $collection->put($this->getGroupUrl() . '#', $group)
             )
             ->when(
                 $parent = $this->getParent(),
-                fn (Collection $collection) => $collection->push($parent)
+                fn (Collection $collection) => $collection->put(
+                    ViewDocumentation::getUrl([
+                        'record' => KnowledgeBase::documentable($this->getParentId()),
+                    ], panel: config('filament-knowledge-base.panel.id', 'knowledge-base')),
+                    $parent,
+                )
             )
             ->put(ViewDocumentation::getUrl([
                 'record' => $this,
             ], panel: config('filament-knowledge-base.panel.id', 'knowledge-base')), $this->getTitle())
             ->toArray()
         ;
+    }
+
+    public function getGroupUrl()
+    {
+        $group = collect(KnowledgeBase::panel()->getNavigation())
+            ->first(function ($item) {
+                return $item instanceof NavigationGroup && $item->getLabel() === $this->getGroup();
+            })
+        ;
+
+        if ($group) {
+            return Arr::first($group->getItems())->getUrl();
+        }
+
+        return null;
     }
 }
