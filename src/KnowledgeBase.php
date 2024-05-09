@@ -38,7 +38,18 @@ class KnowledgeBase
 
     public function panel(): KnowledgeBasePanel
     {
-        return Filament::getPanel(config('filament-knowledge-base.panel.id'));
+        $panel = Filament::getPanel($this->panelId());
+
+        if (! ($panel instanceof KnowledgeBasePanel)) {
+            throw new Exception('Panel must be an Knowledge Base Panel!');
+        }
+
+        return $panel;
+    }
+
+    public function panelId(): string
+    {
+        return config('filament-knowledge-base.panel.id', 'knowledge-base');
     }
 
     public function parseMarkdown(string $path): array
