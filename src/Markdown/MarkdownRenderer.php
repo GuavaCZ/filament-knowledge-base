@@ -79,17 +79,17 @@ final class MarkdownRenderer
                     'enabled' => true,
                     'tag' => 'div',
                     'attributes' => [
-                    'class' => Arr::toCssClasses([
-                        'divide-y divide-gray-200 overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-gray-950/5 dark:divide-white/10 dark:bg-gray-900 dark:ring-white/10',
-                        'fi-ta-content relative divide-y divide-gray-200 overflow-x-auto dark:divide-white/10 dark:border-t-white/10 !border-t-0',
-                        '[&_table]:fi-ta-table [&_table]:w-full [&_table]:table-auto [&_table]:divide-y [&_table]:divide-gray-200 [&_table]:text-start [&_table]:dark:divide-white/5',
-                        '[&_thead]:divide-y [&_thead]:divide-gray-200 [&_thead]:dark:divide-white/5',
-                        '[&_thead_tr]:bg-gray-50 [&_thead_tr]:dark:bg-white/5',
-                        '[&_thead_th]:text-start',
-                        '[&_th]:px-3 [&_th]:py-3.5',
-                        '[&_td]:px-3 [&_td]:py-3.5',
-                        '[&_tbody]:divide-y [&_tbody]:divide-gray-200 [&_tbody]:whitespace-nowrap [&_tbody]:dark:divide-white/5',
-                    ]),
+                        'class' => Arr::toCssClasses([
+                            'divide-y divide-gray-200 overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-gray-950/5 dark:divide-white/10 dark:bg-gray-900 dark:ring-white/10',
+                            'fi-ta-content relative divide-y divide-gray-200 overflow-x-auto dark:divide-white/10 dark:border-t-white/10 !border-t-0',
+                            '[&_table]:fi-ta-table [&_table]:w-full [&_table]:table-auto [&_table]:divide-y [&_table]:divide-gray-200 [&_table]:text-start [&_table]:dark:divide-white/5',
+                            '[&_thead]:divide-y [&_thead]:divide-gray-200 [&_thead]:dark:divide-white/5',
+                            '[&_thead_tr]:bg-gray-50 [&_thead_tr]:dark:bg-white/5',
+                            '[&_thead_th]:text-start',
+                            '[&_th]:px-3 [&_th]:py-3.5',
+                            '[&_td]:px-3 [&_td]:py-3.5',
+                            '[&_tbody]:divide-y [&_tbody]:divide-gray-200 [&_tbody]:whitespace-nowrap [&_tbody]:dark:divide-white/5',
+                        ]),
                     ],
                 ],
                 'alignment_attributes' => [
