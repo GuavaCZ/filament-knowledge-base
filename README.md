@@ -335,6 +335,18 @@ KnowledgeBasePanel::configureUsing(
 );
 ```
 
+#### Disable default classes
+To disable the default styling altogether, you can use:
+
+```php
+use Guava\FilamentKnowledgeBase\Filament\Panels\KnowledgeBasePanel;
+
+KnowledgeBasePanel::configureUsing(
+    fn(KnowledgeBasePanel $panel) => $panel
+        ->disableDefaultClasses()
+);
+```
+
 ### Disable the knowledge base panel button
 When in a panel where the Knowledge Base plugin is enabled, we render by default in the bottom of the sidebar a button to go to the knowledge base panel. You can disable it if you like:
 ```php
