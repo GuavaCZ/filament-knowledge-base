@@ -4,7 +4,6 @@ namespace Guava\FilamentKnowledgeBase\Filament\Panels;
 
 use Composer\InstalledVersions;
 use Exception;
-use Filament\Facades\Filament;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -17,7 +16,6 @@ use Filament\Support\Assets\Theme;
 use Filament\Support\Enums\Platform;
 use Filament\View\PanelsRenderHook;
 use Filament\Widgets\AccountWidget;
-use Guava\FilamentKnowledgeBase\Concerns\CanDisableAnchors;
 use Guava\FilamentKnowledgeBase\Concerns\CanDisableBackToDefaultPanelButton;
 use Guava\FilamentKnowledgeBase\Concerns\CanDisableBreadcrumbs;
 use Guava\FilamentKnowledgeBase\Concerns\HasAnchorSymbol;
