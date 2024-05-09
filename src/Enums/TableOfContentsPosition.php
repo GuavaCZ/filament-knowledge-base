@@ -10,14 +10,11 @@ enum TableOfContentsPosition
 
     case End;
 
-    case Top;
-
     public function toSubNavigationPosition(): SubNavigationPosition
     {
         return match ($this) {
             self::Start => SubNavigationPosition::Start,
             self::End => SubNavigationPosition::End,
-            self::Top => SubNavigationPosition::Top,
         };
     }
 }

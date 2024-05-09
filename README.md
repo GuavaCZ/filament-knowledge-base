@@ -324,6 +324,36 @@ KnowledgeBasePanel::configureUsing(
 );
 ```
 
+### Custom classes on documentation article
+By default, the documentation article (the container where the markdown content is rendered) has a `gu-kb-article` class, which you can use to target and modify. You can also add your own class(es) using:
+```php
+use Guava\FilamentKnowledgeBase\Filament\Panels\KnowledgeBasePanel;
+
+KnowledgeBasePanel::configureUsing(
+    fn(KnowledgeBasePanel $panel) => $panel
+        ->articleClass('max-w-2xl')
+);
+```
+
+### Disable the knowledge base panel button
+When in a panel where the Knowledge Base plugin is enabled, we render by default in the bottom of the sidebar a button to go to the knowledge base panel. You can disable it if you like:
+```php
+use \Filament\View\PanelsRenderHook;
+
+$plugin->disableKnowledgeBasePanelButton();
+```
+
+### Disable the back to default panel button
+When in the knowledge base panel, a similar button is rendered to go back to the default filament panel. You can disable it likewise:
+```php
+use Guava\FilamentKnowledgeBase\Filament\Panels\KnowledgeBasePanel;
+
+KnowledgeBasePanel::configureUsing(
+    fn(KnowledgeBasePanel $panel) => $panel
+        ->disableBackToDefaultPanelButton()
+);
+```
+
 ### Customize the help menu/button render hook
 
 If you want to place the help menu / button someplace else, you can override the render hook:
@@ -332,6 +362,30 @@ If you want to place the help menu / button someplace else, you can override the
 use \Filament\View\PanelsRenderHook;
 
 $plugin->helpMenuRenderHook(PanelsRenderHook::TOPBAR_START);
+```
+
+### Table of contents
+By default, in each documentation article there is a table of contents sidebar on the right.
+
+#### Disabling table of contents
+
+```php
+use Guava\FilamentKnowledgeBase\Filament\Panels\KnowledgeBasePanel;
+
+KnowledgeBasePanel::configureUsing(
+    fn(KnowledgeBasePanel $panel) => $panel
+        ->disableTableOfContents()
+);
+```
+
+#### Changing the position of the table of contents
+```php
+use Guava\FilamentKnowledgeBase\Filament\Panels\KnowledgeBasePanel;
+use Guava\FilamentKnowledgeBase\Enums\TableOfContentsPosition;
+KnowledgeBasePanel::configureUsing(
+    fn(KnowledgeBasePanel $panel) => $panel
+        ->tableOfContentsPosition(TableOfContentsPosition::Start)
+);
 ```
 
 ### Enable modal previews
