@@ -1,5 +1,6 @@
 @php
 $sidebar = $this->getSubNavigationPosition();
+$articleClass = \Guava\FilamentKnowledgeBase\Facades\KnowledgeBase::panel()->getArticleClass();
 @endphp
 
 @push('scripts')
@@ -24,7 +25,9 @@ $sidebar = $this->getSubNavigationPosition();
         }"
 :full-height="true"
 >
-    <div x-data
+    <article
+        class="gu-kb-article {{ $articleClass }}"
+        x-data
     x-init="
 let anchors = document.querySelectorAll('.gu-kb-anchor');
 
@@ -56,7 +59,7 @@ let callback = function(entries, observer) {
     "
     >
     {!!  $this->record->getHtml() !!}
-    </div>
+    </article>
 
 
 </x-filament-panels::page>

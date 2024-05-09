@@ -18,6 +18,7 @@ use Filament\Support\Enums\Platform;
 use Filament\View\PanelsRenderHook;
 use Filament\Widgets\AccountWidget;
 use Guava\FilamentKnowledgeBase\Concerns\CanDisableBackToDefaultPanelButton;
+use Guava\FilamentKnowledgeBase\Concerns\HasArticleClass;
 use Guava\FilamentKnowledgeBase\Contracts\Documentable;
 use Guava\FilamentKnowledgeBase\Documentation;
 use Guava\FilamentKnowledgeBase\Enums\TableOfContentsPosition;
@@ -39,6 +40,7 @@ use Spatie\StructureDiscoverer\Discover;
 class KnowledgeBasePanel extends Panel
 {
     use CanDisableBackToDefaultPanelButton;
+    use HasArticleClass;
 
     protected bool $guestAccess = false;
 
