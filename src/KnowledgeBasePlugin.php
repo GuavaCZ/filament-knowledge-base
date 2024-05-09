@@ -76,7 +76,9 @@ class KnowledgeBasePlugin implements Plugin
                         fn (): string => view('filament-knowledge-base::sidebar-action', [
                             'label' => __('filament-knowledge-base::translations.knowledge-base'),
                             'icon' => 'heroicon-o-book-open',
-                            'url' => \Guava\FilamentKnowledgeBase\Facades\KnowledgeBase::panel()->getUrl(),
+                            'url' => \Guava\FilamentKnowledgeBase\Facades\KnowledgeBase::url(
+                                \Guava\FilamentKnowledgeBase\Facades\KnowledgeBase::panel()
+                            ),
                             'shouldOpenUrlInNewTab' => $this->shouldOpenDocumentationInNewTab(),
                         ])
                     )

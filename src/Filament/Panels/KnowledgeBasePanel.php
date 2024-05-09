@@ -4,6 +4,7 @@ namespace Guava\FilamentKnowledgeBase\Filament\Panels;
 
 use Composer\InstalledVersions;
 use Exception;
+use Filament\Facades\Filament;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -216,7 +217,7 @@ class KnowledgeBasePanel extends Panel
                         fn (): string => view('filament-knowledge-base::sidebar-action', [
                             'label' => __('filament-knowledge-base::translations.back-to-default-panel'),
                             'icon' => 'heroicon-o-arrow-uturn-left',
-                            'url' => KnowledgeBase::defaultPanelUrl(),
+                            'url' => KnowledgeBase::url(Filament::getDefaultPanel()),
                             'shouldOpenUrlInNewTab' => false,
                         ])
                     )

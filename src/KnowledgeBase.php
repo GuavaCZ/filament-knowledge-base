@@ -5,6 +5,7 @@ namespace Guava\FilamentKnowledgeBase;
 use Exception;
 use Filament\Actions\Action;
 use Filament\Facades\Filament;
+use Filament\Panel;
 use Guava\FilamentKnowledgeBase\Contracts\Documentable;
 use Guava\FilamentKnowledgeBase\Filament\Panels\KnowledgeBasePanel;
 use Guava\FilamentKnowledgeBase\Markdown\MarkdownRenderer;
@@ -52,13 +53,13 @@ class KnowledgeBase
         return config('filament-knowledge-base.panel.id', 'knowledge-base');
     }
 
-    public function defaultPanelUrl(): string
+    public function url(Panel $panel): ?string
     {
-        $panel = Filament::getDefaultPanel();
+        $oldPanel = Filament::getCurrentPanel();
 
         Filament::setCurrentPanel($panel);
         $url = $panel->getUrl();
-        Filament::setCurrentPanel($this->panel());
+        Filament::setCurrentPanel($oldPanel);
 
         return $url;
     }
