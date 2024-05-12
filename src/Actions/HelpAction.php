@@ -6,7 +6,6 @@ use Filament\Actions\Action;
 use Filament\Facades\Filament;
 use Guava\FilamentKnowledgeBase\Contracts\Documentable;
 use Guava\FilamentKnowledgeBase\Facades\KnowledgeBase;
-use Guava\FilamentKnowledgeBase\Filament\Pages\ViewDocumentation;
 
 class HelpAction extends Action
 {

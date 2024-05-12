@@ -26,7 +26,6 @@ use Guava\FilamentKnowledgeBase\Contracts\Documentable;
 use Guava\FilamentKnowledgeBase\Documentation;
 use Guava\FilamentKnowledgeBase\Enums\TableOfContentsPosition;
 use Guava\FilamentKnowledgeBase\Facades\KnowledgeBase;
-use Guava\FilamentKnowledgeBase\Filament\Pages\ViewDocumentation;
 use Guava\FilamentKnowledgeBase\Filament\Resources\DocumentationResource;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
