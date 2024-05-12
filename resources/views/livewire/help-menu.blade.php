@@ -5,6 +5,7 @@
     $hasSlideOverPreviews = Filament::getPlugin('guava::filament-knowledge-base')->hasSlideOverPreviews();
     $hasModalTitleBreadcrumbs = Filament::getPlugin('guava::filament-knowledge-base')->hasModalTitleBreadcrumbs();
     $target = Filament::getPlugin('guava::filament-knowledge-base')->shouldOpenDocumentationInNewTab() ? '_blank' : '_self';
+    $articleClass = \Guava\FilamentKnowledgeBase\Facades\KnowledgeBase::panel()->getArticleClass();
 @endphp
 
 <div @class([
@@ -42,7 +43,13 @@
                                 {{ $documentable->getTitle() }}
                             @endif
                         </x-slot>
-                        {!! $documentable->getSimpleHtml() !!}
+
+                        <x-filament-knowledge-base::content @class([
+        "gu-kb-article-modal",
+        $articleClass => ! empty($articleClass),
+    ])>
+                            {!! $documentable->getSimpleHtml() !!}
+                        </x-filament-knowledge-base::content>
                         <x-slot name="footerActions">
                             <x-filament::button tag="a"
                                                 :href="$documentable->getUrl()"

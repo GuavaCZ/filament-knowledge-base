@@ -247,12 +247,8 @@ class KnowledgeBasePanel extends Panel
                     ->toArray()
             )
             ->parentItem($documentable->getParent())
-            ->url(ViewDocumentation::getUrl([
-                'record' => $documentable,
-            ]))
-            ->isActiveWhen(fn () => url()->current() === ViewDocumentation::getUrl([
-                'record' => $documentable,
-            ]))
+            ->url($documentable->getUrl())
+            ->isActiveWhen(fn () => url()->current() === $documentable->getUrl())
         ;
     }
 

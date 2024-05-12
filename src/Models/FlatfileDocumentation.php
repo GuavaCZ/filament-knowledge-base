@@ -95,23 +95,11 @@ class FlatfileDocumentation extends Model implements Documentable
         return $converter->convert(file_get_contents($this->path));
     }
 
-    public function getPart(string $id)
-    {
-        $walker = $this->getHtml()->getDocument()->walker();
-
-        while ($event = $walker->next()) {
-            $node = $event->getNode();
-            if ($node instanceof Heading) {
-            }
-        }
-
-    }
-
     public function getUrl(): string
     {
         return ViewDocumentation::getUrl(parameters: [
             'record' => $this,
-        ], panel: config('filament-knowledge-base.panel.id'));
+        ], panel: KnowledgeBase::panelId());
     }
 
     public function getAnchors()
@@ -203,15 +191,11 @@ class FlatfileDocumentation extends Model implements Documentable
             ->when(
                 $parent = $this->getParent(),
                 fn (Collection $collection) => $collection->put(
-                    ViewDocumentation::getUrl([
-                        'record' => KnowledgeBase::documentable($this->getParentId()),
-                    ], panel: config('filament-knowledge-base.panel.id', 'knowledge-base')),
+                    KnowledgeBase::documentable($this->getParentId())->getUrl(),
                     $parent,
                 )
             )
-            ->put(ViewDocumentation::getUrl([
-                'record' => $this,
-            ], panel: config('filament-knowledge-base.panel.id', 'knowledge-base')), $this->getTitle())
+            ->put($this->getUrl(), $this->getTitle())
             ->toArray()
         ;
     }

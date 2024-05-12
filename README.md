@@ -44,6 +44,12 @@ You can install the package via composer:
 composer require guava/filament-knowledge-base
 ```
 
+Make sure to publish the package assets using:
+
+```bash
+php artisan filament:assets
+```
+
 You can publish the config file with:
 
 ```bash

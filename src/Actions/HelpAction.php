@@ -24,8 +24,10 @@ class HelpAction extends Action
         ;
     }
 
-    public static function forDocumentable(Documentable $documentable): HelpAction
+    public static function forDocumentable(Documentable | string $documentable): HelpAction
     {
+        $documentable = KnowledgeBase::documentable($documentable);
+
         return HelpAction::make("help.{$documentable->getId()}")
             ->label($documentable->getTitle())
             ->icon($documentable->getIcon())
@@ -37,9 +39,7 @@ class HelpAction extends Action
                         Filament::getPlugin('guava::filament-knowledge-base')->hasSlideOverPreviews(),
                         fn (HelpAction $action) => $action->slideOver()
                     ),
-                fn (HelpAction $action) => $action->url(ViewDocumentation::getUrl([
-                    'record' => KnowledgeBase::documentable($documentable),
-                ], panel: config('filament-knowledge-base.panel.id', 'knowledge-base')))
+                fn (HelpAction $action) => $action->url($documentable->getUrl())
             )
         ;
     }

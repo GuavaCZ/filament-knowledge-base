@@ -6,31 +6,26 @@ use Filament\Facades\Filament;
 use Filament\Forms\Components\Actions\Action;
 use Guava\FilamentKnowledgeBase\Contracts\Documentable;
 use Guava\FilamentKnowledgeBase\Facades\KnowledgeBase;
+use Illuminate\Support\Arr;
 use Illuminate\Support\HtmlString;
 
 class HelpAction extends Action
 {
-    //    protected Documentable | string $documentation;
-    //
-    //    public function documentation(Documentable | string $documentation): static
-    //    {
-    //        $this->documentation = $documentation;
-    //
-    //        return $this;
-    //    }
-    //
-    //    public function getDocumentation(): Documentable | string
-    //    {
-    //        return $this->evaluate($this->documentation);
-    //    }
-
-    public function setUp(): void
+    protected static function getContentView(Documentable $documentable): HtmlString
     {
-        $this
-            ->modalContent(function () {
-                return new HtmlString($this->getDocumentation()->getSimpleHtml());
-            })
-        ;
+        $html = $documentable->getSimpleHtml();
+        $articleClass = KnowledgeBase::panel()->getArticleClass();
+
+        $classes = Arr::toCssClasses([
+            'gu-kb-article-modal',
+            $articleClass => ! empty($articleClass),
+        ]);
+
+        return new HtmlString(\Blade::render(<<<blade
+<x-filament-knowledge-base::content class="$classes">
+$html
+</x-filament-knowledge-base::content>
+blade));
     }
 
     public static function forDocumentable(Documentable | string $documentable): static
@@ -44,7 +39,7 @@ class HelpAction extends Action
             ->when(
                 Filament::getPlugin('guava::filament-knowledge-base')->hasModalPreviews(),
                 fn (HelpAction $action) => $action
-                    ->modalContent(fn () => new HtmlString($documentable->getSimpleHtml()))
+                    ->modalContent(fn () => static::getContentView($documentable))
                     ->modalHeading($documentable->getTitle())
                     ->modalSubmitAction(false)
                     ->modalCancelActionLabel(__('filament-knowledge-base::translations.close'))
@@ -52,7 +47,7 @@ class HelpAction extends Action
                         Filament::getPlugin('guava::filament-knowledge-base')->hasSlideOverPreviews(),
                         fn (HelpAction $action) => $action->slideOver()
                     ),
-                fn (HelpAction $action) => $action->url('#'.$documentable->getId())//TODO: Change to real URL
+                fn (HelpAction $action) => $action->url($documentable->getUrl())
             )
         ;
     }

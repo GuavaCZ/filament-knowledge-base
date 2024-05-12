@@ -2,6 +2,8 @@
 
 namespace Guava\FilamentKnowledgeBase;
 
+use Filament\Support\Assets\AlpineComponent;
+use Filament\Support\Facades\FilamentAsset;
 use Guava\FilamentKnowledgeBase\Commands\MakeDocumentationCommand;
 use Guava\FilamentKnowledgeBase\Livewire\HelpMenu;
 use Guava\FilamentKnowledgeBase\Providers\KnowledgeBasePanelProvider;
@@ -36,5 +38,15 @@ class KnowledgeBaseServiceProvider extends PackageServiceProvider
     public function packageBooted(): void
     {
         Livewire::component('help-menu', HelpMenu::class);
+
+        FilamentAsset::register(
+            assets: [
+                AlpineComponent::make(
+                    'anchors-component',
+                    __DIR__ . '/../dist/js/anchors-component.js',
+                ),
+            ],
+            package: 'guava/filament-knowledge-base'
+        );
     }
 }

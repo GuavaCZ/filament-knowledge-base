@@ -38,7 +38,7 @@ class DocumentationResource extends Resource
 
     public static function getGlobalSearchResultUrl(Model $record): ?string
     {
-        return ViewDocumentation::getUrl(['record' => $record]);
+        return ViewDocumentation::getUrl(['record' => $record], panel: KnowledgeBase::panelId());
     }
 
     public static function getGlobalSearchResultTitle(Model $record): string | Htmlable
