@@ -23,7 +23,10 @@ and give your users a comprehensive knowledge base tailored for your product. Ri
 ![Modal Previews Example](https://github.com/GuavaCZ/filament-knowledge-base/raw/main/docs/images/screenshot_modal_previews.jpeg)
 
 For a better understanding of how it works, please have a look at the video showcase:
-![Video Showcase](https://github.com/GuavaCZ/filament-knowledge-base/raw/main/docs/images/demo_preview.mov)
+
+<video width="320" height="240" controls>
+  <source src=“https://github.com/GuavaCZ/filament-knowledge-base/raw/main/docs/images/demo_preview.mp4” type="video/mp4">
+</video>
 
 ## Support us
 
