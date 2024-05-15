@@ -28,6 +28,10 @@ For a better understanding of how it works, please have a look at the video show
   <source src=“https://github.com/GuavaCZ/filament-knowledge-base/raw/main/docs/images/demo_preview.mp4” type="video/mp4">
 </video>
 
+
+https://github.com/GuavaCZ/filament-knowledge-base/assets/10926334/cf9ebb59-aaf9-4e30-ad17-2832da4b9488
+
+
 ## Support us
 
 Your support is key to the continual advancement of our plugin. We appreciate every user who has contributed to our
