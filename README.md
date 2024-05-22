@@ -25,7 +25,7 @@ and give your users a comprehensive knowledge base tailored for your product. Ri
 For a better understanding of how it works, please have a look at the video showcase:
 
 <video width="320" height="240" controls>
-  <source src=“https://github.com/GuavaCZ/filament-knowledge-base/raw/main/docs/images/demo_preview.mp4” type="video/mp4">
+  <source src="https://github.com/GuavaCZ/filament-knowledge-base/raw/main/docs/images/demo_preview.mp4" type="video/mp4">
 </video>
 
 
