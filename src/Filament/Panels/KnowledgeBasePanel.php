@@ -226,7 +226,6 @@ class KnowledgeBasePanel extends Panel
 
             // TODO: Replace with ->navigationItems and ->navigationGroups to support custom pages
             ->navigation($this->makeNavigation(...))
-            ->spa()
         ;
     }
 
