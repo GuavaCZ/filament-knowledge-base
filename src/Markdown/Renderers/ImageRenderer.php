@@ -41,7 +41,7 @@ final class ImageRenderer implements ConfigurationAwareInterface, NodeRendererIn
         } else {
             $attrs['src'] = Str::startsWith($url = $node->getUrl(), ['http://', 'https://'])
                 ? $url
-                : Vite::asset($url);
+                : Vite::asset(str($url)->ltrim('/')->toString());
         }
 
         $attrs['alt'] = $this->getAltText($node);
