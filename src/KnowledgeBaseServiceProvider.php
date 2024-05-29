@@ -6,6 +6,7 @@ use Filament\Support\Assets\AlpineComponent;
 use Filament\Support\Facades\FilamentAsset;
 use Guava\FilamentKnowledgeBase\Commands\MakeDocumentationCommand;
 use Guava\FilamentKnowledgeBase\Livewire\HelpMenu;
+use Guava\FilamentKnowledgeBase\Livewire\Modals;
 use Guava\FilamentKnowledgeBase\Providers\KnowledgeBasePanelProvider;
 use Livewire\Livewire;
 use Spatie\LaravelPackageTools\Package;
@@ -38,12 +39,17 @@ class KnowledgeBaseServiceProvider extends PackageServiceProvider
     public function packageBooted(): void
     {
         Livewire::component('help-menu', HelpMenu::class);
+        Livewire::component('modals', Modals::class);
 
         FilamentAsset::register(
             assets: [
                 AlpineComponent::make(
                     'anchors-component',
                     __DIR__ . '/../dist/js/anchors-component.js',
+                ),
+                AlpineComponent::make(
+                    'modals-component',
+                    __DIR__ . '/../dist/js/modals-component.js',
                 ),
             ],
             package: 'guava/filament-knowledge-base'

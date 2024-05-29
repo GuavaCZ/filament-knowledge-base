@@ -266,6 +266,36 @@ reference the documentation you linked.
 
 ![Documentation button example](https://github.com/GuavaCZ/filament-knowledge-base/raw/main/docs/images/screenshot_help_menu.png)
 
+#### Opening documentations in modals
+From any livewire component where you use the documentation pages (you have rendered the Help Menu), you can create links that will automatically open the documentation in a modal, by simply adding this fragment to the `href` attribute of the link:
+
+```html
+#modal-<documentation-id>
+```
+
+such as 
+```html
+<a href="#modal-users.introduction">Open Introduction</a>
+```
+
+### Modal Links
+To make it easy to access the documentation from anywhere, this plugin adds intercepts fragment links anywhere in the filament panel in order to open up a modal for a documentation page.
+
+To use modal links, simply add a link in **any place** in your panel with a fragment in the format `#modal-<documentation-id>`, such as `#modal-intro.getting-started`, for example:
+```html
+<a href="#modal-intro.getting-started">Open Introduction</a>
+```
+
+As long as a documentation with that ID exists (/docs/en/intro/getting-started.md), it will automatically open a modal with the content of that documentation.
+
+You can even share the URL with someone and it will automatically open the modal upon opening!
+
+![Modal links example](https://github.com/GuavaCZ/filament-knowledge-base/raw/main/docs/images/screenshot_modal_links.gif)
+
+
+#### Disabling Modal Links
+to disable modal links, simply call `disableModalLinks()` on the KnowledgeBasePlugin in your panel Service Provider..
+
 ### Help Actions
 
 The plugin comes with a neat `HelpAction`, which can be linked to a specific markdown file or even a partial markdown

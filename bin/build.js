@@ -48,3 +48,9 @@ compile({
     entryPoints: ['./resources/js/anchors-component.js'],
     outfile: './dist/js/anchors-component.js',
 })
+
+compile({
+    ...defaultOptions,
+    entryPoints: ['./resources/js/modals-component.js'],
+    outfile: './dist/js/modals-component.js',
+})

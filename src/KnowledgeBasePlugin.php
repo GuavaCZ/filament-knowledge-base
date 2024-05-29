@@ -6,12 +6,14 @@ use Filament\Contracts\Plugin;
 use Filament\Panel;
 use Filament\View\PanelsRenderHook;
 use Guava\FilamentKnowledgeBase\Concerns\CanDisableKnowledgeBasePanelButton;
+use Guava\FilamentKnowledgeBase\Concerns\CanDisableModalLinks;
 use Guava\FilamentKnowledgeBase\Concerns\HasModalPreviews;
 use Illuminate\Support\Facades\Blade;
 
 class KnowledgeBasePlugin implements Plugin
 {
     use CanDisableKnowledgeBasePanelButton;
+    use CanDisableModalLinks;
     use HasModalPreviews;
 
     protected bool $modalTitleBreadcrumbs = false;
@@ -67,6 +69,13 @@ class KnowledgeBasePlugin implements Plugin
             ->renderHook(
                 $this->getHelpMenuRenderHook(),
                 fn (): string => Blade::render('@livewire(\'help-menu\')'),
+            )
+            ->when(
+                ! $this->shouldDisableModalLinks(),
+                fn (Panel $panel) => $panel->renderHook(
+                    PanelsRenderHook::BODY_END,
+                    fn (): string => Blade::render('@livewire(\'modals\')'),
+                )
             )
             ->when(
                 ! $this->shouldDisableKnowledgeBasePanelButton(),
