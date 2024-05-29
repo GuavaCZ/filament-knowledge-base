@@ -18,6 +18,7 @@ class Modals extends Component implements HasActions, HasForms
     use InteractsWithForms;
 
     public ?Documentable $documentable = null;
+
     protected bool $shouldOpenDocumentationInNewTab;
 
     public function mount(): void
@@ -26,13 +27,14 @@ class Modals extends Component implements HasActions, HasForms
     }
 
     #[On('close-modal')]
-    public function onClose($id) {
+    public function onClose($id)
+    {
         if ($id !== 'kb-custom-modal') {
             return;
         }
-        $this->js(<<<JS
-\$nextTick(() => {
-    \$wire.resetDocumentation();
+        $this->js(<<<'JS'
+$nextTick(() => {
+    $wire.resetDocumentation();
 });
 JS);
     }
@@ -41,14 +43,15 @@ JS);
     {
         $this->documentable = KnowledgeBase::documentable($id);
 
-        $this->js(<<<JS
-\$nextTick(() => {
-    \$dispatch('open-modal', { id: 'kb-custom-modal' });
+        $this->js(<<<'JS'
+$nextTick(() => {
+    $dispatch('open-modal', { id: 'kb-custom-modal' });
 });
 JS);
     }
 
-    public function resetDocumentation() {
+    public function resetDocumentation()
+    {
         $this->documentable = null;
     }
 
