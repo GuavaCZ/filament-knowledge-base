@@ -240,7 +240,7 @@ class KnowledgeBasePanel extends Panel
                     ->where('parent', $documentable->getTitle())
                     ->get()
                     ->filter(fn (Documentable $documentable) => $documentable->isRegistered())
-                    ->sort(fn (Documentable $d1, Documentable $d2) => $d1->getOrder() >= $d2->getOrder())
+                    ->sort(fn (Documentable $d1, Documentable $d2) => $d1->getOrder() <=> $d2->getOrder())
                     ->map(fn (Documentable $documentable) => $this->buildNavigationItem($documentable))
                     ->toArray()
             )
@@ -276,7 +276,7 @@ class KnowledgeBasePanel extends Panel
                     : NavigationGroup::make($key)
                         ->items(
                             $items
-                                ->sort(fn (Documentable $d1, Documentable $d2) => $d1->getOrder() >= $d2->getOrder())
+                                ->sort(fn (Documentable $d1, Documentable $d2) => $d1->getOrder() <=> $d2->getOrder())
                                 ->map(fn (Documentable $documentable) => $this->buildNavigationItem($documentable))
                                 ->toArray()
                         )
