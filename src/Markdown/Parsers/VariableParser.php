@@ -12,8 +12,7 @@ class VariableParser implements InlineParserInterface
 {
     public function __construct(
         protected ?Model $record = null,
-    ) {
-    }
+    ) {}
 
     public function getMatchDefinition(): InlineParserMatch
     {

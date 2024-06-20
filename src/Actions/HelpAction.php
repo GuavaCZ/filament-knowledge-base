@@ -9,9 +9,7 @@ use Guava\FilamentKnowledgeBase\Facades\KnowledgeBase;
 
 class HelpAction extends Action
 {
-    protected function setUp(): void
-    {
-    }
+    protected function setUp(): void {}
 
     public function generic(): HelpAction
     {

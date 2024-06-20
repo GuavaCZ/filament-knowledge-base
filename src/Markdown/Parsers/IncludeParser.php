@@ -9,9 +9,7 @@ use League\CommonMark\Parser\InlineParserContext;
 
 class IncludeParser implements InlineParserInterface
 {
-    public function __construct(protected MarkdownRenderer $renderer)
-    {
-    }
+    public function __construct(protected MarkdownRenderer $renderer) {}
 
     public function getMatchDefinition(): InlineParserMatch
     {
