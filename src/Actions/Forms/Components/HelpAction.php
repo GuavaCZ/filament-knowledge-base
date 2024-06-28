@@ -21,7 +21,7 @@ class HelpAction extends Action
             $articleClass => ! empty($articleClass),
         ]);
 
-         $replacementStringId = \Str::random();
+        $replacementStringId = \Str::random();
 
         $parsed = \Blade::render(<<<blade
 <x-filament-knowledge-base::content class="$classes">
@@ -29,7 +29,7 @@ $replacementStringId
 </x-filament-knowledge-base::content>
 blade);
 
-        return new HtmlString( \Str::replace($replacementStringId, $html, $parsed));
+        return new HtmlString(\Str::replace($replacementStringId, $html, $parsed));
     }
 
     public static function forDocumentable(Documentable | string $documentable): static
