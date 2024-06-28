@@ -21,11 +21,15 @@ class HelpAction extends Action
             $articleClass => ! empty($articleClass),
         ]);
 
-        return new HtmlString(\Blade::render(<<<blade
+         $replacementStringId = \Str::random();
+
+        $parsed = \Blade::render(<<<blade
 <x-filament-knowledge-base::content class="$classes">
-$html
+$replacementStringId
 </x-filament-knowledge-base::content>
-blade));
+blade);
+
+        return new HtmlString( \Str::replace($replacementStringId, $html, $parsed));
     }
 
     public static function forDocumentable(Documentable | string $documentable): static
