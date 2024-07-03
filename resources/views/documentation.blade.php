@@ -11,6 +11,11 @@
                     url: event.target.href
                 });
             }))
+
+        var filamentKnowledgeBaseTranslations = {
+            urlCopied: "@lang('filament-knowledge-base::translations.url-copied')",
+            codeCopied: "@lang('filament-knowledge-base::translations.code-copied')",
+        };
     </script>
 @endpush
 {{--<x-filament-panels::sidebar.item activ--}}

@@ -118,7 +118,7 @@ class ViewDocumentation extends ViewRecord
         $this->js(<<<JS
         if (navigator.clipboard) {
             await navigator.clipboard.writeText('$url').then(() => {
-                (new FilamentNotification()).title('URL was copied to your clipboard')
+                (new FilamentNotification()).title(filamentKnowledgeBaseTranslations.urlCopied)
                 .success()
                 .send();
             }).catch((err) => {
