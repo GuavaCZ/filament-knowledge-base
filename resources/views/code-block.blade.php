@@ -23,7 +23,7 @@
             x-on:click.prevent="
         if (navigator.clipboard) {
         navigator.clipboard.writeText($root.querySelector('.shiki').textContent);
-        new FilamentNotification().title('Code copied to your clipboard.').success().send();
+        new FilamentNotification().title(filamentKnowledgeBaseTranslations.codeCopied).success().send();
         }
         const range = document.createRange();
         range.selectNodeContents($root.querySelector('.shiki'));
