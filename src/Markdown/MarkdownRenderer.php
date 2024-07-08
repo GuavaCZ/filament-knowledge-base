@@ -8,6 +8,7 @@ use Guava\FilamentKnowledgeBase\Filament\Panels\KnowledgeBasePanel;
 use Guava\FilamentKnowledgeBase\Markdown\Parsers\IncludeParser;
 use Guava\FilamentKnowledgeBase\Markdown\Renderers\FencedCodeRenderer;
 use Guava\FilamentKnowledgeBase\Markdown\Renderers\ImageRenderer;
+use InvalidArgumentException;
 use League\CommonMark\Environment\Environment;
 use League\CommonMark\Environment\EnvironmentBuilderInterface;
 use League\CommonMark\Environment\EnvironmentInterface;
@@ -151,9 +152,17 @@ final class MarkdownRenderer
 
     public function convert(string $input): RenderedContentInterface
     {
-        return cache()->remember($this->getCacheKey($input), config('filament-knowledge-base.cache.ttl'),
-            fn() => $this->getMarkdownConverter()->convert($input)
-        );
+        $ttl = config('filament-knowledge-base.cache.ttl');
+
+        if ($ttl === 'forever') {
+            return cache()->rememberForever($this->getCacheKey($input), fn() => $this->getMarkdownConverter()->convert($input));
+        }
+
+        if (!is_int($ttl) || $ttl < 1) {
+            throw new InvalidArgumentException('The cache.ttl configuration must be an integer greater than 0 or the string "forever".');
+        }
+
+        return cache()->remember($this->getCacheKey($input), $ttl, fn() => $this->getMarkdownConverter()->convert($input));
     }
 
     protected function getCacheKey(string $input): string

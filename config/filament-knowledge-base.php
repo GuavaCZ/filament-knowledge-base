@@ -13,6 +13,6 @@ return [
 
     'cache' => [
         'prefix' => env('FILAMENT_KB_CACHE_PREFIX', 'filament_kb_'),
-        'ttl' => env('FILAMENT_KB_CACHE_TTL', 86400),
+        'ttl' => env('FILAMENT_KB_CACHE_TTL', 'forever'),
     ],
 ];
