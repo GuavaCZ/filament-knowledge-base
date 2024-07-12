@@ -53,12 +53,12 @@ final class MarkdownRenderer
                 Heading::class => [
                     'class' => $shouldDisableDefaultClasses
                         ? 'relative'
-                        : static fn(Heading $node) => match ($node->getLevel()) {
-                                1 => 'text-3xl mb-2 [&:first-child]:mt-0 mt-10',
-                                2 => 'text-xl mb-2 [&:first-child]:mt-0 mt-2',
-                                3 => 'text-lg mb-1 [&:first-child]:mt-0 mt-2',
-                                default => null,
-                            } . ' relative',
+                        : static fn (Heading $node) => match ($node->getLevel()) {
+                            1 => 'text-3xl mb-2 [&:first-child]:mt-0 mt-10',
+                            2 => 'text-xl mb-2 [&:first-child]:mt-0 mt-2',
+                            3 => 'text-lg mb-1 [&:first-child]:mt-0 mt-2',
+                            default => null,
+                        } . ' relative',
                 ],
                 Paragraph::class => [
                     'class' => $shouldDisableDefaultClasses ? '' : 'mb-4 [&:last-child]:mb-0 leading-relaxed',
@@ -75,7 +75,7 @@ final class MarkdownRenderer
                 'symbol' => $anchorSymbol ?? '',
                 'html_class' => Arr::toCssClasses([
                     'gu-kb-anchor md:absolute md:-left-8 mr-2 md:mr-0 text-primary-600 dark:text-primary-500 font-bold',
-                    'hidden' => !$anchorSymbol,
+                    'hidden' => ! $anchorSymbol,
                 ]),
             ],
             'table' => [
@@ -84,15 +84,15 @@ final class MarkdownRenderer
                     'tag' => 'div',
                     'attributes' => [
                         'class' => $shouldDisableDefaultClasses ? '' : Arr::toCssClasses([
-                            'divide-y divide-gray-200 overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-gray-950/5 dark:divide-white/10 dark:bg-gray-900 dark:ring-white/10',
-                            'fi-ta-content relative divide-y divide-gray-200 overflow-x-auto dark:divide-white/10 dark:border-t-white/10 !border-t-0',
-                            '[&_table]:fi-ta-table [&_table]:w-full [&_table]:table-auto [&_table]:divide-y [&_table]:divide-gray-200 [&_table]:text-start [&_table]:dark:divide-white/5',
-                            '[&_thead]:divide-y [&_thead]:divide-gray-200 [&_thead]:dark:divide-white/5',
-                            '[&_thead_tr]:bg-gray-50 [&_thead_tr]:dark:bg-white/5',
-                            '[&_thead_th]:text-start',
-                            '[&_th]:px-3 [&_th]:py-3.5',
-                            '[&_td]:px-3 [&_td]:py-3.5',
-                            '[&_tbody]:divide-y [&_tbody]:divide-gray-200 [&_tbody]:whitespace-nowrap [&_tbody]:dark:divide-white/5',
+                        'divide-y divide-gray-200 overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-gray-950/5 dark:divide-white/10 dark:bg-gray-900 dark:ring-white/10',
+                        'fi-ta-content relative divide-y divide-gray-200 overflow-x-auto dark:divide-white/10 dark:border-t-white/10 !border-t-0',
+                        '[&_table]:fi-ta-table [&_table]:w-full [&_table]:table-auto [&_table]:divide-y [&_table]:divide-gray-200 [&_table]:text-start [&_table]:dark:divide-white/5',
+                        '[&_thead]:divide-y [&_thead]:divide-gray-200 [&_thead]:dark:divide-white/5',
+                        '[&_thead_tr]:bg-gray-50 [&_thead_tr]:dark:bg-white/5',
+                        '[&_thead_th]:text-start',
+                        '[&_th]:px-3 [&_th]:py-3.5',
+                        '[&_td]:px-3 [&_td]:py-3.5',
+                        '[&_tbody]:divide-y [&_tbody]:divide-gray-200 [&_tbody]:whitespace-nowrap [&_tbody]:dark:divide-white/5',
                         ]),
                     ],
                 ],
@@ -113,10 +113,12 @@ final class MarkdownRenderer
             ->addExtension(new DefaultAttributesExtension())
             ->addExtension(new FrontMatterExtension())
             ->addExtension(new MarkerExtension())
-            ->addExtension(new TableExtension());
-        if (!$this->isMinimal()) {
+            ->addExtension(new TableExtension())
+        ;
+        if (! $this->isMinimal()) {
             $environment
-                ->addExtension(new HeadingPermalinkExtension());
+                ->addExtension(new HeadingPermalinkExtension())
+            ;
         }
 
         // Parsers
@@ -124,11 +126,13 @@ final class MarkdownRenderer
 
         // Renderers
         $environment
-            ->addRenderer(Image::class, new ImageRenderer(), 5);
+            ->addRenderer(Image::class, new ImageRenderer(), 5)
+        ;
 
         if (KnowledgeBasePanel::hasSyntaxHighlighting()) {
             $environment
-                ->addRenderer(FencedCode::class, new FencedCodeRenderer(), 5);
+                ->addRenderer(FencedCode::class, new FencedCodeRenderer(), 5)
+            ;
         }
 
         return $environment;
@@ -155,14 +159,14 @@ final class MarkdownRenderer
         $ttl = config('filament-knowledge-base.cache.ttl');
 
         if ($ttl === 'forever') {
-            return cache()->rememberForever($this->getCacheKey($input), fn() => $this->getMarkdownConverter()->convert($input));
+            return cache()->rememberForever($this->getCacheKey($input), fn () => $this->getMarkdownConverter()->convert($input));
         }
 
-        if (!is_int($ttl) || $ttl < 1) {
+        if (! is_int($ttl) || $ttl < 1) {
             throw new InvalidArgumentException('The cache.ttl configuration must be an integer greater than 0 or the string "forever".');
         }
 
-        return cache()->remember($this->getCacheKey($input), $ttl, fn() => $this->getMarkdownConverter()->convert($input));
+        return cache()->remember($this->getCacheKey($input), $ttl, fn () => $this->getMarkdownConverter()->convert($input));
     }
 
     protected function getCacheKey(string $input): string
