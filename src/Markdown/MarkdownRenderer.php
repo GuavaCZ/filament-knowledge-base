@@ -8,6 +8,7 @@ use Guava\FilamentKnowledgeBase\Filament\Panels\KnowledgeBasePanel;
 use Guava\FilamentKnowledgeBase\Markdown\Parsers\IncludeParser;
 use Guava\FilamentKnowledgeBase\Markdown\Renderers\FencedCodeRenderer;
 use Guava\FilamentKnowledgeBase\Markdown\Renderers\ImageRenderer;
+use InvalidArgumentException;
 use League\CommonMark\Environment\Environment;
 use League\CommonMark\Environment\EnvironmentBuilderInterface;
 use League\CommonMark\Environment\EnvironmentInterface;
@@ -52,12 +53,12 @@ final class MarkdownRenderer
                 Heading::class => [
                     'class' => $shouldDisableDefaultClasses
                         ? 'relative'
-                        : static fn (Heading $node) => match ($node->getLevel()) {
-                            1 => 'text-3xl mb-2 [&:first-child]:mt-0 mt-10',
-                            2 => 'text-xl mb-2 [&:first-child]:mt-0 mt-2',
-                            3 => 'text-lg mb-1 [&:first-child]:mt-0 mt-2',
-                            default => null,
-                        } . ' relative',
+                        : static fn(Heading $node) => match ($node->getLevel()) {
+                                1 => 'text-3xl mb-2 [&:first-child]:mt-0 mt-10',
+                                2 => 'text-xl mb-2 [&:first-child]:mt-0 mt-2',
+                                3 => 'text-lg mb-1 [&:first-child]:mt-0 mt-2',
+                                default => null,
+                            } . ' relative',
                 ],
                 Paragraph::class => [
                     'class' => $shouldDisableDefaultClasses ? '' : 'mb-4 [&:last-child]:mb-0 leading-relaxed',
@@ -74,7 +75,7 @@ final class MarkdownRenderer
                 'symbol' => $anchorSymbol ?? '',
                 'html_class' => Arr::toCssClasses([
                     'gu-kb-anchor md:absolute md:-left-8 mr-2 md:mr-0 text-primary-600 dark:text-primary-500 font-bold',
-                    'hidden' => ! $anchorSymbol,
+                    'hidden' => !$anchorSymbol,
                 ]),
             ],
             'table' => [
@@ -112,12 +113,10 @@ final class MarkdownRenderer
             ->addExtension(new DefaultAttributesExtension())
             ->addExtension(new FrontMatterExtension())
             ->addExtension(new MarkerExtension())
-            ->addExtension(new TableExtension())
-        ;
-        if (! $this->isMinimal()) {
+            ->addExtension(new TableExtension());
+        if (!$this->isMinimal()) {
             $environment
-                ->addExtension(new HeadingPermalinkExtension())
-            ;
+                ->addExtension(new HeadingPermalinkExtension());
         }
 
         // Parsers
@@ -125,13 +124,11 @@ final class MarkdownRenderer
 
         // Renderers
         $environment
-            ->addRenderer(Image::class, new ImageRenderer(), 5)
-        ;
+            ->addRenderer(Image::class, new ImageRenderer(), 5);
 
         if (KnowledgeBasePanel::hasSyntaxHighlighting()) {
             $environment
-                ->addRenderer(FencedCode::class, new FencedCodeRenderer(), 5)
-            ;
+                ->addRenderer(FencedCode::class, new FencedCodeRenderer(), 5);
         }
 
         return $environment;
@@ -155,10 +152,17 @@ final class MarkdownRenderer
 
     public function convert(string $input): RenderedContentInterface
     {
-        return cache()->rememberForever(
-            $this->getCacheKey($input),
-            fn () => $this->getMarkdownConverter()->convert($input)
-        );
+        $ttl = config('filament-knowledge-base.cache.ttl');
+
+        if ($ttl === 'forever') {
+            return cache()->rememberForever($this->getCacheKey($input), fn() => $this->getMarkdownConverter()->convert($input));
+        }
+
+        if (!is_int($ttl) || $ttl < 1) {
+            throw new InvalidArgumentException('The cache.ttl configuration must be an integer greater than 0 or the string "forever".');
+        }
+
+        return cache()->remember($this->getCacheKey($input), $ttl, fn() => $this->getMarkdownConverter()->convert($input));
     }
 
     protected function getCacheKey(string $input): string
@@ -167,6 +171,6 @@ final class MarkdownRenderer
             'minimal' => $this->isMinimal(),
         ]);
 
-        return md5("kb.$input.$options");
+        return config('filament-knowledge-base.cache.prefix') . md5("kb.$input.$options");
     }
 }

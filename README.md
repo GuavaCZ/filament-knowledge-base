@@ -31,7 +31,6 @@ For a better understanding of how it works, please have a look at the video show
 
 https://github.com/GuavaCZ/filament-knowledge-base/assets/10926334/cf9ebb59-aaf9-4e30-ad17-2832da4b9488
 
-
 ## Support us
 
 Your support is key to the continual advancement of our plugin. We appreciate every user who has contributed to our
@@ -75,6 +74,11 @@ return [
     'docs-path' => env('FILAMENT_KB_DOCS_PATH', 'docs'),
 
     'model' => \Guava\FilamentKnowledgeBase\Models\FlatfileDocumentation::class,
+    
+    'cache' => [
+        'prefix' => env('FILAMENT_KB_CACHE_PREFIX', 'filament_kb_'),
+        'ttl' => env('FILAMENT_KB_CACHE_TTL', 86400),
+    ],
 ];
 ```
 
@@ -267,21 +271,29 @@ reference the documentation you linked.
 ![Documentation button example](https://github.com/GuavaCZ/filament-knowledge-base/raw/main/docs/images/screenshot_help_menu.png)
 
 #### Opening documentations in modals
-From any livewire component where you use the documentation pages (you have rendered the Help Menu), you can create links that will automatically open the documentation in a modal, by simply adding this fragment to the `href` attribute of the link:
+
+From any livewire component where you use the documentation pages (you have rendered the Help Menu), you can create links that will automatically open the documentation
+in a modal, by simply adding this fragment to the `href` attribute of the link:
 
 ```html
-#modal-<documentation-id>
+#modal-
+<documentation-id>
 ```
 
-such as 
+such as
+
 ```html
 <a href="#modal-users.introduction">Open Introduction</a>
 ```
 
 ### Modal Links
-To make it easy to access the documentation from anywhere, this plugin adds intercepts fragment links anywhere in the filament panel in order to open up a modal for a documentation page.
 
-To use modal links, simply add a link in **any place** in your panel with a fragment in the format `#modal-<documentation-id>`, such as `#modal-intro.getting-started`, for example:
+To make it easy to access the documentation from anywhere, this plugin adds intercepts fragment links anywhere in the filament panel in order to open up a modal for a
+documentation page.
+
+To use modal links, simply add a link in **any place** in your panel with a fragment in the format `#modal-<documentation-id>`, such as `#modal-intro.getting-started`,
+for example:
+
 ```html
 <a href="#modal-intro.getting-started">Open Introduction</a>
 ```
@@ -292,8 +304,8 @@ You can even share the URL with someone and it will automatically open the modal
 
 ![Modal links example](https://github.com/GuavaCZ/filament-knowledge-base/raw/main/docs/images/screenshot_modal_links.gif)
 
-
 #### Disabling Modal Links
+
 to disable modal links, simply call `disableModalLinks()` on the KnowledgeBasePlugin in your panel Service Provider..
 
 ### Help Actions
@@ -344,6 +356,7 @@ php artisan cache:clear
 A lot of the functionalities can be customized to a certain extent.
 
 ### Customize the knowledge base panel
+
 You can customize the knowledge base panel to your liking using:
 
 ```php
@@ -356,6 +369,7 @@ KnowledgeBasePanel::configureUsing(
 ```
 
 #### Change brand name
+
 For example to change the default brand name/title (displayed in the top left) of the panel, you can do:
 
 ```php
@@ -368,7 +382,10 @@ KnowledgeBasePanel::configureUsing(
 ```
 
 ### Custom classes on documentation article
-By default, the documentation article (the container where the markdown content is rendered) has a `gu-kb-article` class, which you can use to target and modify. You can also add your own class(es) using:
+
+By default, the documentation article (the container where the markdown content is rendered) has a `gu-kb-article` class, which you can use to target and modify. You can
+also add your own class(es) using:
+
 ```php
 use Guava\FilamentKnowledgeBase\Filament\Panels\KnowledgeBasePanel;
 
@@ -379,6 +396,7 @@ KnowledgeBasePanel::configureUsing(
 ```
 
 #### Disable default classes
+
 To disable the default styling altogether, you can use:
 
 ```php
@@ -391,7 +409,10 @@ KnowledgeBasePanel::configureUsing(
 ```
 
 ### Disable the knowledge base panel button
-When in a panel where the Knowledge Base plugin is enabled, we render by default in the bottom of the sidebar a button to go to the knowledge base panel. You can disable it if you like:
+
+When in a panel where the Knowledge Base plugin is enabled, we render by default in the bottom of the sidebar a button to go to the knowledge base panel. You can disable
+it if you like:
+
 ```php
 use \Filament\View\PanelsRenderHook;
 
@@ -399,7 +420,9 @@ $plugin->disableKnowledgeBasePanelButton();
 ```
 
 ### Disable the back to default panel button
+
 When in the knowledge base panel, a similar button is rendered to go back to the default filament panel. You can disable it likewise:
+
 ```php
 use Guava\FilamentKnowledgeBase\Filament\Panels\KnowledgeBasePanel;
 
@@ -420,6 +443,7 @@ $plugin->helpMenuRenderHook(PanelsRenderHook::TOPBAR_START);
 ```
 
 ### Table of contents
+
 By default, in each documentation article there is a table of contents sidebar on the right.
 
 #### Disabling table of contents
@@ -434,6 +458,7 @@ KnowledgeBasePanel::configureUsing(
 ```
 
 #### Changing the position of the table of contents
+
 ```php
 use Guava\FilamentKnowledgeBase\Filament\Panels\KnowledgeBasePanel;
 use Guava\FilamentKnowledgeBase\Enums\TableOfContentsPosition;
@@ -446,7 +471,9 @@ KnowledgeBasePanel::configureUsing(
 ### Anchors
 
 #### Customizing the anchor symbol
+
 By default we use the `#` symbol. You can customize the symbol using:
+
 ```php
 use Guava\FilamentKnowledgeBase\Filament\Panels\KnowledgeBasePanel;
 
@@ -457,7 +484,9 @@ KnowledgeBasePanel::configureUsing(
 ```
 
 #### Disabling anchors
+
 We render an anchor prefix (#) in front of every heading. To disable it, you can do:
+
 ```php
 use Guava\FilamentKnowledgeBase\Filament\Panels\KnowledgeBasePanel;
 
@@ -489,6 +518,7 @@ $plugin->slideOverPreviews();
 ![Modal Slideover Example](/docs/images/screenshot_modal_slideovers.jpeg)
 
 ### Breadcrubs
+
 #### Disable breadcrumbs
 
 By default on each documentation page, there is a breadcrumb at the top. You can disable it if you wish:
@@ -501,6 +531,7 @@ KnowledgeBasePanel::configureUsing(
         ->disableBreadcrumbs()
 );
 ```
+
 #### Enable breadcrumbs in modal preview titles
 
 When using modal previews, by default the title shows just that, the title of the documentation page.
