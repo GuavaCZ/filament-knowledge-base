@@ -39,6 +39,7 @@ class FlatfileDocumentation extends Model implements Documentable
                 $id = str($file->getPathname())
                     ->afterLast($path)
                     ->beforeLast($file->getExtension())
+                    ->replace('\\', '/')
                     ->replace('/', '.')
                     ->trim('.')
                 ;
