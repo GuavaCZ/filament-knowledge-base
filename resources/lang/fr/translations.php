@@ -9,4 +9,3 @@ return [
     'url-copied' => 'URL copiée dans votre presse-papiers.',
     'code-copied' => 'Code copié dans votre presse-papiers.',
 ];
-

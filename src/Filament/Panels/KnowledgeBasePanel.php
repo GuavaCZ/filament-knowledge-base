@@ -260,7 +260,7 @@ class KnowledgeBasePanel extends Panel
                     ...collect(Discover::in(app_path('Docs'))
                         ->extending(Documentation::class)
                         ->get())
-                        ->map(fn ($class) => new $class())
+                        ->map(fn ($class) => new $class)
                         ->all()
                 )
             ;

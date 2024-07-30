@@ -22,15 +22,15 @@ final class FencedCodeRenderer implements NodeRendererInterface
 
     public function __construct()
     {
-        $this->shiki = new Shiki();
-        $this->baseRenderer = new BaseRenderer();
+        $this->shiki = new Shiki;
+        $this->baseRenderer = new BaseRenderer;
     }
 
     private function getLanguage($language): string
     {
         $home = getenv('HOME');
         $command = [
-            (new ExecutableFinder())->find('node', 'node', [
+            (new ExecutableFinder)->find('node', 'node', [
                 '/usr/local/bin',
                 '/opt/homebrew/bin',
                 $home . '/n/bin', // support https://github.com/tj/n

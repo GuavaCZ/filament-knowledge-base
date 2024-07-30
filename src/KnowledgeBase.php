@@ -81,7 +81,7 @@ class KnowledgeBase
     public function documentable(Documentable | string $documentable): Documentable
     {
         if (is_string($documentable) && class_exists($documentable)) {
-            $documentable = new $documentable();
+            $documentable = new $documentable;
         }
 
         if ($documentable instanceof Documentable) {
@@ -103,7 +103,7 @@ class KnowledgeBase
     {
         return new HtmlString($this->documentable($documentable)->getContent());
         if (is_string($documentable) && class_exists($documentable)) {
-            $documentable = new $documentable();
+            $documentable = new $documentable;
         }
 
         if ($documentable instanceof Documentable) {
