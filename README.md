@@ -207,6 +207,59 @@ icon: heroicon-o-book-open
 ---
 ```
 
+#### Front Matter Options
+Below is a list of currently available options in the front matter.
+
+#### Title
+Allows you to modify the title of the documentation page.
+```md
+---
+title: My new title
+---
+```
+
+#### Icon
+Allows you to modify the icon of the documentation page.
+
+You can use any name supported by Blade UI icons, that you have installed.
+
+```md
+---
+icon: heroicon-o-user
+---
+```
+
+#### Order
+Allows you to modify the order of the documentation page within it's parent / group.
+
+A lower number will be displayed first.
+
+```md
+---
+order: 1
+---
+```
+
+#### Group
+Allows you to define the group (and it's title) of the documentation page.
+
+```md
+---
+group: Getting Started
+---
+```
+
+#### Parent
+Allows you to define the parent of the documentation page.
+
+```md
+---
+parent: my-parent
+---
+```
+
+So for a file in `docs/en/prologue/getting-started/intro.md`, the parent would be `getting-started`.
+
 #### Content
 
 Anything after the front matter is your content, written in markdown:
