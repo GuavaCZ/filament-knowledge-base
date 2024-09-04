@@ -24,12 +24,17 @@ class FlatfileDocumentation extends Model implements Documentable
 
     public $incrementing = false;
 
+    public function getLocale(): string
+    {
+        return App::getLocale();
+    }    
+
     public function getRows()
     {
         $path = base_path(
             str(config('filament-knowledge-base.docs-path'))
                 ->append('/')
-                ->append(App::getLocale())
+                ->append($this->getLocale())
         );
 
         return collect(File::allFiles($path))
