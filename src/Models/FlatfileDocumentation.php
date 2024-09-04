@@ -27,7 +27,7 @@ class FlatfileDocumentation extends Model implements Documentable
     public function getLocale(): string
     {
         return App::getLocale();
-    }    
+    }
 
     public function getRows()
     {
