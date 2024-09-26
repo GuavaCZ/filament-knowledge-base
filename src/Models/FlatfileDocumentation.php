@@ -29,6 +29,11 @@ class FlatfileDocumentation extends Model implements Documentable
         return App::getLocale();
     }
 
+    public function getFallbackLocale(): string
+    {
+        return App::getFallbackLocale();
+    }
+
     public function getRows()
     {
         $path = base_path(
@@ -36,6 +41,14 @@ class FlatfileDocumentation extends Model implements Documentable
                 ->append('/')
                 ->append($this->getLocale())
         );
+
+        if (! File::exists($path)) {
+            $path = base_path(
+                str(config('filament-knowledge-base.docs-path'))
+                    ->append('/')
+                    ->append($this->getFallbackLocale())
+            );
+        }
 
         return collect(File::allFiles($path))
             ->map(function (\SplFileInfo $file) use ($path) {
