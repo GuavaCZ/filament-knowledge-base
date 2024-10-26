@@ -22,6 +22,18 @@ class FlatfileDocumentation extends Model implements Documentable
 {
     use Sushi;
 
+    protected $schema = [
+        'id' => 'string',
+        'slug' => 'string',
+        'path' => 'string',
+        'content' => 'text',
+        'title' => 'string',
+        'group' => 'string',
+        'icon' => 'string',
+        'parent' => 'string',
+        'order' => 'integer',
+    ];
+
     public $incrementing = false;
 
     public function getLocale(): string
