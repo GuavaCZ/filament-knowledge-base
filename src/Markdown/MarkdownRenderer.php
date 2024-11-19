@@ -12,6 +12,7 @@ use InvalidArgumentException;
 use League\CommonMark\Environment\Environment;
 use League\CommonMark\Environment\EnvironmentBuilderInterface;
 use League\CommonMark\Environment\EnvironmentInterface;
+use League\CommonMark\Extension\Attributes\AttributesExtension;
 use League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension;
 use League\CommonMark\Extension\CommonMark\Node\Block\BlockQuote;
 use League\CommonMark\Extension\CommonMark\Node\Block\FencedCode;
@@ -27,7 +28,7 @@ use League\CommonMark\Output\RenderedContentInterface;
 use N0sz\CommonMark\Marker\Marker;
 use N0sz\CommonMark\Marker\MarkerExtension;
 
-final class MarkdownRenderer
+class MarkdownRenderer
 {
     protected bool $minimal = false;
 
@@ -43,7 +44,7 @@ final class MarkdownRenderer
         return $this->minimal;
     }
 
-    private function getOptions(): array
+    protected function getOptions(): array
     {
         $anchorSymbol = KnowledgeBase::panel()->getAnchorSymbol();
         $shouldDisableDefaultClasses = KnowledgeBase::panel()->shouldDisableDefaultClasses();
@@ -105,12 +106,13 @@ final class MarkdownRenderer
         ];
     }
 
-    private function configureEnvironment(EnvironmentBuilderInterface $environment): EnvironmentInterface
+    protected function configureEnvironment(EnvironmentBuilderInterface $environment): EnvironmentInterface
     {
         // Extensions
         $environment
             ->addExtension(new CommonMarkCoreExtension)
             ->addExtension(new DefaultAttributesExtension)
+            ->addExtension(new AttributesExtension)
             ->addExtension(new FrontMatterExtension)
             ->addExtension(new MarkerExtension)
             ->addExtension(new TableExtension)
@@ -138,7 +140,7 @@ final class MarkdownRenderer
         return $environment;
     }
 
-    private function getEnvironment(): EnvironmentInterface
+    protected function getEnvironment(): EnvironmentInterface
     {
         return $this->configureEnvironment(
             environment: new Environment(
@@ -147,7 +149,7 @@ final class MarkdownRenderer
         );
     }
 
-    private function getMarkdownConverter(): MarkdownConverter
+    protected function getMarkdownConverter(): MarkdownConverter
     {
         return new MarkdownConverter(
             environment: $this->getEnvironment()
