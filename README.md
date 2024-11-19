@@ -298,8 +298,8 @@ want to integrate. You can either return the `IDs` as strings (dot-separated pat
 helper to retrieve the model:
 
 ```php
-use use Guava\FilamentKnowledgeBase\Contracts\HasKnowledgeBase;
-
+use Guava\FilamentKnowledgeBase\Contracts\HasKnowledgeBase;
+use Guava\FilamentKnowledgeBase\Facades\KnowledgeBase;
 class UserResource extends Resource implements HasKnowledgeBase
 {
     // ...
@@ -310,7 +310,7 @@ class UserResource extends Resource implements HasKnowledgeBase
         return [
             'users.introduction',
             'users.authentication',
-            FilamentKnowledgeBase::model()::find('users.permissions'),
+            KnowledgeBase::model()::find('users.permissions'),
         ];
     }
 }
