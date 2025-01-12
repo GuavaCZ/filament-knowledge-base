@@ -56,6 +56,12 @@ Make sure to publish the package assets using:
 php artisan filament:assets
 ```
 
+and translations with:
+
+```bash
+php artisan vendor:publish --tag="filament-knowledge-base-translations"
+```
+
 You can publish the config file with:
 
 ```bash
