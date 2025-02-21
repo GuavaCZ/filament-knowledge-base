@@ -272,12 +272,14 @@ class KnowledgeBasePanel extends Panel
             ->groupBy(fn (Documentable $documentable) => $documentable->getGroup())
             ->map(
                 fn (Collection $items, string $key) => empty($key)
-                    ? $items->map(fn (Documentable $documentation) => $this->buildNavigationItem($documentation))
+                    ? $items
+                        ->map(fn (Documentable $documentation) => $this->buildNavigationItem($documentation))
+                        ->sortBy(fn (NavigationItem $item) => $item->getSort(), SORT_NUMERIC)
                     : NavigationGroup::make($key)
                         ->items(
                             $items
-                                ->sort(fn (Documentable $d1, Documentable $d2) => $d1->getOrder() <=> $d2->getOrder())
                                 ->map(fn (Documentable $documentable) => $this->buildNavigationItem($documentable))
+                                ->sortBy(fn (NavigationItem $item) => $item->getSort(), SORT_NUMERIC)
                                 ->toArray()
                         )
             )
