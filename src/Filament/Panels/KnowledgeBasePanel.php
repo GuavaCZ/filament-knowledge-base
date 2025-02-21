@@ -294,7 +294,7 @@ class KnowledgeBasePanel extends Panel
 
         $documentables
             ->filter(fn (Documentable $documentable) => $documentable->isRegistered())
-            ->filter(fn (Documentable $documentable) => ! str_ends_with($documentable->getId(), '._group'))
+            ->filter(fn (Documentable $documentable) => $documentable->getId() !== '_group')
             ->filter(fn (Documentable $documentable) => $documentable->getParent() === null)
             ->groupBy(fn (Documentable $documentable) => $documentable->getGroup())
             ->map(
