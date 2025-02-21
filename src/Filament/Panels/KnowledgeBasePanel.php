@@ -26,6 +26,7 @@ use Guava\FilamentKnowledgeBase\Contracts\Documentable;
 use Guava\FilamentKnowledgeBase\Documentation;
 use Guava\FilamentKnowledgeBase\Enums\TableOfContentsPosition;
 use Guava\FilamentKnowledgeBase\Facades\KnowledgeBase;
+use Guava\FilamentKnowledgeBase\Filament\Navigation\NavigationSortableGroup;
 use Guava\FilamentKnowledgeBase\Filament\Resources\DocumentationResource;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
@@ -229,25 +230,51 @@ class KnowledgeBasePanel extends Panel
         ;
     }
 
-    protected function buildNavigationItem(Documentable $documentable)
+    protected function buildNavigationItem(Documentable $documentable, bool $canHaveIcon = true): NavigationItem
     {
         return NavigationItem::make($documentable->getTitle())
             ->group($documentable->getGroup())
-            ->icon($documentable->getIcon())
             ->sort($documentable->getOrder())
-            ->childItems(
-                KnowledgeBase::model()::query()
-                    ->where('parent', $documentable->getTitle())
-                    ->get()
-                    ->filter(fn (Documentable $documentable) => $documentable->isRegistered())
-                    ->sort(fn (Documentable $d1, Documentable $d2) => $d1->getOrder() <=> $d2->getOrder())
-                    ->map(fn (Documentable $documentable) => $this->buildNavigationItem($documentable))
-                    ->toArray()
+            ->when($canHaveIcon, fn (NavigationItem $item) => $item
+                ->icon($documentable->getIcon())
+                ->childItems(
+                    KnowledgeBase::model()::query()
+                        ->where('parent', $documentable->getTitle())
+                        ->get()
+                        ->filter(fn (Documentable $documentable) => $documentable->isRegistered())
+                        ->filter(fn (Documentable $documentable) => ! str_ends_with($documentable->getId(), '._group'))
+                        ->map(fn (Documentable $documentable) => $this->buildNavigationItem($documentable))
+                        ->sortBy(fn (NavigationItem $item) => $item->getSort(), SORT_NUMERIC)
+                        ->toArray()
+                )
             )
             ->parentItem($documentable->getParent())
             ->url($documentable->getUrl())
-            ->isActiveWhen(fn () => url()->current() === $documentable->getUrl())
-        ;
+            ->isActiveWhen(fn () => url()->current() === $documentable->getUrl());
+    }
+
+    /**
+     * @param  Collection<int, Documentable>  $items
+     */
+    protected function buildNavigationGroup(Collection $items, string $key): NavigationSortableGroup
+    {
+        [$groups, $onlyItems] = $items->partition(fn ($item) => str_ends_with($item->getId(), '._group'));
+
+        $group = $groups->first();
+        $allowIcons = ! ($group?->getIcon());
+
+        return NavigationSortableGroup::make($key)
+            ->when($group, fn (NavigationSortableGroup $navGroup) => $navGroup
+                ->label($group->getTitle() ?? $key)
+                ->sort($group->getOrder() ?? 999999)
+                ->icon($groups->first()->getIcon())
+            )
+            ->items(
+                $onlyItems
+                    ->map(fn (Documentable $documentable) => $this->buildNavigationItem($documentable, $allowIcons))
+                    ->sortBy(fn (NavigationItem $item) => $item->getSort(), SORT_NUMERIC)
+                    ->toArray()
+            );
     }
 
     protected function makeNavigation(NavigationBuilder $builder): NavigationBuilder
@@ -262,33 +289,37 @@ class KnowledgeBasePanel extends Panel
                         ->get())
                         ->map(fn ($class) => new $class)
                         ->all()
-                )
-            ;
+                );
         }
 
         $documentables
             ->filter(fn (Documentable $documentable) => $documentable->isRegistered())
+            ->filter(fn (Documentable $documentable) => ! str_ends_with($documentable->getId(), '._group'))
             ->filter(fn (Documentable $documentable) => $documentable->getParent() === null)
             ->groupBy(fn (Documentable $documentable) => $documentable->getGroup())
             ->map(
                 fn (Collection $items, string $key) => empty($key)
                     ? $items
-                        ->sort(fn (Documentable $d1, Documentable $d2) => $d1->getOrder() <=> $d2->getOrder())
                         ->map(fn (Documentable $documentation) => $this->buildNavigationItem($documentation))
-                    : NavigationGroup::make($key)
-                        ->items(
-                            $items
-                                ->sort(fn (Documentable $d1, Documentable $d2) => $d1->getOrder() <=> $d2->getOrder())
-                                ->map(fn (Documentable $documentable) => $this->buildNavigationItem($documentable))
-                                ->toArray()
-                        )
+                        ->sortBy(fn (NavigationItem $item) => $item->getSort(), SORT_NUMERIC)
+                    : $this->buildNavigationGroup($items, $key)
             )
             ->flatten()
+            ->sortBy(fn (NavigationItem|NavigationSortableGroup $item) => $item->getSort(), SORT_NUMERIC)
+            ->reduce(function (Collection $items, NavigationItem|NavigationSortableGroup $item) {
+                if ($item instanceof NavigationItem) {
+                    $previousItems = $items->count() && ! $items->last()->getLabel() ? $items->pop()->getItems() : [];
+                    $items->push((new NavigationGroup)->items([...$previousItems, $item]));
+                } else {
+                    $items->push($item);
+                }
+
+                return $items;
+            }, new Collection)
             ->each(fn ($item) => match (true) {
                 $item instanceof NavigationItem => $builder->item($item),
                 $item instanceof NavigationGroup => $builder->group($item),
-            })
-        ;
+            });
 
         return $builder;
     }
