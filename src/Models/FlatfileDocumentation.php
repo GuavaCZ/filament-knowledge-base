@@ -183,6 +183,8 @@ class FlatfileDocumentation extends Model implements Documentable
         $parts = str($this->getId())->explode('.', 3);
         if (count($parts) >= 3) {
             return $parts[0] . '.' . $parts[1];
+        } elseif (count($parts) == 2) {
+            return $parts[0];
         }
 
         return null;
