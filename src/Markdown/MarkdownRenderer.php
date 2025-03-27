@@ -17,6 +17,7 @@ use League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension;
 use League\CommonMark\Extension\CommonMark\Node\Block\BlockQuote;
 use League\CommonMark\Extension\CommonMark\Node\Block\FencedCode;
 use League\CommonMark\Extension\CommonMark\Node\Block\Heading;
+use League\CommonMark\Extension\CommonMark\Node\Block\ListBlock;
 use League\CommonMark\Extension\CommonMark\Node\Inline\Image;
 use League\CommonMark\Extension\DefaultAttributes\DefaultAttributesExtension;
 use League\CommonMark\Extension\FrontMatter\FrontMatterExtension;
@@ -62,6 +63,9 @@ class MarkdownRenderer
                         } . ' relative',
                 ],
                 Paragraph::class => [
+                    'class' => $shouldDisableDefaultClasses ? '' : 'mb-4 [&:last-child]:mb-0 leading-relaxed',
+                ],
+                ListBlock::class => [
                     'class' => $shouldDisableDefaultClasses ? '' : 'mb-4 [&:last-child]:mb-0 leading-relaxed',
                 ],
                 Marker::class => [
