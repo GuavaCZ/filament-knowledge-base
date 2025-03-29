@@ -22,6 +22,7 @@ use League\CommonMark\Extension\CommonMark\Node\Inline\Image;
 use League\CommonMark\Extension\DefaultAttributes\DefaultAttributesExtension;
 use League\CommonMark\Extension\FrontMatter\FrontMatterExtension;
 use League\CommonMark\Extension\HeadingPermalink\HeadingPermalinkExtension;
+use League\CommonMark\Extension\Table\Table;
 use League\CommonMark\Extension\Table\TableExtension;
 use League\CommonMark\MarkdownConverter;
 use League\CommonMark\Node\Block\Paragraph;
@@ -91,6 +92,7 @@ class MarkdownRenderer
                         'class' => $shouldDisableDefaultClasses ? '' : Arr::toCssClasses([
                             'divide-y divide-gray-200 overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-gray-950/5 dark:divide-white/10 dark:bg-gray-900 dark:ring-white/10',
                             'fi-ta-content relative divide-y divide-gray-200 overflow-x-auto dark:divide-white/10 dark:border-t-white/10 !border-t-0',
+                            'mb-4 [&:last-child]:mb-0 leading-relaxed',
                             '[&_table]:fi-ta-table [&_table]:w-full [&_table]:table-auto [&_table]:divide-y [&_table]:divide-gray-200 [&_table]:text-start [&_table]:dark:divide-white/5',
                             '[&_thead]:divide-y [&_thead]:divide-gray-200 [&_thead]:dark:divide-white/5',
                             '[&_thead_tr]:bg-gray-50 [&_thead_tr]:dark:bg-white/5',
