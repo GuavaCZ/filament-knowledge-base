@@ -29,7 +29,6 @@
 >
     <x-filament-knowledge-base::content @class([
         "gu-kb-article-full",
-        "[&_ul]:list-[revert] [&_ol]:list-[revert] [&_ul]:ml-4 [&_ol]:ml-4",
         $articleClass => ! empty($articleClass),
     ])>
         {!!  $this->record->getHtml() !!}
