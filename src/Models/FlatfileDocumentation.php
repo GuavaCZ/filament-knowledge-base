@@ -202,7 +202,7 @@ class FlatfileDocumentation extends Model implements Documentable
 
     public function getIcon(): ?string
     {
-        return $this->icon ?? 'heroicon-o-document';
+        return $this->icon;
     }
 
     public function isRegistered(): bool
