@@ -1,6 +1,6 @@
 @php
     $sidebar = $this->getSubNavigationPosition();
-    $articleClass = \Guava\FilamentKnowledgeBase\Facades\KnowledgeBase::panel()->getArticleClass();
+    $articleClass = \Guava\FilamentKnowledgeBase\Facades\KnowledgeBase::plugin()->getArticleClass();
 @endphp
 
 @push('scripts')

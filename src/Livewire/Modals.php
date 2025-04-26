@@ -23,7 +23,7 @@ class Modals extends Component implements HasActions, HasForms
 
     public function mount(): void
     {
-        $this->shouldOpenDocumentationInNewTab = Filament::getPlugin('guava::filament-knowledge-base')->shouldOpenDocumentationInNewTab();
+        $this->shouldOpenDocumentationInNewTab = KnowledgeBase::companion()->shouldOpenDocumentationInNewTab();
     }
 
     #[On('close-modal')]

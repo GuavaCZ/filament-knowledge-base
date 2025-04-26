@@ -23,12 +23,12 @@ class ViewDocumentation extends ViewRecord
 
     public function getSubNavigationPosition(): SubNavigationPosition
     {
-        return KnowledgeBase::panel()->getTableOfContentsPosition()->toSubNavigationPosition();
+        return KnowledgeBase::plugin()->getTableOfContentsPosition()->toSubNavigationPosition();
     }
 
     public function getBreadcrumbs(): array
     {
-        if (KnowledgeBase::panel()->shouldDisableBreadcrumbs()) {
+        if (KnowledgeBase::plugin()->shouldDisableBreadcrumbs()) {
             return [];
         }
 
@@ -92,7 +92,7 @@ class ViewDocumentation extends ViewRecord
 
     public function getSubNavigation(): array
     {
-        if (KnowledgeBase::panel()->shouldDisableTableOfContents()) {
+        if (KnowledgeBase::plugin()->shouldDisableTableOfContents()) {
             return [];
         }
 

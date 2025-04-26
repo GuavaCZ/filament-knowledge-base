@@ -29,11 +29,11 @@ class HelpAction extends Action
             ->label($documentable->getTitle())
             ->icon($documentable->getIcon())
             ->when(
-                Filament::getPlugin('guava::filament-knowledge-base')->hasModalPreviews(),
+                KnowledgeBase::companion()->hasModalPreviews(),
                 fn (HelpAction $action) => $action
                     ->alpineClickHandler('$dispatch("open-modal", {id: "' . $documentable->getId() . '"})')
                     ->when(
-                        Filament::getPlugin('guava::filament-knowledge-base')->hasSlideOverPreviews(),
+                        KnowledgeBase::companion()->hasSlideOverPreviews(),
                         fn (HelpAction $action) => $action->slideOver()
                     ),
                 fn (HelpAction $action) => $action->url($documentable->getUrl())

@@ -1,26 +1,44 @@
 <?php
 
-namespace Guava\FilamentKnowledgeBase;
+namespace Guava\FilamentKnowledgeBase\Plugins;
 
 use Filament\Contracts\Plugin;
+use Filament\Facades\Filament;
 use Filament\Panel;
 use Filament\View\PanelsRenderHook;
 use Guava\FilamentKnowledgeBase\Concerns\CanDisableKnowledgeBasePanelButton;
 use Guava\FilamentKnowledgeBase\Concerns\CanDisableModalLinks;
 use Guava\FilamentKnowledgeBase\Concerns\HasModalPreviews;
+use Guava\FilamentKnowledgeBase\Facades\KnowledgeBase;
 use Illuminate\Support\Facades\Blade;
 
-class KnowledgeBasePlugin implements Plugin
+class KnowledgeBaseCompanionPlugin implements Plugin
 {
     use CanDisableKnowledgeBasePanelButton;
     use CanDisableModalLinks;
     use HasModalPreviews;
+
+    public const ID = 'guava::filament-knowledge-base-companion';
+
+    protected string $knowledgeBasePanelId;
 
     protected bool $modalTitleBreadcrumbs = false;
 
     protected bool $openDocumentationInNewTab = false;
 
     protected string $helpMenuRenderHook = PanelsRenderHook::TOPBAR_END;
+
+    public function knowledgeBasePanelId(string $id): static
+    {
+        $this->knowledgeBasePanelId = $id;
+
+        return $this;
+    }
+
+    public function getKnowledgeBasePanelId(): string
+    {
+        return $this->knowledgeBasePanelId;
+    }
 
     public function helpMenuRenderHook(string $renderHook): static
     {
@@ -60,7 +78,7 @@ class KnowledgeBasePlugin implements Plugin
 
     public function getId(): string
     {
-        return 'guava::filament-knowledge-base';
+        return static::ID;
     }
 
     public function register(Panel $panel): void
@@ -85,8 +103,8 @@ class KnowledgeBasePlugin implements Plugin
                         fn (): string => view('filament-knowledge-base::sidebar-action', [
                             'label' => __('filament-knowledge-base::translations.knowledge-base'),
                             'icon' => 'heroicon-o-book-open',
-                            'url' => \Guava\FilamentKnowledgeBase\Facades\KnowledgeBase::url(
-                                \Guava\FilamentKnowledgeBase\Facades\KnowledgeBase::panel()
+                            'url' => KnowledgeBase::url(
+                                Filament::getPanel($this->getKnowledgeBasePanelId())
                             ),
                             'shouldOpenUrlInNewTab' => $this->shouldOpenDocumentationInNewTab(),
                         ])

@@ -4,12 +4,14 @@ namespace Guava\FilamentKnowledgeBase;
 
 use Exception;
 use Filament\Actions\Action;
+use Filament\Contracts\Plugin;
 use Filament\Facades\Filament;
 use Filament\Panel;
 use Guava\FilamentKnowledgeBase\Contracts\Documentable;
-use Guava\FilamentKnowledgeBase\Filament\Panels\KnowledgeBasePanel;
 use Guava\FilamentKnowledgeBase\Markdown\MarkdownRenderer;
 use Guava\FilamentKnowledgeBase\Pages\Documentation;
+use Guava\FilamentKnowledgeBase\Plugins\KnowledgeBaseCompanionPlugin;
+use Guava\FilamentKnowledgeBase\Plugins\KnowledgeBasePlugin;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\File;
@@ -37,20 +39,86 @@ class KnowledgeBase
         return config('filament-knowledge-base.model');
     }
 
-    public function panel(): KnowledgeBasePanel
+    /**
+     * Attempts to get the knowledge base main plugin from the specified or current filament panel.
+     *
+     * @param  Panel|string|null  $panel  Panel to get the plugin from. If null, the current panel is used.
+     *
+     * @returns KnowledgeBasePlugin<Plugin>
+     *
+     * @throws Exception
+     */
+    public function plugin(Panel | string | null $panel = null): Plugin
     {
-        $panel = Filament::getPanel($this->panelId());
+        $panel = match (true) {
+            $panel instanceof Panel => $panel,
+            is_string($panel) => Filament::getPanel($panel),
+            default => Filament::getCurrentPanel(),
+        };
 
-        if (! ($panel instanceof KnowledgeBasePanel)) {
+        if (! $panel) {
+            throw new Exception('Could not find the requested panel.');
+        }
+
+        if ($panel->hasPlugin(KnowledgeBasePlugin::ID)) {
+            return $panel->getPlugin(KnowledgeBasePlugin::ID);
+        }
+
+        // Attempt to load the main plugin via the companion plugin
+        if ($panel->hasPlugin(KnowledgeBaseCompanionPlugin::ID)) {
+            return Filament::getPanel(
+                $this->companion($panel)->getKnowledgeBasePanelId()
+            )
+                ->getPlugin(KnowledgeBasePlugin::ID)
+            ;
+        }
+
+        throw new Exception('The requested panel does not have the knowledge base main plugin.');
+    }
+
+    /**
+     * @return KnowledgeBaseCompanionPlugin<Plugin>
+     *
+     * @throws Exception
+     */
+    public function companion(Panel | string | null $panel = null): Plugin
+    {
+        $panel = match (true) {
+            $panel instanceof Panel => $panel,
+            is_string($panel) => Filament::getPanel($panel),
+            default => Filament::getCurrentPanel(),
+        };
+
+        if (! $panel) {
+            throw new Exception('Could not find the requested panel.');
+        }
+
+        if ($panel->hasPlugin(KnowledgeBaseCompanionPlugin::ID)) {
+            return $panel->getPlugin(KnowledgeBaseCompanionPlugin::ID);
+        }
+
+        throw new Exception('The requested panel does not have the knowledge base companion plugin.');
+    }
+
+    public function panel(): Panel
+    {
+        $panel = Filament::getCurrentPanel();
+
+        if ($panel->hasPlugin(KnowledgeBasePlugin::ID)) {
+            return $panel;
+        }
+
+        if ($panel->hasPlugin(KnowledgeBaseCompanionPlugin::ID)) {
+            $panel = Filament::getPanel(
+                $panel->getPlugin(KnowledgeBaseCompanionPlugin::ID)->getKnowledgeBasePanelId()
+            );
+        }
+
+        if (! $panel->hasPlugin(KnowledgeBasePlugin::ID)) {
             throw new Exception('Panel must be an Knowledge Base Panel!');
         }
 
         return $panel;
-    }
-
-    public function panelId(): string
-    {
-        return config('filament-knowledge-base.panel.id', 'knowledge-base');
     }
 
     public function url(Panel $panel): ?string
@@ -67,8 +135,9 @@ class KnowledgeBase
     public function parseMarkdown(string $path): array
     {
         $converter = app(MarkdownRenderer::class);
-
+        //        dump($path);
         $result = $converter->convert(file_get_contents($path));
+        //        dump($result);
 
         $frontMatter = [];
         if ($result instanceof RenderedContentWithFrontMatter) {
@@ -92,7 +161,12 @@ class KnowledgeBase
             throw new Exception('The class you provided is not a \`Documentable\`.');
         }
 
-        if ($model = $this->model()::find(str($documentable)->replace('/', '.'))) {
+        $panel = \Guava\FilamentKnowledgeBase\Facades\KnowledgeBase::panel();
+//        $panelId = Facades\KnowledgeBase::companion()->getKnowledgeBasePanelId();
+//        dd($panelId);
+        if ($model = $this->model()::query()
+            ->where('panel_id', $panel->getId())
+            ->find(str($documentable)->replace('/', '.'))) {
             return $model;
         } else {
             throw new Exception("'The provided documentable \"$documentable\" could not be found.'");
@@ -102,6 +176,7 @@ class KnowledgeBase
     public function markdown(Documentable | string $documentable)
     {
         return new HtmlString($this->documentable($documentable)->getContent());
+
         if (is_string($documentable) && class_exists($documentable)) {
             $documentable = new $documentable;
         }

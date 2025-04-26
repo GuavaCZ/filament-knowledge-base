@@ -3,6 +3,7 @@
 namespace Guava\FilamentKnowledgeBase\Markdown;
 
 use Arr;
+use Filament\Facades\Filament;
 use Guava\FilamentKnowledgeBase\Facades\KnowledgeBase;
 use Guava\FilamentKnowledgeBase\Filament\Panels\KnowledgeBasePanel;
 use Guava\FilamentKnowledgeBase\Markdown\Parsers\IncludeParser;
@@ -47,8 +48,8 @@ class MarkdownRenderer
 
     protected function getOptions(): array
     {
-        $anchorSymbol = KnowledgeBase::panel()->getAnchorSymbol();
-        $shouldDisableDefaultClasses = KnowledgeBase::panel()->shouldDisableDefaultClasses();
+        $anchorSymbol = KnowledgeBase::plugin()->getAnchorSymbol();
+        $shouldDisableDefaultClasses = KnowledgeBase::plugin()->shouldDisableDefaultClasses();
 
         return [
             'default_attributes' => [
@@ -136,7 +137,7 @@ class MarkdownRenderer
             ->addRenderer(Image::class, new ImageRenderer, 5)
         ;
 
-        if (KnowledgeBasePanel::hasSyntaxHighlighting()) {
+        if (KnowledgeBase::plugin()->hasSyntaxHighlighting()) {
             $environment
                 ->addRenderer(FencedCode::class, new FencedCodeRenderer, 5)
             ;

@@ -14,6 +14,9 @@ use Spatie\LaravelPackageTools\PackageServiceProvider;
 
 class KnowledgeBaseServiceProvider extends PackageServiceProvider
 {
+
+    public static string $name = 'filament-knowledge-base';
+
     public function configurePackage(Package $package): void
     {
         /*
@@ -22,7 +25,7 @@ class KnowledgeBaseServiceProvider extends PackageServiceProvider
          * More info: https://github.com/spatie/laravel-package-tools
          */
         $package
-            ->name('filament-knowledge-base')
+            ->name(static::$name)
             ->hasViews()
             ->hasConfigFile()
             ->hasTranslations()
@@ -33,7 +36,10 @@ class KnowledgeBaseServiceProvider extends PackageServiceProvider
 
     public function packageRegistered(): void
     {
-        $this->app->register(KnowledgeBasePanelProvider::class);
+        $this->app->singleton(KnowledgeBaseRegistry::class, function() {
+            return new KnowledgeBaseRegistry();
+        });
+//        $this->app->register(KnowledgeBasePanelProvider::class);
     }
 
     public function packageBooted(): void

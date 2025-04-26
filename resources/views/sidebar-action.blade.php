@@ -5,7 +5,7 @@
         :url="$url"
         :should-open-url-in-new-tab="$shouldOpenUrlInNewTab">
         <x-filament::button
-            class="!font-medium !text-gray-700 dark:!text-gray-200"
+            class="!font-medium !text-gray-700 dark:!text-gray-200 hover:!bg-gray-100 focus-visible:!bg-gray-100 dark:hover:!bg-white/5 dark:focus-visible:!bg-white/5"
             style="box-shadow: none; background: none; padding:0;"
             color="gray"
             icon-size="lg"

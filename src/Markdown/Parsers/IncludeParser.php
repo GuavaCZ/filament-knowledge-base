@@ -2,6 +2,7 @@
 
 namespace Guava\FilamentKnowledgeBase\Markdown\Parsers;
 
+use Guava\FilamentKnowledgeBase\Facades\KnowledgeBase;
 use Guava\FilamentKnowledgeBase\Markdown\MarkdownRenderer;
 use League\CommonMark\Parser\Inline\InlineParserInterface;
 use League\CommonMark\Parser\Inline\InlineParserMatch;
@@ -35,16 +36,16 @@ class IncludeParser implements InlineParserInterface
 
         $result = $this->renderer->convert(
             file_get_contents(
-                str(base_path(config('filament-knowledge-base.docs-path')))
-                    ->rtrim('/')
+                str(KnowledgeBase::plugin()->getDocsPath())
+                    ->rtrim(DIRECTORY_SEPARATOR)
                     ->append(
-                        '/',
+                        DIRECTORY_SEPARATOR,
                         \App::getLocale(),
-                        '/',
+                        DIRECTORY_SEPARATOR,
                         str($path)
-                            ->trim('/')
+                            ->trim(DIRECTORY_SEPARATOR)
                             ->replaceEnd('.md', '')
-                            ->replace('.', '/')
+                            ->replace('.', DIRECTORY_SEPARATOR)
                             ->append('.md')
                     ),
             )

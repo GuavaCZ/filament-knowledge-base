@@ -17,7 +17,7 @@ use Filament\Support\Assets\Theme;
 use Filament\Support\Enums\Platform;
 use Filament\View\PanelsRenderHook;
 use Filament\Widgets\AccountWidget;
-use Guava\FilamentKnowledgeBase\Concerns\CanDisableBackToDefaultPanelButton;
+use Guava\FilamentKnowledgeBase\Concerns\HasBackToDefaultPanelButton;
 use Guava\FilamentKnowledgeBase\Concerns\CanDisableBreadcrumbs;
 use Guava\FilamentKnowledgeBase\Concerns\CanDisableDefaultClasses;
 use Guava\FilamentKnowledgeBase\Concerns\HasAnchorSymbol;
@@ -41,19 +41,13 @@ use Spatie\StructureDiscoverer\Discover;
 
 class KnowledgeBasePanel extends Panel
 {
-    use CanDisableBackToDefaultPanelButton;
+    use HasBackToDefaultPanelButton;
     use CanDisableBreadcrumbs;
     use CanDisableDefaultClasses;
     use HasAnchorSymbol;
     use HasArticleClass;
 
-    protected bool $guestAccess = false;
 
-    protected static bool $syntaxHighlighting = false;
-
-    protected bool $disableTableOfContents = false;
-
-    protected TableOfContentsPosition $tableOfContentsPosition = TableOfContentsPosition::End;
 
     public function __construct()
     {
@@ -62,59 +56,6 @@ class KnowledgeBasePanel extends Panel
         );
     }
 
-    public function guestAccess(bool $condition = true): static
-    {
-        $this->guestAccess = $condition;
-
-        return $this;
-    }
-
-    public function hasGuestAccess(): bool
-    {
-        return $this->evaluate($this->guestAccess);
-    }
-
-    public function disableTableOfContents(bool $condition = true): static
-    {
-        $this->disableTableOfContents = $condition;
-
-        return $this;
-    }
-
-    public function shouldDisableTableOfContents(): bool
-    {
-        return $this->evaluate($this->disableTableOfContents);
-    }
-
-    public function tableOfContentsPosition(TableOfContentsPosition $position): static
-    {
-        $this->tableOfContentsPosition = $position;
-
-        return $this;
-    }
-
-    public function getTableOfContentsPosition(): TableOfContentsPosition
-    {
-        return $this->evaluate($this->tableOfContentsPosition);
-    }
-
-    public function syntaxHighlighting(bool $condition = true): static
-    {
-        static::$syntaxHighlighting = $condition;
-
-        if (static::$syntaxHighlighting) {
-            if (! InstalledVersions::isInstalled('spatie/shiki-php')) {
-                throw new Exception('You need to install shiki and spatie/shiki-php in order to use the syntax highlighting feature. Please check the documentation for installation instructions.');
-            }
-        }
-
-        return $this;
-    }
-
-    public static function hasSyntaxHighlighting(): bool
-    {
-        return static::$syntaxHighlighting;
-    }
 
     public function getBrandName(): string | Htmlable
     {

@@ -3,10 +3,13 @@
 namespace Guava\FilamentKnowledgeBase\Models;
 
 use Arr;
+use Filament\Facades\Filament;
 use Filament\Navigation\NavigationGroup;
+use Filament\Panel;
 use Guava\FilamentKnowledgeBase\Contracts\Documentable;
 use Guava\FilamentKnowledgeBase\Facades\KnowledgeBase;
 use Guava\FilamentKnowledgeBase\Filament\Pages\ViewDocumentation;
+use Guava\FilamentKnowledgeBase\KnowledgeBaseRegistry;
 use Guava\FilamentKnowledgeBase\Markdown\MarkdownRenderer;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
@@ -32,9 +35,15 @@ class FlatfileDocumentation extends Model implements Documentable
         'icon' => 'string',
         'parent' => 'string',
         'order' => 'integer',
+        'panel_id' => 'string',
     ];
 
     public $incrementing = false;
+
+    public function getPanel(): Panel
+    {
+        return Filament::getPanel($this->panel_id);
+    }
 
     public function getLocale(): string
     {
@@ -48,55 +57,73 @@ class FlatfileDocumentation extends Model implements Documentable
 
     public function getRows()
     {
-        $path = base_path(
-            str(config('filament-knowledge-base.docs-path'))
-                ->append('/')
-                ->append($this->getLocale())
-        );
+        $rows = collect();
 
-        if (! File::exists($path)) {
-            $path = base_path(
-                str(config('filament-knowledge-base.docs-path'))
-                    ->append('/')
+        $paths = app(KnowledgeBaseRegistry::class)->getDocsPaths();
+
+        foreach ($paths as $panelId => $path) {
+            // Get localized docs path
+            $localizedPath = str($path)
+                ->rtrim(DIRECTORY_SEPARATOR)
+                ->append(DIRECTORY_SEPARATOR)
+                ->append($this->getLocale())
+            ;
+
+            // Get fallback locale docs path
+            if (! File::exists($localizedPath)) {
+                $localizedPath = str($path)
+                    ->rtrim(DIRECTORY_SEPARATOR)
+                    ->append(DIRECTORY_SEPARATOR)
                     ->append($this->getFallbackLocale())
+                ;
+            }
+
+            // No docs present
+            if (! File::exists($localizedPath)) {
+                return [];
+            }
+
+
+            $rows->push(
+                ...collect(File::allFiles($localizedPath))
+                    ->map(function (\SplFileInfo $file) use ($panelId, $localizedPath) {
+                        $data = KnowledgeBase::parseMarkdown($file->getRealPath());
+
+                        $id = str($file->getPathname())
+                            ->afterLast($localizedPath)
+                            ->beforeLast($file->getExtension())
+                            ->replace(DIRECTORY_SEPARATOR, '.')
+                            ->trim('.')
+                        ;
+
+                        $parts = $id->explode('.', 3);
+                        $group = data_get($data, 'front-matter.group');
+                        $parent = data_get($data, 'front-matter.parent');
+                        if (count($parts) >= 2) {
+                            $group ??= Str::headline($parts[0]);
+                        }
+                        if (count($parts) >= 3) {
+                            $parent ??= Str::headline($parts[1]);
+                        }
+
+                        return [
+                            'id' => $id,
+                            'slug' => $id->replace('.', '/')->toString(),
+                            'path' => $file->getRealPath(),
+                            'content' => data_get($data, 'html'),
+                            'title' => data_get($data, 'front-matter.title', $id->afterLast('.')->headline()),
+                            'group' => $group,
+                            'icon' => data_get($data, 'front-matter.icon'),
+                            'parent' => $parent,
+                            'order' => data_get($data, 'front-matter.order'),
+                            'panel_id' => $panelId,
+                        ];
+                    })
+                    ->toArray()
             );
         }
 
-        return collect(File::allFiles($path))
-            ->map(function (\SplFileInfo $file) use ($path) {
-                $data = KnowledgeBase::parseMarkdown($file->getRealPath());
-
-                $id = str($file->getPathname())
-                    ->afterLast($path)
-                    ->beforeLast($file->getExtension())
-                    ->replace(DIRECTORY_SEPARATOR, '.')
-                    ->trim('.')
-                ;
-
-                $parts = $id->explode('.', 3);
-                $group = data_get($data, 'front-matter.group');
-                $parent = data_get($data, 'front-matter.parent');
-                if (count($parts) >= 2) {
-                    $group ??= Str::headline($parts[0]);
-                }
-                if (count($parts) >= 3) {
-                    $parent ??= Str::headline($parts[1]);
-                }
-
-                return [
-                    'id' => $id,
-                    'slug' => $id->replace('.', '/')->toString(),
-                    'path' => $file->getRealPath(),
-                    'content' => data_get($data, 'html'),
-                    'title' => data_get($data, 'front-matter.title', $id->afterLast('.')->headline()),
-                    'group' => $group,
-                    'icon' => data_get($data, 'front-matter.icon'),
-                    'parent' => $parent,
-                    'order' => data_get($data, 'front-matter.order'),
-                ];
-            })
-            ->toArray()
-        ;
+        return $rows->toArray();
     }
 
     public function getFrontMatter(): array
@@ -128,7 +155,7 @@ class FlatfileDocumentation extends Model implements Documentable
     {
         return ViewDocumentation::getUrl(parameters: [
             'record' => $this,
-        ], panel: KnowledgeBase::panelId());
+        ], panel: $this->panel_id);
     }
 
     public function getAnchors()

@@ -1,6 +1,6 @@
 <?php
 
-namespace Guava\FilamentKnowledgeBase\Actions\Forms\Components;
+namespace Guava\FilamentKnowledgeBase\Actions\Tables\Components;
 
 use Filament\Facades\Filament;
 use Filament\Forms\Components\Actions\Action;

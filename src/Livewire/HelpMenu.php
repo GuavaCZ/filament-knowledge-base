@@ -29,7 +29,7 @@ class HelpMenu extends Component implements HasActions, HasForms
     {
         $controller = request()->route()->controller;
 
-        $this->shouldOpenDocumentationInNewTab = Filament::getPlugin('guava::filament-knowledge-base')->shouldOpenDocumentationInNewTab();
+        $this->shouldOpenDocumentationInNewTab = KnowledgeBase::companion()->shouldOpenDocumentationInNewTab();
 
         $this->documentation = Arr::wrap(match (true) {
             $controller instanceof HasKnowledgeBase => $controller::getDocumentation(),

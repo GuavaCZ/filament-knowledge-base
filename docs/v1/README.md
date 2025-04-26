@@ -88,58 +88,12 @@ return [
 ];
 ```
 
-## Prerequisites
- - PHP 8.1+
- - Laravel 10+
- - Filament 3.2+
-
 ## Introduction
 
-This package allows you to add many markdown powered knowledge bases to your filament application.
+### Knowledge Base Panel
 
-For this purpose, our package comes with two filament plugins, one for your knowledge base panels and one for your regular panels, which helps to glue them together.
-
-You can turn any of your filament panels into a knowledge base by registering the `KnowledgeBasePlugin` in your panel's plugins config.
-
-Currently, it is **required that you use a separate panel** for your knowledge base(s), as they will override your panel navigation.
-
-
-### Knowledge base panel
-
-A knowledge base panel is any panel that has the `KnowledgeBasePlugin` registered.
-
-This is where you will find all your documentation files that you added to this knowledge base.
-
-For detailed information about the knowledge base panel and how to customize it, check out its own [documentation here](URL_HERE).
-
-### Knowledge Base Companion
-
-The knowledge base companion is a plugin that should be registered in any of your **regular filament panels** that you want to deeply integrate with a knowledge base.
-
-This will allow you to link your resources and pages with specific documentation pages, so your users can easily find the information they are looking for.
-
-For example, the companion plugin renders a documentation button at the bottom of the sidebar which links to your knowledge base panel. 
-
-It also allows you to render a help menu in the top navigation for each resource or page that should be linked with a specific documentation page. For example, you might want to show a help button in your `ProductResource` and link it to your `Product` documentation page.
-
-For detailed information about the knowledge base companion plugin and how to customize it, check out its own [documentation here](URL_HERE).
-
-Add the companion plugin to your regular panel(s):
-```php
-use Guava\FilamentKnowledgeBase\Plugins\KnowledgeBaseCompanionPlugin;
-
-public function panel(Panel $panel): Panel
-{
-    return $panel
-        ->id('admin')
-        ->path('admin')
-        // ...
-        ->plugins([
-            KnowledgeBaseCompanionPlugin::make()
-            ->knowledgeBasePanelId('knowledge-base'),
-        ]);
-}
-```
+We register a separate panel for your entire Knowledge Base. This way you have a single place where you can in detail
+document your functionalities.
 
 ### Modal Previews
 
@@ -166,27 +120,47 @@ In the future, we plan to also ship a Database Driver so you can store your docu
 
 ## Usage
 
-### Create a panel
-You can turn any filament panel into a knowledge base by registering the `KnowledgeBasePlugin` in your panel's plugins config.
+### Register plugin
 
-Currently, it is **required that you use a separate panel for your knowledge base(s)**, as they will override your panel navigation.
+To begin, register the `KnowledgeBasePlugin` in all your Filament Panels from which you want to access your Knowledge
+Base / Documentation.
 
-To create one, follow the [filament documentation](https://filamentphp.com/docs/3.x/panels/configuration#creating-a-new-panel) on how to create one:
-```shell
-php artisan make:filament-panel knowledge-base
+```php
+use Filament\Panel;
+use Guava\FilamentKnowledgeBase\KnowledgeBasePlugin;
+ 
+public function panel(Panel $panel): Panel
+{
+    return $panel
+        ->plugins([
+            // ...
+            KnowledgeBasePlugin::make(),
+        ])
+}
 ```
 
-This will create a new panel provider in `app/Providers/Filament/KnowledgeBasePanelProvider.php`.
-
-#### Make sure you have a custom filament theme
+### Make sure you have a custom filament theme
 
 Check [here](https://filamentphp.com/docs/3.x/panels/themes#creating-a-custom-theme) how to create one.
 
-You can create one specifically for the knowledge base panel, or you can reuse a custom theme from your other panel(s).
+You can create one specifically for the knowledge base panel or if you want to have the same design as your main panel(
+s), you can simply reuse the vite theme from your panel.
 
-#### Build CSS
+Then in the register method of your `AppServiceProvider`, configure the vite theme of the knowledge base panel using:
 
-Now in your custom filament theme, make sure to include the plugin's php and blade files in the `tailwind.config.js`, so the CSS is correctly built:
+```php
+use Guava\FilamentKnowledgeBase\Filament\Panels\KnowledgeBasePanel;
+
+KnowledgeBasePanel::configureUsing(
+    fn(KnowledgeBasePanel $panel) => $panel
+        ->viteTheme('resources/css/filament/admin/theme.css') // your filament vite theme path here 
+);
+```
+
+### Build CSS
+
+In every filament theme, make sure to include the plugin's php and blade files in the `tailwind.config.js`, so the CSS
+is correctly built:
 
 ```js
 {
@@ -199,35 +173,12 @@ Now in your custom filament theme, make sure to include the plugin's php and bla
 }
 ```
 
-### Register plugin
-
-Finally, turn your panel into a knowledge base panel by registering the knowledge base plugin:
-
-```php
-use Guava\FilamentKnowledgeBase\Plugins\KnowledgeBasePlugin;
-
-public function panel(Panel $panel): Panel
-{
-    return $panel
-        ->id('knowledge-base')
-        ->path('kb')
-        // ...
-        ->plugins([
-            KnowledgeBasePlugin::make(),
-        ]);
-}
-```
-
-And that's it! Now you can access the knowledge base under `/kb` or whatever you configured in the `path` option of the panel.
-
 ### Create documentation
 
-Right now your knowledge base panel should be quite empty.
-
-To create your first documentation, run the `docs:make` command, such as:
+To create your first documentation, simply run the `docs:make`, such as:
 
 ```bash
-php artisan docs:make
+php artisan docs:make prologue.getting-started
 ```
 
 This will create a file in `/docs/en/prologue/getting-started.md`.
@@ -265,7 +216,35 @@ icon: heroicon-o-book-open
 #### Front Matter Options
 Below is a list of currently available options in the front matter.
 
+#### Title
+Allows you to modify the title of the documentation page.
+```md
+---
+title: My new title
+---
+```
 
+#### Icon
+Allows you to modify the icon of the documentation page.
+
+You can use any name supported by Blade UI icons, that you have installed.
+
+```md
+---
+icon: heroicon-o-user
+---
+```
+
+#### Order
+Allows you to modify the order of the documentation page within it's parent / group.
+
+A lower number will be displayed first.
+
+```md
+---
+order: 1
+---
+```
 
 #### Group
 Allows you to define the group (and it's title) of the documentation page.
@@ -287,7 +266,19 @@ parent: my-parent
 
 So for a file in `docs/en/prologue/getting-started/intro.md`, the parent would be `getting-started`.
 
+#### Content
 
+Anything after the front matter is your content, written in markdown:
+
+```md
+---
+// Front matter ... 
+---
+
+# Introduction
+
+Lorem ipsum dolor ....
+```
 
 And that's it! You've created a simple knowledge base inside Filament.
 
@@ -510,6 +501,60 @@ use \Filament\View\PanelsRenderHook;
 $plugin->helpMenuRenderHook(PanelsRenderHook::TOPBAR_START);
 ```
 
+### Table of contents
+
+By default, in each documentation article there is a table of contents sidebar on the right.
+
+#### Disabling table of contents
+
+```php
+use Guava\FilamentKnowledgeBase\Filament\Panels\KnowledgeBasePanel;
+
+KnowledgeBasePanel::configureUsing(
+    fn(KnowledgeBasePanel $panel) => $panel
+        ->disableTableOfContents()
+);
+```
+
+#### Changing the position of the table of contents
+
+```php
+use Guava\FilamentKnowledgeBase\Filament\Panels\KnowledgeBasePanel;
+use Guava\FilamentKnowledgeBase\Enums\TableOfContentsPosition;
+KnowledgeBasePanel::configureUsing(
+    fn(KnowledgeBasePanel $panel) => $panel
+        ->tableOfContentsPosition(TableOfContentsPosition::Start)
+);
+```
+
+### Anchors
+
+#### Customizing the anchor symbol
+
+By default we use the `#` symbol. You can customize the symbol using:
+
+```php
+use Guava\FilamentKnowledgeBase\Filament\Panels\KnowledgeBasePanel;
+
+KnowledgeBasePanel::configureUsing(
+    fn(KnowledgeBasePanel $panel) => $panel
+        ->anchorSymbol('¶')
+);
+```
+
+#### Disabling anchors
+
+We render an anchor prefix (#) in front of every heading. To disable it, you can do:
+
+```php
+use Guava\FilamentKnowledgeBase\Filament\Panels\KnowledgeBasePanel;
+
+KnowledgeBasePanel::configureUsing(
+    fn(KnowledgeBasePanel $panel) => $panel
+        ->disableAnchors()
+);
+```
+
 ### Enable modal previews
 
 If you want to open documentations in modal previews instead of immediately redirecting to the full pages, you can
@@ -531,6 +576,20 @@ $plugin->slideOverPreviews();
 
 ![Modal Slideover Example](/docs/images/screenshot_modal_slideovers.jpeg)
 
+### Breadcrubs
+
+#### Disable breadcrumbs
+
+By default on each documentation page, there is a breadcrumb at the top. You can disable it if you wish:
+
+```php
+use Guava\FilamentKnowledgeBase\Filament\Panels\KnowledgeBasePanel;
+
+KnowledgeBasePanel::configureUsing(
+    fn(KnowledgeBasePanel $panel) => $panel
+        ->disableBreadcrumbs()
+);
+```
 
 #### Enable breadcrumbs in modal preview titles
 
@@ -554,6 +613,20 @@ To change this, you can customize your plugin:
 $plugin->openDocumentationInNewTab()
 ```
 
+### Guest Access
+
+By default, the panel is only accessible to authenticated users.
+
+If you want the knowledge base to be publicly accessible, simply configure it like so:
+
+```php
+use Guava\FilamentKnowledgeBase\Filament\Panels\KnowledgeBasePanel;
+
+KnowledgeBasePanel::configureUsing(
+    fn(KnowledgeBasePanel $panel) => $panel
+        ->guestAccess()
+);
+```
 
 ## Markdown
 
