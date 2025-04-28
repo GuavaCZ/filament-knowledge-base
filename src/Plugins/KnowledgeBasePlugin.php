@@ -9,6 +9,7 @@ use Filament\Facades\Filament;
 use Filament\Navigation\NavigationBuilder;
 use Filament\Navigation\NavigationGroup;
 use Filament\Navigation\NavigationItem;
+use Filament\Navigation\NavigationManager as BaseNavigationManager;
 use Filament\Panel;
 use Filament\Support\Concerns\EvaluatesClosures;
 use Filament\View\PanelsRenderHook;
@@ -21,6 +22,7 @@ use Guava\FilamentKnowledgeBase\Contracts\Documentable;
 use Guava\FilamentKnowledgeBase\Documentation;
 use Guava\FilamentKnowledgeBase\Enums\TableOfContentsPosition;
 use Guava\FilamentKnowledgeBase\Facades\KnowledgeBase;
+use Guava\FilamentKnowledgeBase\Filament\Navigation\Navigation;
 use Guava\FilamentKnowledgeBase\Filament\Resources\DocumentationResource;
 use Guava\FilamentKnowledgeBase\KnowledgeBaseRegistry;
 use Illuminate\Support\Collection;
@@ -151,11 +153,14 @@ class KnowledgeBasePlugin implements Plugin
         //            )
         //        ;
         app(KnowledgeBaseRegistry::class)->docsPath($panel->getId(), $this->getDocsPath());
+
+
     }
 
     public function boot(Panel $panel): void
     {
-        $panel->navigation(fn (NavigationBuilder $builder) => $this->makeNavigation($panel, $builder));
+        Navigation::make($panel)->build();
+//        $panel->navigation(fn (NavigationBuilder $builder) => $this->makeNavigation($panel, $builder));
     }
 
     public static function make(?string $docsPath = null): static
@@ -193,17 +198,17 @@ class KnowledgeBasePlugin implements Plugin
             ->get()
         ;
 
-        if (File::exists(app_path('Docs'))) {
-            $documentables
-                ->push(
-                    ...collect(Discover::in(app_path('Docs'))
-                        ->extending(Documentation::class)
-                        ->get())
-                        ->map(fn ($class) => new $class)
-                        ->all()
-                )
-            ;
-        }
+//        if (File::exists(app_path('Docs'))) {
+//            $documentables
+//                ->push(
+//                    ...collect(Discover::in(app_path('Docs'))
+//                        ->extending(Documentation::class)
+//                        ->get())
+//                        ->map(fn ($class) => new $class)
+//                        ->all()
+//                )
+//            ;
+//        }
 
         $documentables
             ->filter(fn (Documentable $documentable) => $documentable->isRegistered())

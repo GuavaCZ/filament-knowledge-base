@@ -80,7 +80,7 @@ class MarkdownRenderer
                 'id_prefix' => '',
                 'symbol' => $anchorSymbol ?? '',
                 'html_class' => Arr::toCssClasses([
-                    'gu-kb-anchor md:absolute md:-left-8 mr-2 md:mr-0 text-primary-600 dark:text-primary-500 font-bold',
+                    'gu-kb-anchor md:absolute md:-left-8 mr-2 md:mr-0 text-primary-600 dark:text-primary-500 font-bold -mt-20 pt-20',
                     'hidden' => ! $anchorSymbol,
                 ]),
             ],
