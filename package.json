@@ -4,9 +4,5 @@
         "esbuild": "^0.21.1",
         "semantic-release": "^22.0.5"
     },
-    "dependencies": {
-        "shiki": "^1.2.3",
-        "tm-grammars": "^1.7.2"
-    },
     "type": "module"
 }

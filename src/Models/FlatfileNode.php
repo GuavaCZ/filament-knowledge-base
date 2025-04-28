@@ -16,7 +16,6 @@ use Guava\FilamentKnowledgeBase\Markdown\MarkdownRenderer;
 use Guava\FilamentKnowledgeBase\Support\FlatfileParser;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\File;
@@ -264,6 +263,7 @@ class FlatfileNode extends Model implements Documentable
     public function getAnchors()
     {
         $walker = $this->getHtml()->getDocument()->walker();
+
         $anchors = [];
         while ($event = $walker->next()) {
             $node = $event->getNode();
@@ -276,7 +276,6 @@ class FlatfileNode extends Model implements Documentable
                     continue;
                 }
 
-//                $anchors[$next->getLiteral()] = $slug;
                 $anchors[$slug] = $next->getLiteral();
             }
         }

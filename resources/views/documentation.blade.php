@@ -3,6 +3,19 @@
     $articleClass = \Guava\FilamentKnowledgeBase\Facades\KnowledgeBase::plugin()->getArticleClass();
 @endphp
 
+@push('styles')
+    <style>
+        html.dark .phiki,
+        html.dark .phiki span {
+            color: var(--phiki-dark-color) !important;
+            background-color: var(--phiki-dark-background-color) !important;
+            font-style: var(--phiki-dark-font-style) !important;
+            font-weight: var(--phiki-dark-font-weight) !important;
+            text-decoration: var(--phiki-dark-text-decoration) !important;
+        }
+    </style>
+@endpush
+
 @push('scripts')
     <script>
         document.querySelectorAll('.gu-kb-anchor')
@@ -28,7 +41,7 @@
     :full-height="true"
 >
     <x-filament-knowledge-base::content @class([
-        "gu-kb-article-full prose prose-lg",
+        "gu-kb-article-full prose prose-lg dark:prose-invert",
         $articleClass => ! empty($articleClass),
     ])>
         {!!  $this->record->getHtml() !!}

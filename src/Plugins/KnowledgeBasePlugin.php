@@ -57,11 +57,11 @@ class KnowledgeBasePlugin implements Plugin
     {
         static::$syntaxHighlighting = $condition;
 
-        if (static::$syntaxHighlighting) {
-            if (! InstalledVersions::isInstalled('spatie/shiki-php')) {
-                throw new Exception('You need to install shiki and spatie/shiki-php in order to use the syntax highlighting feature. Please check the documentation for installation instructions.');
-            }
-        }
+//        if (static::$syntaxHighlighting) {
+//            if (! InstalledVersions::isInstalled('spatie/shiki-php')) {
+//                throw new Exception('You need to install shiki and spatie/shiki-php in order to use the syntax highlighting feature. Please check the documentation for installation instructions.');
+//            }
+//        }
 
         return $this;
     }

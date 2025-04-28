@@ -3,9 +3,7 @@
 namespace Guava\FilamentKnowledgeBase\Markdown;
 
 use Arr;
-use Filament\Facades\Filament;
 use Guava\FilamentKnowledgeBase\Facades\KnowledgeBase;
-use Guava\FilamentKnowledgeBase\Filament\Panels\KnowledgeBasePanel;
 use Guava\FilamentKnowledgeBase\Markdown\Parsers\IncludeParser;
 use Guava\FilamentKnowledgeBase\Markdown\Renderers\FencedCodeRenderer;
 use Guava\FilamentKnowledgeBase\Markdown\Renderers\ImageRenderer;
@@ -29,6 +27,8 @@ use League\CommonMark\Node\Block\Paragraph;
 use League\CommonMark\Output\RenderedContentInterface;
 use N0sz\CommonMark\Marker\Marker;
 use N0sz\CommonMark\Marker\MarkerExtension;
+use Phiki\CommonMark\PhikiExtension;
+use Phiki\Theme\Theme;
 
 class MarkdownRenderer
 {
@@ -80,7 +80,7 @@ class MarkdownRenderer
                 'id_prefix' => '',
                 'symbol' => $anchorSymbol ?? '',
                 'html_class' => Arr::toCssClasses([
-                    'gu-kb-anchor md:absolute md:-left-8 mr-2 md:mr-0 text-primary-600 dark:text-primary-500 font-bold -mt-20 pt-20',
+                    'gu-kb-anchor md:absolute md:-left-8 mr-2 md:mr-0 text-primary-600 dark:text-primary-500 font-bold no-underline -mt-20 pt-20',
                     'hidden' => ! $anchorSymbol,
                 ]),
             ],
@@ -122,6 +122,10 @@ class MarkdownRenderer
             ->addExtension(new FrontMatterExtension)
             ->addExtension(new MarkerExtension)
             ->addExtension(new TableExtension)
+            ->addExtension(new PhikiExtension([
+                'light' => Theme::GithubLight,
+                'dark' => Theme::GithubDark,
+            ]))
         ;
         if (! $this->isMinimal()) {
             $environment
@@ -137,11 +141,11 @@ class MarkdownRenderer
             ->addRenderer(Image::class, new ImageRenderer, 5)
         ;
 
-        if (KnowledgeBase::plugin()->hasSyntaxHighlighting()) {
-            $environment
-                ->addRenderer(FencedCode::class, new FencedCodeRenderer, 5)
-            ;
-        }
+//        if (KnowledgeBase::plugin()->hasSyntaxHighlighting()) {
+//            $environment
+//                ->addRenderer(FencedCode::class, new FencedCodeRenderer, 5)
+//            ;
+//        }
 
         return $environment;
     }
