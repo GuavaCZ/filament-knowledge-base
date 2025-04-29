@@ -14,6 +14,7 @@ use Guava\FilamentKnowledgeBase\Actions\HelpAction;
 use Guava\FilamentKnowledgeBase\Contracts\Documentable;
 use Guava\FilamentKnowledgeBase\Contracts\HasKnowledgeBase;
 use Guava\FilamentKnowledgeBase\Facades\KnowledgeBase;
+use Illuminate\Support\Collection;
 use Livewire\Component;
 
 class HelpMenu extends Component implements HasActions, HasForms
@@ -23,13 +24,13 @@ class HelpMenu extends Component implements HasActions, HasForms
 
     public array $documentation;
 
-    protected bool $shouldOpenDocumentationInNewTab;
+    protected bool $shouldOpenKnowledgeBasePanelInNewTab;
 
     public function mount(): void
     {
         $controller = request()->route()->controller;
 
-        $this->shouldOpenDocumentationInNewTab = KnowledgeBase::companion()->shouldOpenDocumentationInNewTab();
+        $this->shouldOpenKnowledgeBasePanelInNewTab = KnowledgeBase::companion()->shouldOpenKnowledgeBasePanelInNewTab();
 
         $this->documentation = Arr::wrap(match (true) {
             $controller instanceof HasKnowledgeBase => $controller::getDocumentation(),
@@ -38,7 +39,7 @@ class HelpMenu extends Component implements HasActions, HasForms
         });
     }
 
-    public function getDocumentation()
+    public function getDocumentation(): Collection
     {
         return collect($this->documentation)
             ->map(fn ($documentable) => KnowledgeBase::documentable($documentable))
@@ -48,10 +49,9 @@ class HelpMenu extends Component implements HasActions, HasForms
     public function actions(): array
     {
         return $this->getDocumentation()
-//            ->map(fn (string $class) => KnowledgeBasePanel::getDocumentationAction($class))
             ->map(
                 fn (Documentable $documentable) => HelpAction::forDocumentable($documentable)
-                    ->openUrlInNewTab($this->shouldOpenDocumentationInNewTab)
+                    ->openUrlInNewTab($this->shouldOpenKnowledgeBasePanelInNewTab)
             )
             ->toArray()
         ;
@@ -66,7 +66,7 @@ class HelpMenu extends Component implements HasActions, HasForms
     {
         return HelpAction::forDocumentable($this->getDocumentation()->first())
             ->generic()
-            ->openUrlInNewTab($this->shouldOpenDocumentationInNewTab)
+            ->openUrlInNewTab($this->shouldOpenKnowledgeBasePanelInNewTab)
         ;
     }
 

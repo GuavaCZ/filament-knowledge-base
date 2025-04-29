@@ -40,9 +40,6 @@
         "phpstan/phpstan-phpunit": "^1.0"
     },
     "autoload": {
-        "files": [
-            "src/helpers.php"
-        ],
         "psr-4": {
             "Guava\\FilamentKnowledgeBase\\": "src/",
             "Guava\\FilamentKnowledgeBase\\Database\\Factories\\": "database/factories/"

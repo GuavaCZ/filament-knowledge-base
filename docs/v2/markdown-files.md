@@ -94,6 +94,36 @@ This is useful if you want to order your files using numerical ordering, such as
 order: 3
 ```
 
+#### Active
+This option allows you to hide the documentation file. This is useful if you want to hide the documentation from the navigation and prevent users from viewing it.
+
+However, keep in mind the documentation file **can still be viewed in your regular filament panels in modal previews!**
+
+```yaml
+active: false
+```
+
+#### URL
+> [!NOTE] This option is only applicable for the `link` type.
+
+This option allows you to specify a URL for the documentation file. It will be opened when the user clicks on the documentation item in the navigation.
+
+```yaml
+url: https://example.com
+```
+
+#### Type
+This option allows you to determine the type of the documentation file.
+
+There are currently the following types available:
+- `document`: This is the primary type and is used for the majority of documentation files. This is where you write your markdown content. Documentation files of this type can also be used as parents by other documentation types. This type can be omitted, as it is the default type.
+- `group`: This type is used to group multiple documentation files together. The group will be displayed in the knowledge panel navigation and the documentation files within the group will be displayed as sub-items of the group.
+- `link`: This type is used to display a link to an external URL. The link will be displayed in the knowledge panel navigation and will open the URL in a new tab.
+
+```yaml
+type: group
+```
+
 ## Content
 
 Anything that comes after the front matter is considered content. The content is parsed using [CommonMark](https://commonmark.thephpleague.com/).
@@ -126,6 +156,13 @@ By default, the following extensions are enabled:
 
 Knowledge base comes with a few custom options that you can use in your markdown files.
 
+#### Markers
+You can mark important parts of your documentation using the marker syntax. This will render a colored box around your text in the primary color of your knowledge base panel.
+
+```markdown
+In this example, ==this part== of the text is going to be marked.
+```
+
 #### Includes
 
 To allow you to reuse content across multiple Markdown files, you can use the `include` directive. This directive allows you to include the content of another markdown file in your current file.
@@ -141,6 +178,22 @@ This becomes extremely useful when integrating with your regular filament panel,
 The ID of your documentation file is the **dot-notation representation of the relative path to the file**, starting from the knowledge bases `docs` directory.
 
 For example, consider the following documentation file: `/docs/my-knowledge-base/en/users/advanced/customization.md`, the ID would be `users.advanced.customization`.
+
+### Vite assets
+You can include Vite assets (images) in your markdown files using the regular markdown image syntax. For the path of the image, use the same path you would pass to your `Vite::asset()` method.
+
+For example, if your image is located in `/resources/img/logo.png`, you can include it in your markdown file like this:
+
+```markdown
+![Logo](/resources/img/logo.png)
+```
+
+We will automatically wrap all relative paths in the `Vite::asset()` method. That means, both `npm run dev` will work on localhost as well as `npm run build` on production.
+
+### Syntax highlighting
+Syntax highlighting is enabled by default for all code blocks in your markdown files.
+
+Syntax highlighting is provided by [PhikiPHP](https://github.com/phikiphp/phiki).
 
 [//]: # (#### Variables)
 

@@ -8,15 +8,15 @@
     $hasModalPreviews = $companion->hasModalPreviews();
     $hasSlideOverPreviews = $companion->hasSlideOverPreviews();
     $hasModalTitleBreadcrumbs = $companion->hasModalTitleBreadcrumbs();
-    $target = $companion->shouldOpenDocumentationInNewTab() ? '_blank' : '_self';
+    $target = $companion->shouldOpenKnowledgeBasePanelInNewTab() ? '_blank' : '_self';
     $articleClass = $plugin->getArticleClass();
 @endphp
 
 <div @class([
-    'hidden' => ! $documentation,
+    'hidden' => empty($documentation),
 ])
 >
-    @if($documentation)
+    @if(!empty($documentation))
         @if($this->shouldShowAsMenu())
             {{$this->getMenuAction()}}
         @else

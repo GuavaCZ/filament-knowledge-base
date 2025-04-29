@@ -3,11 +3,12 @@
     use Guava\FilamentKnowledgeBase\Facades\KnowledgeBase;
 
     $plugin = KnowledgeBase::plugin();
+    $companion = KnowledgeBase::companion();
 
-    $hasModalPreviews = $plugin->hasModalPreviews();
-    $hasSlideOverPreviews = $plugin->hasSlideOverPreviews();
-    $hasModalTitleBreadcrumbs = $plugin->hasModalTitleBreadcrumbs();
-    $target = $plugin->shouldOpenDocumentationInNewTab() ? '_blank' : '_self';
+    $hasModalPreviews = $companion->hasModalPreviews();
+    $hasSlideOverPreviews = $companion->hasSlideOverPreviews();
+    $hasModalTitleBreadcrumbs = $companion->hasModalTitleBreadcrumbs();
+    $target = $companion->shouldOpenKnowledgeBasePanelInNewTab() ? '_blank' : '_self';
     $articleClass = $plugin->getArticleClass();
 @endphp
 

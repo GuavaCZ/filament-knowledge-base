@@ -5,7 +5,6 @@ namespace Guava\FilamentKnowledgeBase\Markdown;
 use Arr;
 use Guava\FilamentKnowledgeBase\Facades\KnowledgeBase;
 use Guava\FilamentKnowledgeBase\Markdown\Parsers\IncludeParser;
-use Guava\FilamentKnowledgeBase\Markdown\Renderers\FencedCodeRenderer;
 use Guava\FilamentKnowledgeBase\Markdown\Renderers\ImageRenderer;
 use InvalidArgumentException;
 use League\CommonMark\Environment\Environment;
@@ -14,16 +13,13 @@ use League\CommonMark\Environment\EnvironmentInterface;
 use League\CommonMark\Extension\Attributes\AttributesExtension;
 use League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension;
 use League\CommonMark\Extension\CommonMark\Node\Block\BlockQuote;
-use League\CommonMark\Extension\CommonMark\Node\Block\FencedCode;
 use League\CommonMark\Extension\CommonMark\Node\Block\Heading;
-use League\CommonMark\Extension\CommonMark\Node\Block\ListBlock;
 use League\CommonMark\Extension\CommonMark\Node\Inline\Image;
 use League\CommonMark\Extension\DefaultAttributes\DefaultAttributesExtension;
 use League\CommonMark\Extension\FrontMatter\FrontMatterExtension;
 use League\CommonMark\Extension\HeadingPermalink\HeadingPermalinkExtension;
 use League\CommonMark\Extension\Table\TableExtension;
 use League\CommonMark\MarkdownConverter;
-use League\CommonMark\Node\Block\Paragraph;
 use League\CommonMark\Output\RenderedContentInterface;
 use N0sz\CommonMark\Marker\Marker;
 use N0sz\CommonMark\Marker\MarkerExtension;
@@ -49,38 +45,27 @@ class MarkdownRenderer
     protected function getOptions(): array
     {
         $anchorSymbol = KnowledgeBase::plugin()->getAnchorSymbol();
-        $shouldDisableDefaultClasses = KnowledgeBase::plugin()->shouldDisableDefaultClasses();
+        $shouldDisableFilamentStyledTables = KnowledgeBase::plugin()->shouldDisableFilamentStyledTables();
+        $shouldDisableFilamentStyledBlockquotes = KnowledgeBase::plugin()->shouldDisableFilamentStyledBlockquotes();
 
         return [
             'default_attributes' => [
                 Heading::class => [
-                    'class' => $shouldDisableDefaultClasses
-                        ? 'relative'
-                        : static fn (Heading $node) => match ($node->getLevel()) {
-                            1 => 'text-3xl mb-2 [&:first-child]:mt-0 mt-10',
-                            2 => 'text-xl mb-2 [&:first-child]:mt-0 mt-2',
-                            3 => 'text-lg mb-1 [&:first-child]:mt-0 mt-2',
-                            default => null,
-                        } . ' relative',
-                ],
-                Paragraph::class => [
-                    'class' => $shouldDisableDefaultClasses ? '' : 'mb-4 [&:last-child]:mb-0 leading-relaxed',
-                ],
-                ListBlock::class => [
-                    'class' => $shouldDisableDefaultClasses ? '' : 'mb-4 [&:last-child]:mb-0 leading-relaxed',
+                    'class' => 'relative',
+                    'data-level' => static fn (Heading $node) => (string) $node->getLevel(),
                 ],
                 Marker::class => [
                     'class' => 'bg-primary-500/20 dark:bg-primary-400/40 text-inherit rounded-md py-0.5 px-1.5',
                 ],
                 BlockQuote::class => [
-                    'class' => $shouldDisableDefaultClasses ? '' : 'bg-white dark:bg-gray-900 mt-2 mb-4 p-4 rounded-md ring-1 ring-gray-950/5 dark:ring-white/10',
+                    'class' => $shouldDisableFilamentStyledBlockquotes ? '' : 'bg-white dark:bg-gray-900 rounded-md ring-1 ring-gray-950/5 dark:ring-white/10',
                 ],
             ],
             'heading_permalink' => [
                 'id_prefix' => '',
                 'symbol' => $anchorSymbol ?? '',
                 'html_class' => Arr::toCssClasses([
-                    'gu-kb-anchor md:absolute md:-left-8 mr-2 md:mr-0 text-primary-600 dark:text-primary-500 font-bold no-underline -mt-20 pt-20',
+                    'gu-kb-anchor md:absolute md:-left-8 mr-2 md:mr-0 text-primary-600 dark:text-primary-500 font-bold !no-underline -mt-20 pt-20',
                     'hidden' => ! $anchorSymbol,
                 ]),
             ],
@@ -89,11 +74,11 @@ class MarkdownRenderer
                     'enabled' => true,
                     'tag' => 'div',
                     'attributes' => [
-                        'class' => $shouldDisableDefaultClasses ? '' : Arr::toCssClasses([
-                            'divide-y divide-gray-200 overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-gray-950/5 dark:divide-white/10 dark:bg-gray-900 dark:ring-white/10',
+                        'class' => $shouldDisableFilamentStyledTables ? '' : Arr::toCssClasses([
+                            'py-0 divide-y divide-gray-200 overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-gray-950/5 dark:divide-white/10 dark:bg-gray-900 dark:ring-white/10',
                             'fi-ta-content relative divide-y divide-gray-200 overflow-x-auto dark:divide-white/10 dark:border-t-white/10 !border-t-0',
                             'mb-4 [&:last-child]:mb-0 leading-relaxed',
-                            '[&_table]:fi-ta-table [&_table]:w-full [&_table]:table-auto [&_table]:divide-y [&_table]:divide-gray-200 [&_table]:text-start [&_table]:dark:divide-white/5',
+                            '[&_table]:fi-ta-table [&_table]:w-full [&_table]:table-auto [&_table]:divide-y [&_table]:divide-gray-200 [&_table]:text-start [&_table]:dark:divide-white/5 [&_table]:my-0',
                             '[&_thead]:divide-y [&_thead]:divide-gray-200 [&_thead]:dark:divide-white/5',
                             '[&_thead_tr]:bg-gray-50 [&_thead_tr]:dark:bg-white/5',
                             '[&_thead_th]:text-start',
@@ -122,11 +107,20 @@ class MarkdownRenderer
             ->addExtension(new FrontMatterExtension)
             ->addExtension(new MarkerExtension)
             ->addExtension(new TableExtension)
-            ->addExtension(new PhikiExtension([
-                'light' => Theme::GithubLight,
-                'dark' => Theme::GithubDark,
-            ]))
         ;
+
+        if (! KnowledgeBase::plugin()->shouldDisableSyntaxHighlighting()) {
+            $environment
+                ->addExtension(new PhikiExtension(
+                    [
+                        'light' => Theme::GithubLight,
+                        'dark' => Theme::GithubDark,
+                    ],
+                    withGutter: true
+                ))
+            ;
+        }
+
         if (! $this->isMinimal()) {
             $environment
                 ->addExtension(new HeadingPermalinkExtension)
@@ -140,12 +134,6 @@ class MarkdownRenderer
         $environment
             ->addRenderer(Image::class, new ImageRenderer, 5)
         ;
-
-//        if (KnowledgeBase::plugin()->hasSyntaxHighlighting()) {
-//            $environment
-//                ->addRenderer(FencedCode::class, new FencedCodeRenderer, 5)
-//            ;
-//        }
 
         return $environment;
     }

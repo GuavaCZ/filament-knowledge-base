@@ -3,19 +3,19 @@
 namespace Guava\FilamentKnowledgeBase\Plugins;
 
 use Filament\Contracts\Plugin;
-use Filament\Facades\Filament;
 use Filament\Panel;
+use Filament\Support\Concerns\EvaluatesClosures;
 use Filament\View\PanelsRenderHook;
-use Guava\FilamentKnowledgeBase\Concerns\CanDisableKnowledgeBasePanelButton;
 use Guava\FilamentKnowledgeBase\Concerns\CanDisableModalLinks;
+use Guava\FilamentKnowledgeBase\Concerns\HasKnowledgeBasePanelButton;
 use Guava\FilamentKnowledgeBase\Concerns\HasModalPreviews;
-use Guava\FilamentKnowledgeBase\Facades\KnowledgeBase;
 use Illuminate\Support\Facades\Blade;
 
 class KnowledgeBaseCompanionPlugin implements Plugin
 {
-    use CanDisableKnowledgeBasePanelButton;
     use CanDisableModalLinks;
+    use EvaluatesClosures;
+    use HasKnowledgeBasePanelButton;
     use HasModalPreviews;
 
     public const ID = 'guava::filament-knowledge-base-companion';
@@ -23,8 +23,6 @@ class KnowledgeBaseCompanionPlugin implements Plugin
     protected string $knowledgeBasePanelId;
 
     protected bool $modalTitleBreadcrumbs = false;
-
-    protected bool $openDocumentationInNewTab = false;
 
     protected string $helpMenuRenderHook = PanelsRenderHook::TOPBAR_END;
 
@@ -59,21 +57,9 @@ class KnowledgeBaseCompanionPlugin implements Plugin
         return $this;
     }
 
-    public function openDocumentationInNewTab(bool $condition = true): static
-    {
-        $this->openDocumentationInNewTab = $condition;
-
-        return $this;
-    }
-
     public function hasModalTitleBreadcrumbs(): bool
     {
         return $this->modalTitleBreadcrumbs;
-    }
-
-    public function shouldOpenDocumentationInNewTab(): bool
-    {
-        return $this->openDocumentationInNewTab;
     }
 
     public function getId(): string
@@ -100,14 +86,7 @@ class KnowledgeBaseCompanionPlugin implements Plugin
                 fn (Panel $panel) => $panel
                     ->renderHook(
                         PanelsRenderHook::SIDEBAR_FOOTER,
-                        fn (): string => view('filament-knowledge-base::sidebar-action', [
-                            'label' => __('filament-knowledge-base::translations.knowledge-base'),
-                            'icon' => 'heroicon-o-book-open',
-                            'url' => KnowledgeBase::url(
-                                Filament::getPanel($this->getKnowledgeBasePanelId())
-                            ),
-                            'shouldOpenUrlInNewTab' => $this->shouldOpenDocumentationInNewTab(),
-                        ])
+                        fn (): string => $this->getKnowledgeBasePanelButton()->render(),
                     )
             )
         ;

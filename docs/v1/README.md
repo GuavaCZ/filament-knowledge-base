@@ -284,7 +284,7 @@ And that's it! You've created a simple knowledge base inside Filament.
 
 ### Accessing the knowledge base
 
-In every panel you registered the Knowlege Base plugin, we automatically inject a documentation button at the very
+In every panel you registered the Knowledge Base plugin, we automatically inject a documentation button at the very
 bottom of the sidebar.
 
 ![Documentation button example](https://github.com/GuavaCZ/filament-knowledge-base/raw/main/docs/images/screenshot_documentation_button.png)

@@ -13,6 +13,14 @@
             font-weight: var(--phiki-dark-font-weight) !important;
             text-decoration: var(--phiki-dark-text-decoration) !important;
         }
+        pre.phiki code span.line span.line-number {
+            /*content: attr(data-line);*/
+            display: inline-block;
+            width: 1.7rem;
+            margin-right: 1rem;
+            color: #666;
+            text-align: right;
+        }
     </style>
 @endpush
 
@@ -41,7 +49,7 @@
     :full-height="true"
 >
     <x-filament-knowledge-base::content @class([
-        "gu-kb-article-full prose prose-lg dark:prose-invert",
+        "gu-kb-article-full",
         $articleClass => ! empty($articleClass),
     ])>
         {!!  $this->record->getHtml() !!}

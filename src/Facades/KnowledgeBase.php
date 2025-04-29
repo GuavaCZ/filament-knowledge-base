@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Facade;
  */
 class KnowledgeBase extends Facade
 {
-    protected static function getFacadeAccessor()
+    protected static function getFacadeAccessor(): string
     {
         return \Guava\FilamentKnowledgeBase\KnowledgeBase::class;
     }

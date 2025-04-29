@@ -8,7 +8,7 @@
     $hasModalPreviews = $companion->hasModalPreviews();
     $hasSlideOverPreviews = $companion->hasSlideOverPreviews();
     $hasModalTitleBreadcrumbs = $companion->hasModalTitleBreadcrumbs();
-    $target = $companion->shouldOpenDocumentationInNewTab() ? '_blank' : '_self';
+    $target = $companion->shouldOpenKnowledgeBasePanelInNewTab() ? '_blank' : '_self';
     $articleClass = $plugin->getArticleClass();
 @endphp
 

@@ -7,14 +7,12 @@ use Filament\Support\Facades\FilamentAsset;
 use Guava\FilamentKnowledgeBase\Commands\MakeDocumentationCommand;
 use Guava\FilamentKnowledgeBase\Livewire\HelpMenu;
 use Guava\FilamentKnowledgeBase\Livewire\Modals;
-use Guava\FilamentKnowledgeBase\Providers\KnowledgeBasePanelProvider;
 use Livewire\Livewire;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
 class KnowledgeBaseServiceProvider extends PackageServiceProvider
 {
-
     public static string $name = 'filament-knowledge-base';
 
     public function configurePackage(Package $package): void
@@ -29,17 +27,15 @@ class KnowledgeBaseServiceProvider extends PackageServiceProvider
             ->hasViews()
             ->hasConfigFile()
             ->hasTranslations()
-            ->hasMigration('create_filament-knowledge-base_table')
             ->hasCommand(MakeDocumentationCommand::class)
         ;
     }
 
     public function packageRegistered(): void
     {
-        $this->app->singleton(KnowledgeBaseRegistry::class, function() {
-            return new KnowledgeBaseRegistry();
+        $this->app->singleton(KnowledgeBaseRegistry::class, function () {
+            return new KnowledgeBaseRegistry;
         });
-//        $this->app->register(KnowledgeBasePanelProvider::class);
     }
 
     public function packageBooted(): void

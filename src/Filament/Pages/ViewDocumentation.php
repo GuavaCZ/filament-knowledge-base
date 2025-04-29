@@ -40,7 +40,7 @@ class ViewDocumentation extends ViewRecord
     {
         parent::mount($record);
 
-        if ($this->record->type === NodeType::Group) {
+        if ($this->record->getType() === NodeType::Group) {
             if ($child = $this->record->children()?->first()) {
                 $this->redirect($child->getUrl());
             } else {
@@ -49,47 +49,8 @@ class ViewDocumentation extends ViewRecord
         }
     }
 
-    //    public function mount(FlatfileDocumentation $documentation) {
-    //        $this->record = $documentation;
-    //    }
-
-    //    public function getTitle(): string|Htmlable
-    //    {
-    //        return $this->record->title ?? parent::getTitle();
-    //    }
-    //
-    //    /**
-    //     * @return string|null
-    //     */
-    //    public static function getNavigationLabel(): string
-    //    {
-    //        return self::$navigationLabel;
-    //    }
-
-    //    public static function getRoutePath(): string
-    //    {
-    //        return '/{documentation?}';
-    //    }
-
-    //    public static function routes(Panel $panel): void
-    //    {
-    //        Route::get(static::getRoutePath(), static::class)
-    //            ->middleware(static::getRouteMiddleware($panel))
-    //            ->withoutMiddleware(static::getWithoutRouteMiddleware($panel))
-    //            ->name(static::getRelativeRouteName())
-    //            ->where('documentation', '.*')
-    //        ;
-    //    }
-
     public static function route(string $path): PageRegistration
     {
-
-        //        Route::get(static::getRoutePath(), static::class)
-        //            ->middleware(static::getRouteMiddleware($panel))
-        //            ->withoutMiddleware(static::getWithoutRouteMiddleware($panel))
-        //            ->name(static::getRelativeRouteName())
-        //            ->where('documentation', '.*')
-        //        ;
         return new PageRegistration(
             page: static::class,
             route: fn (Panel $panel): Route => RouteFacade::get($path, static::class)
@@ -121,7 +82,7 @@ class ViewDocumentation extends ViewRecord
     }
 
     #[On('documentation.anchor.copy')]
-    public function copyAnchorToClipboard(string $url)
+    public function copyAnchorToClipboard(string $url): void
     {
         $this->js(<<<JS
         if (navigator.clipboard) {

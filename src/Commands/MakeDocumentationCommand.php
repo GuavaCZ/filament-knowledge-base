@@ -2,6 +2,7 @@
 
 namespace Guava\FilamentKnowledgeBase\Commands;
 
+use Guava\FilamentKnowledgeBase\KnowledgeBaseRegistry;
 use Illuminate\Console\GeneratorCommand;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\File;
@@ -9,7 +10,7 @@ use Illuminate\Support\Stringable;
 
 class MakeDocumentationCommand extends GeneratorCommand
 {
-    protected $signature = 'docs:make {name} {--class} {--L|locale=*}';
+    protected $signature = 'docs:make {panel} {name} {--L|locale=*}';
 
     protected $aliases = [
         'kb:make',
@@ -21,54 +22,46 @@ class MakeDocumentationCommand extends GeneratorCommand
 
     protected function getStub(): string
     {
-        return $this->option('class')
-            ? __DIR__ . '/../../stubs/documentation.php.stub'
-            : __DIR__ . '/../../stubs/markdown.md.stub';
+        return __DIR__ . '/../../stubs/markdown.md.stub';
     }
 
-    protected function qualifyClass($name)
+    protected function qualifyClass($name): string
     {
-        return $this->option('class')
-            ? parent::qualifyClass($name)
-            : $name;
+        return $name;
     }
 
-    protected function getPath($name)
-    {
-        return $this->option('class')
-            ? parent::getPath($name)
-            : str(base_path(config('filament-knowledge-base.docs-path')))
-                ->rtrim('/')
-                ->append(
-                    '/',
-                    str($name)
-                        ->replaceEnd('.md', '')
-                        ->append('.md')
-                )
-        ;
-    }
+//    protected function getPath($name)
+//    {
+//        dd(\app(KnowledgeBaseRegistry::class)->getDocsPaths());
+//        return str(base_path(config('filament-knowledge-base.docs-path')))
+//                ->rtrim('/')
+//                ->append(
+//                    '/',
+//                    str($name)
+//                        ->replaceEnd('.md', '')
+//                        ->append('.md')
+//                )
+//        ;
+//    }
 
-    protected function getNameInput()
-    {
-        return str(parent::getNameInput())
-            ->trim('/')
-            ->replace('.', '/')
-            ->when(
-                ! $this->option('class'),
-                fn (Stringable $str) => $str->prepend($this->currentLocale, '/')
-            )
-            ->toString()
-        ;
-    }
+//    protected function getNameInput()
+//    {
+//        return str(parent::getNameInput())
+//            ->trim('/')
+//            ->replace('.', '/')
+//            ->when(
+//                ! $this->option('class'),
+//                fn (Stringable $str) => $str->prepend($this->currentLocale, '/')
+//            )
+//            ->toString()
+//        ;
+//    }
 
     protected string $currentLocale;
 
     public function handle()
     {
-        if ($this->option('class')) {
-            return parent::handle();
-        }
-
+        dd(\app(KnowledgeBaseRegistry::class)->getDocsPaths());
         $path = str(base_path(config('filament-knowledge-base.docs-path')))
             ->rtrim('/')
             ->append('/')

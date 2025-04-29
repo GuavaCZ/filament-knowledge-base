@@ -31,7 +31,7 @@ class IncludeParser implements InlineParserInterface
         // Advance the cursor to the end of the match
         $cursor->advanceBy($inlineContext->getFullMatchLength());
 
-        // Grab the Twitter handle
+        // Grab the id from the match
         [$path] = $inlineContext->getSubMatches();
 
         $result = $this->renderer->convert(

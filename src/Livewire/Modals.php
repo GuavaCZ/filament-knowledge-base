@@ -19,15 +19,15 @@ class Modals extends Component implements HasActions, HasForms
 
     public ?Documentable $documentable = null;
 
-    protected bool $shouldOpenDocumentationInNewTab;
+    protected bool $shouldOpenKnowledgeBasePanelInNewTab;
 
     public function mount(): void
     {
-        $this->shouldOpenDocumentationInNewTab = KnowledgeBase::companion()->shouldOpenDocumentationInNewTab();
+        $this->shouldOpenKnowledgeBasePanelInNewTab = KnowledgeBase::companion()->shouldOpenKnowledgeBasePanelInNewTab();
     }
 
     #[On('close-modal')]
-    public function onClose($id)
+    public function onClose($id): void
     {
         if ($id !== 'kb-custom-modal') {
             return;
@@ -39,7 +39,7 @@ $nextTick(() => {
 JS);
     }
 
-    public function showDocumentation(string $id)
+    public function showDocumentation(string $id): void
     {
         $this->documentable = KnowledgeBase::documentable($id);
 
@@ -50,7 +50,7 @@ $nextTick(() => {
 JS);
     }
 
-    public function resetDocumentation()
+    public function resetDocumentation(): void
     {
         $this->documentable = null;
     }

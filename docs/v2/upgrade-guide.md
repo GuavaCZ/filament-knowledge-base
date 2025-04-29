@@ -106,6 +106,13 @@ If you work with the Documentation model somewhere in your code, please note tha
 
 Please adjust your imports and references accordingly.
 
+## Config
+
+Configuration option `filament-knowledge-base.model` has been renamed to `filament-knowledge-base.flatfile-model`.
+
+Configuration options `filament-knowledge-base.panel` and `filament-knowledge-base.docs-path` have been completely removed. 
+
+Please adjust your config file accordingly.
 
 ## Found an issue?
 
