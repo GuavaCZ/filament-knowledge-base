@@ -5,6 +5,8 @@ namespace Guava\FilamentKnowledgeBase\Support;
 use Exception;
 use Guava\FilamentKnowledgeBase\Enums\NodeType;
 use Guava\FilamentKnowledgeBase\Facades\KnowledgeBase;
+use Guava\FilamentKnowledgeBase\Markdown\MarkdownRenderer;
+use Guava\FilamentKnowledgeBase\Models\FlatfileNode;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Fluent;
@@ -13,6 +15,8 @@ use SplFileInfo;
 
 class FlatfileParser
 {
+    protected string $renderer = MarkdownRenderer::class;
+
     public function __construct(
         protected string $panelId,
         protected string $path
@@ -32,8 +36,8 @@ class FlatfileParser
      */
     protected function processFile(SplFileInfo $file): array
     {
-        $data = KnowledgeBase::parseMarkdown($file->getRealPath());
-
+//        $data = app($this->renderer)->convertAndReturnFluent(file_get_contents($file->getRealPath()));
+        $data = (new MarkdownRenderer())->convertAndReturnFluent(file_get_contents($file->getRealPath()));
         $type = NodeType::tryFrom($data->get('front-matter.type') ?? NodeType::Documentation->value);
 
         $id = str($file->getRealPath())
@@ -72,7 +76,7 @@ class FlatfileParser
     protected function parseGroupFile(SplFileInfo $file, string $id, Fluent $data): array
     {
         return [
-            'data' => json_encode([]),
+            'data' => json_encode($this->getCustomData($data)),
         ];
     }
 
@@ -83,6 +87,7 @@ class FlatfileParser
     {
         $result = [
             'data' => json_encode([
+                ...$this->getCustomData($data),
                 'content' => $data->get('html'),
             ]),
         ];
@@ -101,9 +106,34 @@ class FlatfileParser
     {
         return [
             'data' => json_encode([
+                ...$this->getCustomData($data),
                 'url' => $data->get('front-matter.url'),
             ]),
         ];
+    }
+
+    protected function getCustomData(Fluent $data): array {
+        return $data->except([
+            'id',
+            'type',
+            'slug',
+            'path',
+            'title',
+            'icon',
+            'order',
+            'active',
+            'parent_id',
+            'panel_id',
+            'url',
+            'data',
+            'content',
+        ]);
+    }
+
+    public function renderer(string $renderer): static {
+        $this->renderer = $renderer;
+
+        return $this;
     }
 
     public static function make(string $panelId, string $path): static

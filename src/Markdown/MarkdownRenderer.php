@@ -6,6 +6,7 @@ use Arr;
 use Guava\FilamentKnowledgeBase\Facades\KnowledgeBase;
 use Guava\FilamentKnowledgeBase\Markdown\Parsers\IncludeParser;
 use Guava\FilamentKnowledgeBase\Markdown\Renderers\ImageRenderer;
+use Illuminate\Support\Fluent;
 use InvalidArgumentException;
 use League\CommonMark\Environment\Environment;
 use League\CommonMark\Environment\EnvironmentBuilderInterface;
@@ -17,6 +18,7 @@ use League\CommonMark\Extension\CommonMark\Node\Block\Heading;
 use League\CommonMark\Extension\CommonMark\Node\Inline\Image;
 use League\CommonMark\Extension\DefaultAttributes\DefaultAttributesExtension;
 use League\CommonMark\Extension\FrontMatter\FrontMatterExtension;
+use League\CommonMark\Extension\FrontMatter\Output\RenderedContentWithFrontMatter;
 use League\CommonMark\Extension\HeadingPermalink\HeadingPermalinkExtension;
 use League\CommonMark\Extension\Table\TableExtension;
 use League\CommonMark\MarkdownConverter;
@@ -48,7 +50,7 @@ class MarkdownRenderer
         $shouldDisableFilamentStyledTables = KnowledgeBase::plugin()->shouldDisableFilamentStyledTables();
         $shouldDisableFilamentStyledBlockquotes = KnowledgeBase::plugin()->shouldDisableFilamentStyledBlockquotes();
 
-        return [
+        return KnowledgeBase::plugin()->configureCommonMarkOptions([
             'default_attributes' => [
                 Heading::class => [
                     'class' => 'relative',
@@ -94,7 +96,7 @@ class MarkdownRenderer
                     'right' => ['class' => '!text-end'],
                 ],
             ],
-        ];
+        ]);
     }
 
     protected function configureEnvironment(EnvironmentBuilderInterface $environment): EnvironmentInterface
@@ -135,7 +137,7 @@ class MarkdownRenderer
             ->addRenderer(Image::class, new ImageRenderer, 5)
         ;
 
-        return $environment;
+        return KnowledgeBase::plugin()->configureCommonMarkEnvironment($environment);
     }
 
     protected function getEnvironment(): EnvironmentInterface
@@ -167,6 +169,18 @@ class MarkdownRenderer
         }
 
         return cache()->remember($this->getCacheKey($input), $ttl, fn () => $this->getMarkdownConverter()->convert($input));
+    }
+
+    public function convertAndReturnFluent(string $input): Fluent
+    {
+        $result = $this->convert($input);
+
+        $frontMatter = [];
+        if ($result instanceof RenderedContentWithFrontMatter) {
+            $frontMatter = $result->getFrontMatter();
+        }
+
+        return fluent(['html' => $result->getContent(), 'front-matter' => $frontMatter]);
     }
 
     protected function getCacheKey(string $input): string

@@ -114,20 +114,6 @@ class KnowledgeBase
         return $url;
     }
 
-    public function parseMarkdown(string $path): Fluent
-    {
-        $converter = app(MarkdownRenderer::class);
-
-        $result = $converter->convert(file_get_contents($path));
-
-        $frontMatter = [];
-        if ($result instanceof RenderedContentWithFrontMatter) {
-            $frontMatter = $result->getFrontMatter();
-        }
-
-        return fluent(['html' => $result->getContent(), 'front-matter' => $frontMatter]);
-    }
-
     public function documentable(Documentable | string $documentable): Documentable
     {
         if ($documentable instanceof Documentable) {

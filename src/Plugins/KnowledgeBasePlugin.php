@@ -6,6 +6,7 @@ use Filament\Contracts\Plugin;
 use Filament\Panel;
 use Filament\Support\Concerns\EvaluatesClosures;
 use Filament\View\PanelsRenderHook;
+use Guava\FilamentKnowledgeBase\Concerns\CanConfigureCommonMark;
 use Guava\FilamentKnowledgeBase\Concerns\CanDisableBreadcrumbs;
 use Guava\FilamentKnowledgeBase\Concerns\CanDisableFilamentStyles;
 use Guava\FilamentKnowledgeBase\Concerns\CanDisableSyntaxHighlighting;
@@ -27,6 +28,7 @@ class KnowledgeBasePlugin implements Plugin
     use HasArticleClass;
     use HasBackToDefaultPanelButton;
     use HasTableOfContents;
+    use CanConfigureCommonMark;
 
     public const ID = 'guava::filament-knowledge-base';
 
