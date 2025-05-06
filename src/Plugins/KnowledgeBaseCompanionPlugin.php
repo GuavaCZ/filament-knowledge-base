@@ -3,6 +3,7 @@
 namespace Guava\FilamentKnowledgeBase\Plugins;
 
 use Filament\Contracts\Plugin;
+use Filament\Navigation\NavigationItem;
 use Filament\Panel;
 use Filament\Support\Concerns\EvaluatesClosures;
 use Filament\View\PanelsRenderHook;
@@ -10,6 +11,8 @@ use Guava\FilamentKnowledgeBase\Concerns\CanDisableModalLinks;
 use Guava\FilamentKnowledgeBase\Concerns\HasKnowledgeBasePanelButton;
 use Guava\FilamentKnowledgeBase\Concerns\HasModalPreviews;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\HtmlString;
+use Illuminate\View\ComponentAttributeBag;
 
 class KnowledgeBaseCompanionPlugin implements Plugin
 {
@@ -86,9 +89,29 @@ class KnowledgeBaseCompanionPlugin implements Plugin
                 fn (Panel $panel) => $panel
                     ->renderHook(
                         PanelsRenderHook::SIDEBAR_FOOTER,
-                        fn (): string => $this->getKnowledgeBasePanelButton()->render(),
+                        fn (): string => Blade::render('filament-panels::components.sidebar.group', [
+                            'attributes' => new ComponentAttributeBag([
+                                'class' => 'px-4 pb-4 [&_.fi-sidebar-item]:rounded-lg [&_.fi-sidebar-item]:ring-1 [&_.fi-sidebar-item]:ring-gray-950/10 dark:[&_.fi-sidebar-item]:ring-white/20',
+                            ]),
+                            'label' => null,
+                            'items' => [
+                                NavigationItem::make(__('filament-knowledge-base::translations.knowledge-base'))
+                                    ->url('#')
+                                    ->icon('heroicon-o-home'),
+                            ],
+                        ])
+                        //                        fn (): string => Blade::render('filament-panels::components.sidebar.item', [
+                        //                            'url' => '#',
+                        //                            'icon' => 'heroicon-o-user',
+                        //                            'slot' => new HtmlString('test'),
+                        //                        ]),
+//                                                fn (): string => $this->getKnowledgeBasePanelButton()->render(),
                     )
             )
+//            ->renderHook(
+//                PanelsRenderHook::BODY_START,
+//                fn () => '<style> .fi-sidebar:not(.fi-sidebar-open) .fi-btn-label { display: none; } .fi-sidebar:not(.fi-sidebar-open) .fi-btn-icon { margin-left: 0.25rem; } </style>'
+//            )
         ;
     }
 

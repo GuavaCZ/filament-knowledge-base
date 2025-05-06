@@ -4,9 +4,7 @@ namespace Guava\FilamentKnowledgeBase\Support;
 
 use Exception;
 use Guava\FilamentKnowledgeBase\Enums\NodeType;
-use Guava\FilamentKnowledgeBase\Facades\KnowledgeBase;
 use Guava\FilamentKnowledgeBase\Markdown\MarkdownRenderer;
-use Guava\FilamentKnowledgeBase\Models\FlatfileNode;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Fluent;
@@ -36,8 +34,7 @@ class FlatfileParser
      */
     protected function processFile(SplFileInfo $file): array
     {
-//        $data = app($this->renderer)->convertAndReturnFluent(file_get_contents($file->getRealPath()));
-        $data = (new MarkdownRenderer())->convertAndReturnFluent(file_get_contents($file->getRealPath()));
+        $data = (new $this->renderer)->convertAndReturnFluent(file_get_contents($file->getRealPath()));
         $type = NodeType::tryFrom($data->get('front-matter.type') ?? NodeType::Documentation->value);
 
         $id = str($file->getRealPath())
@@ -55,9 +52,11 @@ class FlatfileParser
         }
 
         return [
-            'id' => "$this->panelId.$id",
+            'id' => str($data->get('front-matter.id') ?? $id)
+                ->prepend("$this->panelId.")
+                ->toString(),
             'type' => $type,
-            'slug' => str($id)->replace('.', '/')->toString(),
+            'slug' => $data->get('front-matter.slug') ?? str($id)->replace('.', '/')->toString(),
             'path' => $file->getRealPath(),
             'title' => $data->get('front-matter.title') ?? Str::headline(File::name($file->getRealPath())),
             'icon' => $data->get('front-matter.icon'),
@@ -112,25 +111,31 @@ class FlatfileParser
         ];
     }
 
-    protected function getCustomData(Fluent $data): array {
-        return $data->except([
-            'id',
-            'type',
-            'slug',
-            'path',
-            'title',
-            'icon',
-            'order',
-            'active',
-            'parent_id',
-            'panel_id',
-            'url',
-            'data',
-            'content',
-        ]);
+    protected function getCustomData(Fluent $data): array
+    {
+        return $data
+            ->collect('front-matter')
+            ->except([
+                'id',
+                'type',
+                'slug',
+                'path',
+                'title',
+                'icon',
+                'order',
+                'active',
+                'parent_id',
+                'panel_id',
+                'url',
+                'data',
+                'content',
+            ])
+            ->all()
+        ;
     }
 
-    public function renderer(string $renderer): static {
+    public function renderer(string $renderer): static
+    {
         $this->renderer = $renderer;
 
         return $this;
