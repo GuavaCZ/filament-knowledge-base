@@ -105,7 +105,7 @@ class KnowledgeBaseCompanionPlugin implements Plugin
                         //                            'icon' => 'heroicon-o-user',
                         //                            'slot' => new HtmlString('test'),
                         //                        ]),
-//                                                fn (): string => $this->getKnowledgeBasePanelButton()->render(),
+                        //                                                fn (): string => $this->getKnowledgeBasePanelButton()->render(),
                     )
             )
 //            ->renderHook(

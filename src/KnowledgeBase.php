@@ -7,12 +7,9 @@ use Filament\Contracts\Plugin;
 use Filament\Facades\Filament;
 use Filament\Panel;
 use Guava\FilamentKnowledgeBase\Contracts\Documentable;
-use Guava\FilamentKnowledgeBase\Markdown\MarkdownRenderer;
 use Guava\FilamentKnowledgeBase\Plugins\KnowledgeBaseCompanionPlugin;
 use Guava\FilamentKnowledgeBase\Plugins\KnowledgeBasePlugin;
-use Illuminate\Support\Fluent;
 use Illuminate\Support\HtmlString;
-use League\CommonMark\Extension\FrontMatter\Output\RenderedContentWithFrontMatter;
 
 class KnowledgeBase
 {

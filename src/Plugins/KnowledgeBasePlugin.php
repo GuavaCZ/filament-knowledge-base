@@ -20,6 +20,7 @@ use Guava\FilamentKnowledgeBase\KnowledgeBaseRegistry;
 
 class KnowledgeBasePlugin implements Plugin
 {
+    use CanConfigureCommonMark;
     use CanDisableBreadcrumbs;
     use CanDisableFilamentStyles;
     use CanDisableSyntaxHighlighting;
@@ -28,7 +29,6 @@ class KnowledgeBasePlugin implements Plugin
     use HasArticleClass;
     use HasBackToDefaultPanelButton;
     use HasTableOfContents;
-    use CanConfigureCommonMark;
 
     public const ID = 'guava::filament-knowledge-base';
 
@@ -57,16 +57,14 @@ class KnowledgeBasePlugin implements Plugin
             DocumentationResource::class,
         ]);
 
-        $panel
-//            ->when(
-//                ! $this->shouldDisableBackToDefaultPanelButton(),
-//                fn (Panel $panel) => $panel
-//                    ->renderHook(
-//                        PanelsRenderHook::SIDEBAR_FOOTER,
-//                        fn (): string => $this->getBackToDefaultPanelButton()->render()->render(),
-//                    )
-//            )
-        ;
+        //            ->when(
+        //                ! $this->shouldDisableBackToDefaultPanelButton(),
+        //                fn (Panel $panel) => $panel
+        //                    ->renderHook(
+        //                        PanelsRenderHook::SIDEBAR_FOOTER,
+        //                        fn (): string => $this->getBackToDefaultPanelButton()->render()->render(),
+        //                    )
+        //            )
 
         app(KnowledgeBaseRegistry::class)->docsPath($panel->getId(), $this->getDocsPath());
 

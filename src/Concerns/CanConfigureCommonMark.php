@@ -2,9 +2,9 @@
 
 namespace Guava\FilamentKnowledgeBase\Concerns;
 
+use Closure;
 use League\CommonMark\ConverterInterface;
 use League\CommonMark\Environment\EnvironmentBuilderInterface;
-use Closure;
 
 trait CanConfigureCommonMark
 {

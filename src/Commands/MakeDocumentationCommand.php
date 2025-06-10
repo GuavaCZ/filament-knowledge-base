@@ -30,32 +30,32 @@ class MakeDocumentationCommand extends GeneratorCommand
         return $name;
     }
 
-//    protected function getPath($name)
-//    {
-//        dd(\app(KnowledgeBaseRegistry::class)->getDocsPaths());
-//        return str(base_path(config('filament-knowledge-base.docs-path')))
-//                ->rtrim('/')
-//                ->append(
-//                    '/',
-//                    str($name)
-//                        ->replaceEnd('.md', '')
-//                        ->append('.md')
-//                )
-//        ;
-//    }
+    //    protected function getPath($name)
+    //    {
+    //        dd(\app(KnowledgeBaseRegistry::class)->getDocsPaths());
+    //        return str(base_path(config('filament-knowledge-base.docs-path')))
+    //                ->rtrim('/')
+    //                ->append(
+    //                    '/',
+    //                    str($name)
+    //                        ->replaceEnd('.md', '')
+    //                        ->append('.md')
+    //                )
+    //        ;
+    //    }
 
-//    protected function getNameInput()
-//    {
-//        return str(parent::getNameInput())
-//            ->trim('/')
-//            ->replace('.', '/')
-//            ->when(
-//                ! $this->option('class'),
-//                fn (Stringable $str) => $str->prepend($this->currentLocale, '/')
-//            )
-//            ->toString()
-//        ;
-//    }
+    //    protected function getNameInput()
+    //    {
+    //        return str(parent::getNameInput())
+    //            ->trim('/')
+    //            ->replace('.', '/')
+    //            ->when(
+    //                ! $this->option('class'),
+    //                fn (Stringable $str) => $str->prepend($this->currentLocale, '/')
+    //            )
+    //            ->toString()
+    //        ;
+    //    }
 
     protected string $currentLocale;
 

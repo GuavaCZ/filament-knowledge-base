@@ -7,7 +7,6 @@ use Filament\Resources\Resource;
 use Guava\FilamentKnowledgeBase\Facades\KnowledgeBase;
 use Guava\FilamentKnowledgeBase\Filament\Pages\ViewDocumentation;
 use Illuminate\Contracts\Support\Htmlable;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class DocumentationResource extends Resource
@@ -22,7 +21,7 @@ class DocumentationResource extends Resource
         return ['title', 'content'];
     }
 
-    protected static string|null|\BackedEnum $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static string | null | \BackedEnum $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function getPages(): array
     {

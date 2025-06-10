@@ -4,7 +4,6 @@ namespace Guava\FilamentKnowledgeBase\Livewire;
 
 use Filament\Actions\Concerns\InteractsWithActions;
 use Filament\Actions\Contracts\HasActions;
-use Filament\Facades\Filament;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Guava\FilamentKnowledgeBase\Contracts\Documentable;
