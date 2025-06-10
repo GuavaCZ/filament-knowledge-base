@@ -3,7 +3,7 @@
 namespace Guava\FilamentKnowledgeBase\Filament\Pages;
 
 use Filament\Navigation\NavigationItem;
-use Filament\Pages\SubNavigationPosition;
+use Filament\Pages\Enums\SubNavigationPosition;
 use Filament\Panel;
 use Filament\Resources\Pages\PageRegistration;
 use Filament\Resources\Pages\ViewRecord;
@@ -20,9 +20,9 @@ class ViewDocumentation extends ViewRecord
     protected static string $resource = DocumentationResource::class;
 
     //    public Model $record;
-    protected static string $view = 'filament-knowledge-base::documentation';
+    protected string $view = 'filament-knowledge-base::documentation';
 
-    public function getSubNavigationPosition(): SubNavigationPosition
+    public static function getSubNavigationPosition(): SubNavigationPosition
     {
         return KnowledgeBase::plugin()->getTableOfContentsPosition()->toSubNavigationPosition();
     }

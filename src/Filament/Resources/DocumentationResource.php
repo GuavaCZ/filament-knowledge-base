@@ -2,6 +2,7 @@
 
 namespace Guava\FilamentKnowledgeBase\Filament\Resources;
 
+use Filament\Panel;
 use Filament\Resources\Resource;
 use Guava\FilamentKnowledgeBase\Facades\KnowledgeBase;
 use Guava\FilamentKnowledgeBase\Filament\Pages\ViewDocumentation;
@@ -21,7 +22,7 @@ class DocumentationResource extends Resource
         return ['title', 'content'];
     }
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static string|null|\BackedEnum $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function getPages(): array
     {
@@ -32,7 +33,7 @@ class DocumentationResource extends Resource
 
     protected static bool $shouldRegisterNavigation = false;
 
-    public static function getRoutePrefix(): string
+    public static function getRoutePrefix(Panel $panel): string
     {
         return '';
     }
@@ -49,7 +50,7 @@ class DocumentationResource extends Resource
         ;
     }
 
-    public static function resolveRecordRouteBinding(int | string $key): ?Model
+    public static function resolveRecordRouteBinding(int | string $key, ?\Closure $modifyQuery = null): ?Model
     {
         // TODO: First try to load it from a standalone (App/Docs) class
         $record = parent::resolveRecordRouteBinding($key);

@@ -58,14 +58,14 @@ class KnowledgeBasePlugin implements Plugin
         ]);
 
         $panel
-            ->when(
-                ! $this->shouldDisableBackToDefaultPanelButton(),
-                fn (Panel $panel) => $panel
-                    ->renderHook(
-                        PanelsRenderHook::SIDEBAR_FOOTER,
-                        fn (): string => $this->getBackToDefaultPanelButton()->render(),
-                    )
-            )
+//            ->when(
+//                ! $this->shouldDisableBackToDefaultPanelButton(),
+//                fn (Panel $panel) => $panel
+//                    ->renderHook(
+//                        PanelsRenderHook::SIDEBAR_FOOTER,
+//                        fn (): string => $this->getBackToDefaultPanelButton()->render()->render(),
+//                    )
+//            )
         ;
 
         app(KnowledgeBaseRegistry::class)->docsPath($panel->getId(), $this->getDocsPath());

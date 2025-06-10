@@ -32,7 +32,7 @@ jobs:
           fetch-depth: 0
 
       - name: Fix PHP code style issues
-        uses: aglipanci/laravel-pint-action@2.4
+        uses: aglipanci/laravel-pint-action@2.5
 
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v5
@@ -40,7 +40,7 @@ jobs:
           commit_message: "style: fix code styling"
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: "lts/*"
 
