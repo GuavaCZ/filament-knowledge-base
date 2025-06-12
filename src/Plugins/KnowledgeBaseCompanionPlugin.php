@@ -3,6 +3,7 @@
 namespace Guava\FilamentKnowledgeBase\Plugins;
 
 use Filament\Contracts\Plugin;
+use Filament\Facades\Filament;
 use Filament\Navigation\NavigationItem;
 use Filament\Panel;
 use Filament\Support\Concerns\EvaluatesClosures;
@@ -96,7 +97,7 @@ class KnowledgeBaseCompanionPlugin implements Plugin
                             'label' => null,
                             'items' => [
                                 NavigationItem::make(__('filament-knowledge-base::translations.knowledge-base'))
-                                    ->url('#')
+                                    ->url(Filament::getPanel($this->getKnowledgeBasePanelId())->getUrl())
                                     ->icon('heroicon-o-home'),
                             ],
                         ])

@@ -3,13 +3,7 @@
         [
             "@semantic-release/commit-analyzer",
             {
-                "preset": "conventionalcommits",
-                "releaseRules": [
-                    {
-                        "scope": "no-release",
-                        "release": false
-                    }
-                ]
+                "preset": "conventionalcommits"
             }
         ],
         [
@@ -58,8 +52,10 @@
     ],
     "branches": [
         "+([0-9])?(.{+([0-9]),x}).x",
-        "main",
         "master",
+        "main",
+        "next",
+        "next-major",
         {
             "name": "beta",
             "prerelease": true

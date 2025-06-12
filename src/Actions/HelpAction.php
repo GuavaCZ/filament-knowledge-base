@@ -6,6 +6,7 @@ use Filament\Actions\Action;
 use Filament\Facades\Filament;
 use Guava\FilamentKnowledgeBase\Contracts\Documentable;
 use Guava\FilamentKnowledgeBase\Facades\KnowledgeBase;
+use Illuminate\Support\HtmlString;
 
 class HelpAction extends Action
 {
@@ -25,13 +26,16 @@ class HelpAction extends Action
     {
         $documentable = KnowledgeBase::documentable($documentable);
 
-        return HelpAction::make("help.{$documentable->getId()}")
+        return static::make("help.{$documentable->getId()}")
             ->label($documentable->getTitle())
             ->icon($documentable->getIcon())
             ->when(
                 KnowledgeBase::companion()->hasModalPreviews(),
                 fn (HelpAction $action) => $action
-                    ->alpineClickHandler('$dispatch("open-modal", {id: "' . $documentable->getId() . '"})')
+                    ->modal()
+                    ->modalContent(new HtmlString('test'))
+                    ->action(fn() => dd('test'))
+//                    ->alpineClickHandler('$dispatch(\"open-modal\", {id: "' . $documentable->getId() . '"})')
                     ->when(
                         KnowledgeBase::companion()->hasSlideOverPreviews(),
                         fn (HelpAction $action) => $action->slideOver()

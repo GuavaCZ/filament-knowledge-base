@@ -51,9 +51,9 @@ class HelpMenu extends Component implements HasActions, HasForms
         return $this->getDocumentation()
             ->map(
                 fn (Documentable $documentable) => HelpAction::forDocumentable($documentable)
-                    ->openUrlInNewTab($this->shouldOpenKnowledgeBasePanelInNewTab)
+                    ->openUrlInNewTab(fn()=>$this->shouldOpenKnowledgeBasePanelInNewTab)
             )
-            ->toArray()
+            ->all()
         ;
     }
 
@@ -66,13 +66,14 @@ class HelpMenu extends Component implements HasActions, HasForms
     {
         return HelpAction::forDocumentable($this->getDocumentation()->first())
             ->generic()
-            ->openUrlInNewTab($this->shouldOpenKnowledgeBasePanelInNewTab)
+            ->openUrlInNewTab(fn()=>$this->shouldOpenKnowledgeBasePanelInNewTab)
         ;
     }
 
     public function getMenuAction(): ActionGroup
     {
         return ActionGroup::make($this->actions())
+            ->dropdownPlacement('bottom-end')
             ->label(__('filament-knowledge-base::translations.help'))
             ->icon('heroicon-o-question-mark-circle')
             ->iconSize('lg')

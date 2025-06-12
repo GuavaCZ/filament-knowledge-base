@@ -14,8 +14,8 @@
 
 <div
     x-ignore
-    ax-load
-    ax-load-src="{{ \Filament\Support\Facades\FilamentAsset::getAlpineComponentSrc('modals-component', 'guava/filament-knowledge-base') }}"
+    x-load
+    x-load-src="{{ \Filament\Support\Facades\FilamentAsset::getAlpineComponentSrc('modals-component', 'guava/filament-knowledge-base') }}"
     x-data="modalsComponent()"
 >
     <x-filament::modal id="kb-custom-modal"
