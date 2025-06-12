@@ -33,7 +33,7 @@ class HelpAction extends Action
                 fn (HelpAction $action) => $action
                     ->modal()
                     ->modalContent(new HtmlString('test'))
-                    ->action(fn() => dd('test'))
+                    ->action(fn () => dd('test'))
 //                    ->alpineClickHandler('$dispatch(\"open-modal\", {id: "' . $documentable->getId() . '"})')
                     ->when(
                         KnowledgeBase::companion()->hasSlideOverPreviews(),
