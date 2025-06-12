@@ -6,7 +6,6 @@ trait CanDisableSyntaxHighlighting
 {
     protected bool $disableSyntaxHighlighting = false;
 
-
     public function disableSyntaxHighlighting(bool $condition = true): static
     {
         $this->disableSyntaxHighlighting = $condition;

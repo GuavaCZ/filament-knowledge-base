@@ -3,7 +3,6 @@
 namespace Guava\FilamentKnowledgeBase\Actions;
 
 use Filament\Actions\Action;
-use Filament\Facades\Filament;
 use Guava\FilamentKnowledgeBase\Contracts\Documentable;
 use Guava\FilamentKnowledgeBase\Facades\KnowledgeBase;
 use Illuminate\Support\HtmlString;
