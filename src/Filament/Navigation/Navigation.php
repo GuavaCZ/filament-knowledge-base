@@ -16,13 +16,21 @@ class Navigation
 
     public function build(): void
     {
+        $groups = KnowledgeBase::model()::query()
+            ->where('panel_id', $this->panel->getId())
+            ->type(NodeType::Group)
+            ->get()
+            ->sort(fn(FlatfileNode $d1, FlatfileNode $d2) => $d1->order <=> $d2->order);
+
+        $groupsCanHaveIcons = $groups
+            ->where(fn (FlatfileNode $node) => $node
+                ->children()
+                ->where(fn (FlatfileNode $child) => $child->children()->isNotEmpty()))
+            ->isEmpty();
+
         $this->panel->navigationGroups(
-            KnowledgeBase::model()::query()
-                ->where('panel_id', $this->panel->getId())
-                ->type(NodeType::Group)
-                ->get()
-                ->sort(fn (FlatfileNode $d1, FlatfileNode $d2) => $d1->order <=> $d2->order)
-                ->map(fn (FlatfileNode $node) => $node->toNavigationGroup())
+            $groups
+                ->map(fn(FlatfileNode $node) => $node->toNavigationGroup($groupsCanHaveIcons))
                 ->all()
         );
 

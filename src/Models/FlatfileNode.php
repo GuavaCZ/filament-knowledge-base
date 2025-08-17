@@ -179,7 +179,7 @@ class FlatfileNode extends Model implements Documentable
             match ($parent->getType()) {
                 NodeType::Group => $item->group($parent->getTitle()),
                 default => $item
-                    ->parentItem($parent->getTitle())
+                        ->parentItem($parent->getTitle())
                     ->group($parent->parent()?->getTitle()),
             };
         }
@@ -187,14 +187,14 @@ class FlatfileNode extends Model implements Documentable
         return $item;
     }
 
-    public function toNavigationGroup(): NavigationGroup
+    public function toNavigationGroup(bool $canHaveIcon = true): NavigationGroup
     {
         if ($this->type !== NodeType::Group) {
             throw new \Exception('Cannot convert a document to a navigation group');
         }
 
         return NavigationGroup::make($this->getTitle())
-            ->icon($this->getIcon())
+            ->icon($canHaveIcon ? $this->getIcon() : null)
         ;
     }
 
