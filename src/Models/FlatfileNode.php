@@ -68,7 +68,7 @@ class FlatfileNode extends Model implements Documentable
     {
         return static::query()
             ->where('panel_id', $this->getPanelId())
-            ->where('parent_id', $this->getId())
+            ->where('id', $this->parent_id)
             ->first()
         ;
     }
