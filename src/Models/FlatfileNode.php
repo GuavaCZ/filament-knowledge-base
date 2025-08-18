@@ -110,7 +110,7 @@ class FlatfileNode extends Model implements Documentable
 
     public function getIcon(): ?string
     {
-        return $this->icon ?? 'heroicon-o-document';
+        return $this->icon ?? $this->getDefaultIcon();
     }
 
     public function getType(): NodeType
@@ -179,7 +179,7 @@ class FlatfileNode extends Model implements Documentable
             match ($parent->getType()) {
                 NodeType::Group => $item->group($parent->getTitle()),
                 default => $item
-                        ->parentItem($parent->getTitle())
+                    ->parentItem($parent->getTitle())
                     ->group($parent->parent()?->getTitle()),
             };
         }
@@ -192,6 +192,11 @@ class FlatfileNode extends Model implements Documentable
         if ($this->type !== NodeType::Group) {
             throw new \Exception('Cannot convert a document to a navigation group');
         }
+
+        $canHaveIcon = $this
+            ->children()->where(fn (FlatfileNode $child) => $child->children()->isNotEmpty())
+            ->isEmpty()
+        ;
 
         return NavigationGroup::make($this->getTitle())
             ->icon($canHaveIcon ? $this->getIcon() : null)
@@ -272,5 +277,14 @@ class FlatfileNode extends Model implements Documentable
     public function getRouteKeyName(): string
     {
         return 'slug';
+    }
+
+    protected function getDefaultIcon(): ?string
+    {
+        return match ($this->getType()) {
+            NodeType::Documentation => 'heroicon-o-document',
+            NodeType::Link => 'heroicon-o-link',
+            NodeType::Group => null,
+        };
     }
 }

@@ -21,16 +21,10 @@ class Navigation
             ->type(NodeType::Group)
             ->get()
             ->sort(fn(FlatfileNode $d1, FlatfileNode $d2) => $d1->order <=> $d2->order);
-
-        $groupsCanHaveIcons = $groups
-            ->where(fn (FlatfileNode $node) => $node
-                ->children()
-                ->where(fn (FlatfileNode $child) => $child->children()->isNotEmpty()))
-            ->isEmpty();
-
+        
         $this->panel->navigationGroups(
             $groups
-                ->map(fn(FlatfileNode $node) => $node->toNavigationGroup($groupsCanHaveIcons))
+                ->map(fn(FlatfileNode $node) => $node->toNavigationGroup())
                 ->all()
         );
 
