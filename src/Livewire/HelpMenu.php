@@ -50,7 +50,7 @@ class HelpMenu extends Component implements HasActions, HasForms
         return $this->getDocumentation()
             ->map(
                 fn (Documentable $documentable) => HelpAction::forDocumentable($documentable)
-                    ->openUrlInNewTab(fn()=>$this->shouldOpenKnowledgeBasePanelInNewTab)
+                    ->openUrlInNewTab(fn () => $this->shouldOpenKnowledgeBasePanelInNewTab)
             )
             ->all()
         ;
@@ -65,7 +65,7 @@ class HelpMenu extends Component implements HasActions, HasForms
     {
         return HelpAction::forDocumentable($this->getDocumentation()->first())
             ->generic()
-            ->openUrlInNewTab(fn()=>$this->shouldOpenKnowledgeBasePanelInNewTab)
+            ->openUrlInNewTab(fn () => $this->shouldOpenKnowledgeBasePanelInNewTab)
         ;
     }
 
