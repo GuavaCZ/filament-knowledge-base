@@ -10,6 +10,20 @@ It is currently **required** to use a custom, separate panel for your knowledge 
 
 ## Usage
 
+If you don't have a separate panel yet for your knowledge base, please create one using the built in filament command:
+```bash
+php artisan filament:panel
+```
+
+For example, you might create a panel named `knowledge-base`.
+
+Next, add the `KnowledgeBasePlugin` plugin to your panel service provider:
+
+```php
+use Guava\FilamentKnowledgeBase\Plugins\KnowledgeBasePlugin;
+
+$panel->plugin(KnowledgeBasePlugin::make())
+```
 ## Customization
 
 There are a lot of customization options available for your knowledge base. All options are configured via the `KnowledgeBasePlugin` added to your knowledge base panel.
