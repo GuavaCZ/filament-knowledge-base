@@ -79,7 +79,7 @@ For example:
           - `intro.md`
           - `/users`
               - `/intro.md`
-              - `/registration.md`
+              - `/roles.md`
               - `/roles`
                   - `user.md`
                   - `admin.md`
@@ -87,10 +87,17 @@ For example:
           - `intro.md`
           - `/users`
             - `/intro.md`
-            - `/registration.md`
+            - `/roles.md`
             - `/roles`
                 - `user.md`
                 - `admin.md`
+
+The directory structure is fairly limited due to the navigation system of filament and thus is very error prone, although we try to throw meaningful exceptions anytime the structure is wrong.
+
+If you are unsure, make sure these rules are always met:
+1. You are nested MAXIMALLY 3 levels deep (as in the example above)
+2. In the top level directory (the language directory), you can have any markdown files and directories.
+3. In the second level directory, you must have an explicit `<dir>.md` file for each directory. This is because filament does not support deeply nested groups and thus it needs to be a `Parent Item`. In the example above, you can see that for the `roles` directory there also exists a `roles.md` documentation item which acts as the `Parent Item`.
 
 ### Creating documentation pages
 Right now, you need to manually create the files inside the correct structure.
