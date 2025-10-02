@@ -25,7 +25,7 @@ use League\CommonMark\MarkdownConverter;
 use League\CommonMark\Output\RenderedContentInterface;
 use N0sz\CommonMark\Marker\Marker;
 use N0sz\CommonMark\Marker\MarkerExtension;
-use Phiki\CommonMark\PhikiExtension;
+use Phiki\Adapters\CommonMark\PhikiExtension;
 use Phiki\Theme\Theme;
 
 class MarkdownRenderer
