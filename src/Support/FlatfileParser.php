@@ -15,6 +15,8 @@ class FlatfileParser
 {
     protected string $renderer = MarkdownRenderer::class;
 
+    protected array $results = [];
+
     public function __construct(
         protected string $panelId,
         protected string $path
@@ -22,11 +24,11 @@ class FlatfileParser
 
     public function get(): Collection
     {
-        return collect(File::allFiles($this->path))
-            ->map(function (SplFileInfo $file) {
-                return $this->processFile($file);
-            })
+        collect(File::allFiles($this->path))
+            ->each(fn (SplFileInfo $file) => $this->processFile($file))
         ;
+
+        return collect(array_values($this->results));
     }
 
     /**
@@ -51,7 +53,7 @@ class FlatfileParser
             throw new Exception("The documentation file \"$id\" is nested too deeply. The maximum nesting depth is 3.");
         }
 
-        return [
+        $result = [
             'id' => str($data->get('front-matter.id') ?? $id)
                 ->prepend("$this->panelId.")
                 ->toString(),
@@ -67,22 +69,76 @@ class FlatfileParser
             ...match ($type) {
                 NodeType::Group => $this->parseGroupFile($file, $id, $data),
                 NodeType::Link => $this->processLinkFile($file, $id, $data),
-                default => $this->processDocumentationFile($file, $id, $data),
+                default => $this->processDocumentationFile($file, $id, $data, $depth > 1),
             },
         ];
+
+        $this->results[$id->toString()] = $result;
+
+        return $result;
     }
 
-    protected function parseGroupFile(SplFileInfo $file, string $id, Fluent $data): array
+    protected function processDir(SplFileInfo $dir): array
     {
-        return [
+        $id = str($dir->getRealPath())
+            ->afterLast($this->path)
+            ->replace(DIRECTORY_SEPARATOR, '.')
+            ->trim('.')
+        ;
+
+        $parts = explode('.', $id);
+        $depth = count($parts);
+
+        if ($depth > 1) {
+            throw new Exception("The documentation file \"$id\" can not be nested within more than one groups. You will need to create a parent documentation file at: [" . $dir->getRealPath() . '.md]');
+        }
+
+        $result = [
+            'id' => str($id)
+                ->prepend("$this->panelId.")
+                ->toString(),
+            'type' => NodeType::Group,
+            'slug' => str($id)->replace('.', '/')->toString(),
+            'path' => $dir->getRealPath(),
+            'title' => Str::headline(File::name($dir->getRealPath())),
+            'icon' => null,
+            'order' => null,
+            'active' => true,
+            'parent_id' => null,
+            'panel_id' => $this->panelId,
+            ...$this->parseGroupFile($dir, $id, new Fluent([]), $depth > 1),
+        ];
+
+        $this->results[$id->toString()] = $result;
+
+        return $result;
+    }
+
+    protected function parseGroupFile(SplFileInfo $file, string $id, Fluent $data, bool $checkParents = false): array
+    {
+        $result = [
             'data' => json_encode($this->getCustomData($data)),
         ];
+
+        $parentDirPath = dirname($file->getRealPath());
+        $parentFilePath = $parentDirPath . '.md';
+
+        // We have an explicit parent group config
+        if (File::exists($parentFilePath)) {
+            $parentFile = $this->processFile(new SplFileInfo($parentFilePath));
+            $result['parent_id'] = data_get($parentFile, 'id');
+        } elseif ($checkParents) {
+            $parentDir = $this->processDir(new SplFileInfo($parentDirPath));
+            $result['parent_id'] = data_get($parentDir, 'id');
+        }
+
+        return $result;
     }
 
     /**
      * @throws Exception
      */
-    protected function processDocumentationFile(SplFileInfo $file, string $id, Fluent $data): array
+    protected function processDocumentationFile(SplFileInfo $file, string $id, Fluent $data, bool $checkParents = false): array
     {
         $result = [
             'data' => json_encode([
@@ -91,11 +147,16 @@ class FlatfileParser
             ]),
         ];
 
-        $parentFilePath = dirname($file->getRealPath()) . '.md';
+        $parentDirPath = dirname($file->getRealPath());
+        $parentFilePath = $parentDirPath . '.md';
 
+        // We have an explicit parent config
         if (File::exists($parentFilePath)) {
             $parentFile = $this->processFile(new SplFileInfo($parentFilePath));
             $result['parent_id'] = data_get($parentFile, 'id');
+        } elseif ($checkParents) {
+            $parentDir = $this->processDir(new SplFileInfo($parentDirPath));
+            $result['parent_id'] = data_get($parentDir, 'id');
         }
 
         return $result;

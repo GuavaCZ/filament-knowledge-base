@@ -18,10 +18,11 @@ class Navigation
     {
         $groups = KnowledgeBase::model()::query()
             ->where('panel_id', $this->panel->getId())
+            ->where('parent_id', null)
             ->type(NodeType::Group)
             ->get()
             ->sort(fn(FlatfileNode $d1, FlatfileNode $d2) => $d1->order <=> $d2->order);
-        
+
         $this->panel->navigationGroups(
             $groups
                 ->map(fn(FlatfileNode $node) => $node->toNavigationGroup())
