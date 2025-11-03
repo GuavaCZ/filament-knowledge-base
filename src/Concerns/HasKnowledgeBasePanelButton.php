@@ -49,7 +49,7 @@ trait HasKnowledgeBasePanelButton
             ->icon('heroicon-o-book-open')
             ->color('gray')
             ->extraAttributes([
-                'class' => '!font-medium !text-gray-700 dark:!text-gray-200 !mx-4 !mt-2 !mb-4 !py-2.5 !bg-transparent !flex !gap-0 space-x-1.5 !justify-start hover:!bg-gray-100 focus-visible:!bg-gray-100 dark:hover:!bg-white/5 dark:focus-visible:!bg-white/5',
+                'class' => '!mx-4 !mb-4 !py-2.5 !flex space-x-1.5 !justify-start',
             ])
             ->url(KnowledgeBase::url(
                 Filament::getPanel($this->getKnowledgeBasePanelId())

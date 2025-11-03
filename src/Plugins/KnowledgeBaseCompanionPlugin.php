@@ -90,23 +90,23 @@ class KnowledgeBaseCompanionPlugin implements Plugin
                 fn (Panel $panel) => $panel
                     ->renderHook(
                         PanelsRenderHook::SIDEBAR_FOOTER,
-                        fn (): string => Blade::render('filament-panels::components.sidebar.group', [
-                            'attributes' => new ComponentAttributeBag([
-                                'class' => 'px-4 pb-4 [&_.fi-sidebar-item]:rounded-lg [&_.fi-sidebar-item]:ring-1 [&_.fi-sidebar-item]:ring-gray-950/10 dark:[&_.fi-sidebar-item]:ring-white/20',
-                            ]),
-                            'label' => null,
-                            'items' => [
-                                NavigationItem::make(__('filament-knowledge-base::translations.knowledge-base'))
-                                    ->url(Filament::getPanel($this->getKnowledgeBasePanelId())->getUrl())
-                                    ->icon('heroicon-o-home'),
-                            ],
-                        ])
+//                        fn (): string => Blade::render('filament-panels::components.sidebar.group', [
+//                            'attributes' => new ComponentAttributeBag([
+//                                'class' => 'px-4 pb-4 [&_.fi-sidebar-item]:rounded-lg [&_.fi-sidebar-item]:ring-1 [&_.fi-sidebar-item]:ring-gray-950/10 dark:[&_.fi-sidebar-item]:ring-white/20',
+//                            ]),
+//                            'label' => null,
+//                            'items' => [
+//                                NavigationItem::make(__('filament-knowledge-base::translations.knowledge-base'))
+//                                    ->url(Filament::getPanel($this->getKnowledgeBasePanelId())->getUrl())
+//                                    ->icon('heroicon-o-home'),
+//                            ],
+//                        ])
                         //                        fn (): string => Blade::render('filament-panels::components.sidebar.item', [
                         //                            'url' => '#',
                         //                            'icon' => 'heroicon-o-user',
                         //                            'slot' => new HtmlString('test'),
                         //                        ]),
-                        //                                                fn (): string => $this->getKnowledgeBasePanelButton()->render(),
+                        fn (): string => $this->getKnowledgeBasePanelButton()->toHtml(),
                     )
             )
 //            ->renderHook(
