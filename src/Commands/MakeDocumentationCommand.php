@@ -4,6 +4,7 @@ namespace Guava\FilamentKnowledgeBase\Commands;
 
 use Guava\FilamentKnowledgeBase\KnowledgeBaseRegistry;
 use Illuminate\Console\GeneratorCommand;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Stringable;
@@ -61,7 +62,6 @@ class MakeDocumentationCommand extends GeneratorCommand
 
     public function handle()
     {
-        dd(\app(KnowledgeBaseRegistry::class)->getDocsPaths());
         $path = str(base_path(config('filament-knowledge-base.docs-path')))
             ->rtrim('/')
             ->append('/')
@@ -76,7 +76,7 @@ class MakeDocumentationCommand extends GeneratorCommand
             : $locales;
 
         if (empty($locales)) {
-            $locales[] = App::getLocale();
+            $locales = Arr::wrap(App::getLocale());
         }
 
         foreach ($locales as $locale) {
