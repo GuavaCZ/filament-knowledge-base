@@ -15,7 +15,7 @@ class KnowledgeBase
 {
     public function model(): Documentable | string
     {
-        return config('filament-knowledge-base.flatfile-model');
+        return config('filament-knowledge-base.model');
     }
 
     /**
