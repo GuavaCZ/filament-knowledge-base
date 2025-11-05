@@ -119,9 +119,9 @@ class KnowledgeBase
 
         if ($model = static::model()::query()->find(static::panel()->getId() . '.' . $documentable)) {
             return $model;
-        } else {
-            throw new Exception("'The provided documentable \"$documentable\" could not be found.'");
         }
+
+        throw new Exception("'The provided documentable \"$documentable\" could not be found.'");
     }
 
     public function markdown(Documentable | string $documentable): HtmlString
