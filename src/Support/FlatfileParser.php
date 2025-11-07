@@ -141,7 +141,7 @@ class FlatfileParser
     protected function processDocumentationFile(SplFileInfo $file, string $id, Fluent $data, bool $checkParents = false): array
     {
         $result = [
-            'data' => json_encode([
+            'data' => serialize([
                 ...$this->getCustomData($data),
                 'content' => $data->get('html'),
             ]),
@@ -191,8 +191,7 @@ class FlatfileParser
                 'data',
                 'content',
             ])
-            ->all()
-        ;
+            ->all();
     }
 
     public function renderer(string $renderer): static

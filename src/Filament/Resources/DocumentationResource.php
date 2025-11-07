@@ -21,15 +21,17 @@ class DocumentationResource extends Resource
     {
         return [
             'title',
+            'data'
         ];
     }
 
-    public static function modifyGlobalSearchQuery(Builder $query, string $search): void
-    {
-        $query->orWhereRaw("
-           json_extract(data, '$.content') LIKE '%$search%';
-        ");
-    }
+//    public static function modifyGlobalSearchQuery(Builder $query, string $search): void
+//    {
+////        $query->orWhereRaw("
+////           json_extract(data, '$.content') LIKE '%$search%';
+////        ");
+//        $query->orWhereLike('data', "%$search%");
+//    }
 
     protected static string|null|\BackedEnum $navigationIcon = 'heroicon-o-rectangle-stack';
 
