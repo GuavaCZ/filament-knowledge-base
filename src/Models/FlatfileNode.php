@@ -14,6 +14,7 @@ use Guava\FilamentKnowledgeBase\Support\FlatfileParser;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\File;
 use League\CommonMark\Extension\HeadingPermalink\HeadingPermalink;
@@ -187,7 +188,7 @@ class FlatfileNode extends Model implements Documentable
         return $item;
     }
 
-    public function toNavigationGroup(bool $canHaveIcon = true): NavigationGroup
+    public function toNavigationGroup(): NavigationGroup
     {
         if ($this->type !== NodeType::Group) {
             throw new \Exception('Cannot convert a document to a navigation group');
@@ -195,8 +196,7 @@ class FlatfileNode extends Model implements Documentable
 
         $canHaveIcon = $this
             ->children()->where(fn (FlatfileNode $child) => $child->children()->isNotEmpty())
-            ->isEmpty()
-        ;
+            ->isEmpty();
 
         return NavigationGroup::make($this->getTitle())
             ->icon($canHaveIcon ? $this->getIcon() : null)
@@ -281,10 +281,12 @@ class FlatfileNode extends Model implements Documentable
 
     protected function getDefaultIcon(): ?string
     {
+        $icons = config('filament-knowledge-base.icons');
+
         return match ($this->getType()) {
-            NodeType::Documentation => 'heroicon-o-document',
-            NodeType::Link => 'heroicon-o-link',
-            NodeType::Group => null,
+            NodeType::Documentation => Arr::get($icons, NodeType::Documentation->value, 'heroicon-o-document'),
+            NodeType::Link => Arr::get($icons, NodeType::Link->value, 'heroicon-o-link'),
+            NodeType::Group => Arr::get($icons, NodeType::Group->value),
         };
     }
 }

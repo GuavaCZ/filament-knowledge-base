@@ -117,7 +117,7 @@ class KnowledgeBase
             return $documentable;
         }
 
-        if ($model = static::model()::query()->find(static::panel()->getId() . '.' . $documentable)) {
+        if ($model = $this->model()::query()->find($this->panel()->getId() . '.' . $documentable)) {
             return $model;
         }
 
