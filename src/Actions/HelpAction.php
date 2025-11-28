@@ -33,7 +33,9 @@ class HelpAction extends Action
             ->when(
                 KnowledgeBase::companion()->hasModalPreviews(),
                 fn(HelpAction $action) => $action
-                    ->modal()
+                    ->modalHeading(function () use ($documentable) {
+                        return new HtmlString("<h3 class='text-lg font-medium'>{$documentable->getTitle()}</h3>");
+                    })
                     ->modalContent(function () use ($documentable) {
                         $content = data_get($documentable->getData(), 'content', '');
                         $body = new HtmlString("<div class='prose dark:prose-invert'>{$content}</div>");
