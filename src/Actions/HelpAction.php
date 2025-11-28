@@ -9,7 +9,10 @@ use Illuminate\Support\HtmlString;
 
 class HelpAction extends Action
 {
-    protected function setUp(): void {}
+    protected function setUp(): void
+    {
+        parent::setUp();
+    }
 
     public function generic(): HelpAction
     {
