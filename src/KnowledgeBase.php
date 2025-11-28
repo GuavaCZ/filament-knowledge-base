@@ -111,13 +111,17 @@ class KnowledgeBase
         return $url;
     }
 
-    public function documentable(Documentable | string $documentable): Documentable
+    public function documentable(Documentable | string $documentable, ?string $panelId = null): Documentable
     {
         if ($documentable instanceof Documentable) {
             return $documentable;
         }
 
-        if ($model = static::model()::query()->find(static::panel()->getId() . '.' . $documentable)) {
+        if (is_null($panelId) || $panelId === '') {
+            $panelId = static::panel()->getId();
+        }
+
+        if ($model = static::model()::query()->find($panelId . '.' . $documentable)) {
             return $model;
         } else {
             throw new Exception("'The provided documentable \"$documentable\" could not be found.'");
