@@ -24,7 +24,6 @@ class HelpAction extends Action
     public static function forDocumentable(Documentable | string $documentable, ?string $panelId = null): HelpAction
     {
         $documentable = KnowledgeBase::documentable($documentable, $panelId);
-
         return static::make("help.{$documentable->getId()}")
             ->label($documentable->getTitle())
             ->icon($documentable->getIcon())
@@ -32,9 +31,13 @@ class HelpAction extends Action
                 KnowledgeBase::companion()->hasModalPreviews(),
                 fn(HelpAction $action) => $action
                     ->modal()
-                    ->modalContent(new HtmlString('test'))
-                    ->action(fn() => dd('test'))
-                    //                    ->alpineClickHandler('$dispatch(\"open-modal\", {id: "' . $documentable->getId() . '"})')
+                    ->modalContent(function () use ($documentable) {
+                        $content = data_get($documentable->getData(), 'content', '');
+                        $body = new HtmlString("<div class='prose dark:prose-invert'>{$content}</div>");
+                        return $body;
+                    })
+                    ->modalCancelActionLabel(__('filament-knowledge-base::translations.close'))
+                    ->modalSubmitAction(false)
                     ->when(
                         KnowledgeBase::companion()->hasSlideOverPreviews(),
                         fn(HelpAction $action) => $action->slideOver()
