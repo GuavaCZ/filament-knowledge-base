@@ -21,25 +21,25 @@ class HelpAction extends Action
         ;
     }
 
-    public static function forDocumentable(Documentable | string $documentable): HelpAction
+    public static function forDocumentable(Documentable | string $documentable, ?string $panelId = null): HelpAction
     {
-        $documentable = KnowledgeBase::documentable($documentable);
+        $documentable = KnowledgeBase::documentable($documentable, $panelId);
 
         return static::make("help.{$documentable->getId()}")
             ->label($documentable->getTitle())
             ->icon($documentable->getIcon())
             ->when(
                 KnowledgeBase::companion()->hasModalPreviews(),
-                fn (HelpAction $action) => $action
+                fn(HelpAction $action) => $action
                     ->modal()
                     ->modalContent(new HtmlString('test'))
-                    ->action(fn () => dd('test'))
-//                    ->alpineClickHandler('$dispatch(\"open-modal\", {id: "' . $documentable->getId() . '"})')
+                    ->action(fn() => dd('test'))
+                    //                    ->alpineClickHandler('$dispatch(\"open-modal\", {id: "' . $documentable->getId() . '"})')
                     ->when(
                         KnowledgeBase::companion()->hasSlideOverPreviews(),
-                        fn (HelpAction $action) => $action->slideOver()
+                        fn(HelpAction $action) => $action->slideOver()
                     ),
-                fn (HelpAction $action) => $action->url($documentable->getUrl())
+                fn(HelpAction $action) => $action->url($documentable->getUrl())
             )
         ;
     }
