@@ -196,7 +196,8 @@ class FlatfileNode extends Model implements Documentable
 
         $canHaveIcon = $this
             ->children()->where(fn (FlatfileNode $child) => $child->children()->isNotEmpty())
-            ->isEmpty();
+            ->isEmpty()
+        ;
 
         return NavigationGroup::make($this->getTitle())
             ->icon($canHaveIcon ? $this->getIcon() : null)

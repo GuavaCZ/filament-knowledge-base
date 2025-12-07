@@ -15,5 +15,5 @@ return [
         NodeType::Documentation->value => 'heroicon-o-document',
         NodeType::Link->value => 'heroicon-o-link',
         NodeType::Group->value => null,
-    ]
+    ],
 ];

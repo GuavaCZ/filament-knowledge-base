@@ -192,7 +192,8 @@ class FlatfileParser
                 'data',
                 'content',
             ])
-            ->all();
+            ->all()
+        ;
     }
 
     public function renderer(string $renderer): static

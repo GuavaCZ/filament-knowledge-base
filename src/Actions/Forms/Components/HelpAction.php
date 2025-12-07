@@ -41,16 +41,16 @@ blade);
             ->icon('heroicon-o-question-mark-circle')
             ->when(
                 KnowledgeBase::companion()->hasModalPreviews(),
-                fn(HelpAction $action) => $action
-                    ->modalContent(fn() => static::getContentView($documentable))
+                fn (HelpAction $action) => $action
+                    ->modalContent(fn () => static::getContentView($documentable))
                     ->modalHeading($documentable->getTitle())
                     ->modalSubmitAction(false)
                     ->modalCancelActionLabel(__('filament-knowledge-base::translations.close'))
                     ->when(
                         KnowledgeBase::companion()->hasSlideOverPreviews(),
-                        fn(HelpAction $action) => $action->slideOver()
+                        fn (HelpAction $action) => $action->slideOver()
                     ),
-                fn(HelpAction $action) => $action->url($documentable->getUrl())
+                fn (HelpAction $action) => $action->url($documentable->getUrl())
             )
         ;
     }
