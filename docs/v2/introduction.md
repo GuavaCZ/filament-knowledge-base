@@ -100,14 +100,14 @@ If you are unsure, make sure these rules are always met:
 3. In the second level directory, you must have an explicit `<dir>.md` file for each directory. This is because filament does not support deeply nested groups and thus it needs to be a `Parent Item`. In the example above, you can see that for the `roles` directory there also exists a `roles.md` documentation item which acts as the `Parent Item`.
 
 ### Creating documentation pages
-Right now, you need to manually create the files inside the correct structure.
-
-Try creating your first documentation page. Open your terminal in the root directory of your project and enter:
+To create documentation pages, simply run the `docs:make` command and follow the instructions:
 ```bash
-mkdir -p ./docs/knowledge-base/en && touch ./docs/knowledge-base/en/intro.md
+php artisan docs:make
 ```
 
-Now open the file in your favorite editor and paste the following example:
+This will create a basic empty documentation file. To edit it, simply open it in your favorite editor.
+
+An example of a documentation page:
 ```md
 ---
 title: Introduction
