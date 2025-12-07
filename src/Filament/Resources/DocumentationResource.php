@@ -7,6 +7,7 @@ use Filament\Resources\Resource;
 use Guava\FilamentKnowledgeBase\Facades\KnowledgeBase;
 use Guava\FilamentKnowledgeBase\Filament\Pages\ViewDocumentation;
 use Illuminate\Contracts\Support\Htmlable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class DocumentationResource extends Resource
@@ -18,8 +19,19 @@ class DocumentationResource extends Resource
 
     public static function getGloballySearchableAttributes(): array
     {
-        return ['title', 'content'];
+        return [
+            'title',
+            'data',
+        ];
     }
+
+    //    public static function modifyGlobalSearchQuery(Builder $query, string $search): void
+    //    {
+    // //        $query->orWhereRaw("
+    // //           json_extract(data, '$.content') LIKE '%$search%';
+    // //        ");
+    //        $query->orWhereLike('data', "%$search%");
+    //    }
 
     protected static string | null | \BackedEnum $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -44,9 +56,9 @@ class DocumentationResource extends Resource
 
     public static function getGlobalSearchResultTitle(Model $record): string | Htmlable
     {
-        return str($record->slug)
-            ->replace('/', ' -> ')
-        ;
+        return $record->title;
+        //        return str($record->slug)
+        //            ->replace('/', ' -> ');
     }
 
     public static function resolveRecordRouteBinding(int | string $key, ?\Closure $modifyQuery = null): ?Model

@@ -57,7 +57,7 @@ And lastly, add the following to your custom filament theme to correctly build t
 ```css
 @plugin "@tailwindcss/typography";
 @source '../../../../vendor/guava/filament-knowledge-base/src/**/*';
-@source '../../../../vendor/guava/filament-knowledge-base/resources/view/**/*';
+@source '../../../../vendor/guava/filament-knowledge-base/resources/views/**/*';
 ```
 
 > [!IMPORTANT]

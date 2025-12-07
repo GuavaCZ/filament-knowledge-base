@@ -25,6 +25,7 @@ class FlatfileParser
     public function get(): Collection
     {
         collect(File::allFiles($this->path))
+            ->filter(fn (SplFileInfo $file) => in_array(strtolower($file->getExtension()), ['md', 'markdown']))
             ->each(fn (SplFileInfo $file) => $this->processFile($file))
         ;
 

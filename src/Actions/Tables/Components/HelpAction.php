@@ -31,13 +31,13 @@ blade);
         return new HtmlString(\Str::replace($replacementStringId, $html, $parsed));
     }
 
-    public static function forDocumentable(Documentable | string $documentable): static
+    public static function forDocumentable(Documentable | string $documentable, ?string $panelId = null): static
     {
-        $documentable = KnowledgeBase::documentable($documentable);
+        $documentable = KnowledgeBase::documentable($documentable, $panelId);
 
         return static::make("help.{$documentable->getId()}")
             ->label($documentable->getTitle())
-//            ->icon($documentable->getIcon())
+            //            ->icon($documentable->getIcon())
             ->icon('heroicon-o-question-mark-circle')
             ->when(
                 KnowledgeBase::companion()->hasModalPreviews(),

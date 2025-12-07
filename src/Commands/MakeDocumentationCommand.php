@@ -2,15 +2,24 @@
 
 namespace Guava\FilamentKnowledgeBase\Commands;
 
-use Guava\FilamentKnowledgeBase\KnowledgeBaseRegistry;
+use Filament\Facades\Filament;
+use Filament\Panel;
+use Guava\FilamentKnowledgeBase\Enums\NodeType;
+use Guava\FilamentKnowledgeBase\Plugins\KnowledgeBasePlugin;
 use Illuminate\Console\GeneratorCommand;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Stringable;
 
+use function Laravel\Prompts\error;
+use function Laravel\Prompts\info;
+use function Laravel\Prompts\select;
+use function Laravel\Prompts\text;
+
 class MakeDocumentationCommand extends GeneratorCommand
 {
-    protected $signature = 'docs:make {panel} {name} {--L|locale=*}';
+    protected $signature = 'docs:make {panel?} {type?} {name?} {--L|locale=*}';
 
     protected $aliases = [
         'kb:make',
@@ -20,9 +29,19 @@ class MakeDocumentationCommand extends GeneratorCommand
 
     protected $type = 'Documentation';
 
+    protected NodeType $nodeType = NodeType::Documentation;
+
+    protected ?string $panelId = null;
+
+    protected ?string $docsId = null;
+
     protected function getStub(): string
     {
-        return __DIR__ . '/../../stubs/markdown.md.stub';
+        return match ($this->nodeType) {
+            NodeType::Documentation => __DIR__ . '/../../stubs/documentation.md.stub',
+            NodeType::Group => __DIR__ . '/../../stubs/group.md.stub',
+            NodeType::Link => __DIR__ . '/../../stubs/link.md.stub',
+        };
     }
 
     protected function qualifyClass($name): string
@@ -30,53 +49,106 @@ class MakeDocumentationCommand extends GeneratorCommand
         return $name;
     }
 
-    //    protected function getPath($name)
-    //    {
-    //        dd(\app(KnowledgeBaseRegistry::class)->getDocsPaths());
-    //        return str(base_path(config('filament-knowledge-base.docs-path')))
-    //                ->rtrim('/')
-    //                ->append(
-    //                    '/',
-    //                    str($name)
-    //                        ->replaceEnd('.md', '')
-    //                        ->append('.md')
-    //                )
-    //        ;
-    //    }
-
-    //    protected function getNameInput()
-    //    {
-    //        return str(parent::getNameInput())
-    //            ->trim('/')
-    //            ->replace('.', '/')
-    //            ->when(
-    //                ! $this->option('class'),
-    //                fn (Stringable $str) => $str->prepend($this->currentLocale, '/')
-    //            )
-    //            ->toString()
-    //        ;
-    //    }
-
-    protected string $currentLocale;
-
-    public function handle()
+    protected function getPath($name): string
     {
-        dd(\app(KnowledgeBaseRegistry::class)->getDocsPaths());
-        $path = str(base_path(config('filament-knowledge-base.docs-path')))
+        return str($this->getDocsPath())
             ->rtrim('/')
-            ->append('/')
+            ->when(
+                $this->currentLocale,
+                fn (Stringable $str) => $str
+                    ->append(
+                        '/',
+                        $this->currentLocale
+                    )
+            )
+            ->append(
+                '/',
+                str($name)
+                    ->replaceEnd('.md', '')
+                    ->append('.md')
+            )
+        ;
+    }
+
+    protected function getDocsPath(): string
+    {
+        /** @var KnowledgeBasePlugin $plugin */
+        $plugin = Filament::getPanel($this->panelId)->getPlugin(KnowledgeBasePlugin::ID);
+
+        return $plugin->getDocsPath();
+    }
+
+    protected function getNameInput(): string
+    {
+        return str($this->docsId)
+            ->trim('/')
+            ->replace('.', '/')
             ->toString()
         ;
-        if (! File::exists($path)) {
-            File::makeDirectory($path);
+    }
+
+    protected ?string $currentLocale = null;
+
+    public function handle(): bool
+    {
+        $knowledgeBasePanels = collect(Filament::getPanels())
+            ->filter(static fn (Panel $panel) => $panel->hasPlugin(KnowledgeBasePlugin::ID))
+            ->keys()
+        ;
+
+        if ($knowledgeBasePanels->isEmpty()) {
+            error('Please create a knowledge base panel first.');
+
+            return false;
+        }
+
+        $this->panelId = $knowledgeBasePanels->count() > 1
+            ? select(
+                label: 'Which knowledge base panel do you want to add a documentation page to?',
+                options: $knowledgeBasePanels,
+                required: true
+            )
+            : $knowledgeBasePanels->first();
+
+        $this->nodeType = NodeType::from(
+            select(
+                label: 'What node type do you want to create?',
+                options: collect(NodeType::cases())
+                    ->mapWithKeys(fn (NodeType $type) => [$type->value => $type->name])->toArray(),
+                default: NodeType::Documentation->value,
+            )
+        );
+
+        $this->docsId = text(
+            label: 'Enter the ID of the documentation page in dot-notation:',
+            placeholder: 'Such as "users.introduction"',
+            required: true,
+            validate: ['name' => 'required|regex:/^[\w\-\.]+$/i']
+        );
+
+        $maximumNestingLevel = $this->nodeType === NodeType::Group ? 1 : 3;
+
+        if (count(explode('.', $this->docsId)) > $maximumNestingLevel) {
+            error("Maximum nesting level for type [{$this->nodeType->name}] is {$maximumNestingLevel}.");
+
+            return false;
+        }
+
+        $docsPath = $this->getDocsPath();
+        // Create docs path if not existing
+        if (! File::exists($docsPath)) {
+            File::makeDirectory(
+                path: $docsPath,
+                recursive: true
+            );
         }
         $locales = $this->option('locale');
         $locales = empty($locales)
-            ? File::directories($path)
+            ? File::directories($docsPath)
             : $locales;
 
         if (empty($locales)) {
-            $locales[] = App::getLocale();
+            $locales = Arr::wrap(App::getLocale());
         }
 
         foreach ($locales as $locale) {
@@ -84,6 +156,10 @@ class MakeDocumentationCommand extends GeneratorCommand
             if (parent::handle() === false) {
                 return false;
             }
+        }
+
+        if ($this->nodeType === NodeType::Group) {
+            info('A group needs one or more child items in order to appear in your knowledge base panel. Call this command again to create the items.');
         }
 
         return true;

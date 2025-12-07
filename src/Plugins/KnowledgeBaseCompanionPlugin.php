@@ -97,8 +97,11 @@ class KnowledgeBaseCompanionPlugin implements Plugin
                             'label' => null,
                             'items' => [
                                 NavigationItem::make(__('filament-knowledge-base::translations.knowledge-base'))
-                                    ->url(Filament::getPanel($this->getKnowledgeBasePanelId())->getUrl())
-                                    ->icon('heroicon-o-home'),
+                                    ->url(
+                                        Filament::getPanel($this->getKnowledgeBasePanelId())->getUrl(),
+                                        $this->shouldOpenKnowledgeBasePanelInNewTab()
+                                    )
+                                    ->icon('heroicon-o-book-open'),
                             ],
                         ])
                         //                        fn (): string => Blade::render('filament-panels::components.sidebar.item', [
@@ -106,7 +109,7 @@ class KnowledgeBaseCompanionPlugin implements Plugin
                         //                            'icon' => 'heroicon-o-user',
                         //                            'slot' => new HtmlString('test'),
                         //                        ]),
-                        //                                                fn (): string => $this->getKnowledgeBasePanelButton()->render(),
+                        //                        fn (): string => $this->getKnowledgeBasePanelButton()->toHtml(),
                     )
             )
 //            ->renderHook(
