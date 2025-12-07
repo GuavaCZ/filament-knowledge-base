@@ -117,11 +117,11 @@ class KnowledgeBase
             return $documentable;
         }
 
-        if ($model = static::model()::query()->find(static::panel()->getId() . '.' . $documentable)) {
+        if ($model = $this->model()::query()->find($this->panel()->getId() . '.' . $documentable)) {
             return $model;
-        } else {
-            throw new Exception("'The provided documentable \"$documentable\" could not be found.'");
         }
+
+        throw new Exception("'The provided documentable \"$documentable\" could not be found.'");
     }
 
     public function markdown(Documentable | string $documentable): HtmlString
