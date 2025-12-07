@@ -288,19 +288,12 @@ Check [here](https://filamentphp.com/docs/3.x/panels/themes#creating-a-custom-th
 
 You can create one specifically for the knowledge base panel, or you can reuse a custom theme from your other panel(s).
 
-#### Build CSS
+In your custom filament theme, make sure to include the plugin's php and blade files, so the CSS is correctly built:
 
-Now in your custom filament theme, make sure to include the plugin's php and blade files in the `tailwind.config.js`, so the CSS is correctly built:
-
-```js
-{
-    content: [
-        //...
-
-        './vendor/guava/filament-knowledge-base/src/**/*.php',
-        './vendor/guava/filament-knowledge-base/resources/**/*.blade.php',
-    ]
-}
+```css
+@plugin "@tailwindcss/typography";
+@source '../../../../vendor/guava/filament-knowledge-base/src/**/*';
+@source '../../../../vendor/guava/filament-knowledge-base/resources/views/**/*';
 ```
 
 ### Register plugin
@@ -334,19 +327,19 @@ To create your first documentation, run the `docs:make` command, such as:
 php artisan docs:make
 ```
 
-This will create a file in `/docs/en/prologue/getting-started.md`.
+This will create a file in `/docs/<kb-panel-id>/en/prologue/getting-started.md`.
 
 If you want to create the file for a specific locale, you can do so using the `--locale` option (can be repeated for
 multiple locales):
 
 ```bash
-php artisan docs:make prologue.getting-started --locale=de --locale=en
+php artisan docs:make knowledge-base prologue.getting-started --locale=de --locale=en
 ```
 
 This would create the file for both the `de` and `en` locale.
 
 If you **don't** pass any locale, it will automatically create the documentation file for every locale
-in `/docs/{locale}`.
+in `/docs/<kb-panel-id>/{locale}`.
 
 ### Markdown
 
