@@ -24,7 +24,7 @@ function anchorsComponent() {
         if (entry.isIntersecting) {
           let section = "#" + entry.target.id;
           document.querySelectorAll(".fi-sidebar-item-button .fi-sidebar-item-label").forEach((el2) => el2.classList.remove(...classes));
-          let el = document.querySelector(".fi-sidebar-item-button[href='" + section + "'] .fi-sidebar-item-label");
+          let el = document.querySelector(".fi-sidebar-item-btn[href='" + section + "'] .fi-sidebar-item-label");
           el.classList.add(...classes);
         }
       });

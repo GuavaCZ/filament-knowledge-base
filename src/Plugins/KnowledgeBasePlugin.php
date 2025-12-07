@@ -3,6 +3,7 @@
 namespace Guava\FilamentKnowledgeBase\Plugins;
 
 use Filament\Contracts\Plugin;
+use Filament\Facades\Filament;
 use Filament\Panel;
 use Filament\Support\Concerns\EvaluatesClosures;
 use Filament\View\PanelsRenderHook;
@@ -72,7 +73,10 @@ class KnowledgeBasePlugin implements Plugin
 
     public function boot(Panel $panel): void
     {
-        Navigation::make($panel)->build();
+        // Defer building navigation until Filament is serving a request to avoid early model autoloading
+        Filament::serving(function () use ($panel) {
+            Navigation::make($panel)->build();
+        });
     }
 
     public static function make(?string $docsPath = null): static
