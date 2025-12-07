@@ -4,6 +4,7 @@ namespace Guava\FilamentKnowledgeBase\Commands;
 
 use Filament\Facades\Filament;
 use Filament\Panel;
+use Guava\FilamentKnowledgeBase\Enums\NodeType;
 use Guava\FilamentKnowledgeBase\Plugins\KnowledgeBasePlugin;
 use Illuminate\Console\GeneratorCommand;
 use Illuminate\Support\Arr;
@@ -11,13 +12,14 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Stringable;
 
+use function Laravel\Prompts\info;
 use function Laravel\Prompts\error;
 use function Laravel\Prompts\select;
 use function Laravel\Prompts\text;
 
 class MakeDocumentationCommand extends GeneratorCommand
 {
-    protected $signature = 'docs:make {panel?} {name?} {--L|locale=*}';
+    protected $signature = 'docs:make {panel?} {type?} {name?} {--L|locale=*}';
 
     protected $aliases = [
         'kb:make',
@@ -27,13 +29,19 @@ class MakeDocumentationCommand extends GeneratorCommand
 
     protected $type = 'Documentation';
 
+    protected NodeType $nodeType = NodeType::Documentation;
+
     protected ?string $panelId = null;
 
     protected ?string $docsId = null;
 
     protected function getStub(): string
     {
-        return __DIR__ . '/../../stubs/markdown.md.stub';
+        return match ($this->nodeType) {
+            NodeType::Documentation => __DIR__ . '/../../stubs/documentation.md.stub',
+            NodeType::Group => __DIR__ . '/../../stubs/group.md.stub',
+            NodeType::Link => __DIR__ . '/../../stubs/link.md.stub',
+        };
     }
 
     protected function qualifyClass($name): string
@@ -102,6 +110,15 @@ class MakeDocumentationCommand extends GeneratorCommand
             )
             : $knowledgeBasePanels->first();
 
+        $this->nodeType = NodeType::from(
+            select(
+                label: 'What node type do you want to create?',
+                options: collect(NodeType::cases())
+                    ->mapWithKeys(fn (NodeType $type) => [$type->value => $type->name])->toArray(),
+                default: NodeType::Documentation->value,
+            )
+        );
+
         $this->docsId = text(
             label: 'Enter the ID of the documentation page in dot-notation:',
             placeholder: 'Such as "users.introduction"',
@@ -109,8 +126,10 @@ class MakeDocumentationCommand extends GeneratorCommand
             validate: ['name' => 'required|regex:/^[\w\-\.]+$/i']
         );
 
-        if (count(explode('.', $this->docsId)) > 3) {
-            error('You can nest documentations only 3 levels deep!');
+        $maximumNestingLevel = $this->nodeType === NodeType::Group ? 1 : 3;
+
+        if (count(explode('.', $this->docsId)) > $maximumNestingLevel) {
+            error("Maximum nesting level for type [{$this->nodeType->name}] is {$maximumNestingLevel}.");
 
             return false;
         }
@@ -137,6 +156,10 @@ class MakeDocumentationCommand extends GeneratorCommand
             if (parent::handle() === false) {
                 return false;
             }
+        }
+
+        if ($this->nodeType === NodeType::Group) {
+            info('A group needs one or more child items in order to appear in your knowledge base panel. Call this command again to create the items.');
         }
 
         return true;
