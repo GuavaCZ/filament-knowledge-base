@@ -52,7 +52,7 @@ class KnowledgeBasePlugin implements Plugin
 
     public function register(Panel $panel): void
     {
-        $this->docsPath ??= base_path("docs/{$panel->getId()}");
+        $this->docsPath ??= base_path('docs' . DIRECTORY_SEPARATOR . {$panel->getId()}");
 
         $panel->resources([
             DocumentationResource::class,
