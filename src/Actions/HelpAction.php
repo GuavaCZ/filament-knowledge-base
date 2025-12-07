@@ -9,7 +9,10 @@ use Illuminate\Support\HtmlString;
 
 class HelpAction extends Action
 {
-    protected function setUp(): void {}
+    protected function setUp(): void
+    {
+        parent::setUp();
+    }
 
     public function generic(): HelpAction
     {
@@ -21,9 +24,9 @@ class HelpAction extends Action
         ;
     }
 
-    public static function forDocumentable(Documentable | string $documentable): HelpAction
+    public static function forDocumentable(Documentable | string $documentable, ?string $panelId = null): HelpAction
     {
-        $documentable = KnowledgeBase::documentable($documentable);
+        $documentable = KnowledgeBase::documentable($documentable, $panelId);
 
         return static::make("help.{$documentable->getId()}")
             ->label($documentable->getTitle())
@@ -31,10 +34,17 @@ class HelpAction extends Action
             ->when(
                 KnowledgeBase::companion()->hasModalPreviews(),
                 fn (HelpAction $action) => $action
-                    ->modal()
-                    ->modalContent(new HtmlString('test'))
-                    ->action(fn () => dd('test'))
-//                    ->alpineClickHandler('$dispatch(\"open-modal\", {id: "' . $documentable->getId() . '"})')
+                    ->modalHeading(function () use ($documentable) {
+                        return new HtmlString("<h3 class='text-lg font-medium'>{$documentable->getTitle()}</h3>");
+                    })
+                    ->modalContent(function () use ($documentable) {
+                        $content = data_get($documentable->getData(), 'content', '');
+                        $body = new HtmlString("<div class='prose dark:prose-invert'>{$content}</div>");
+
+                        return $body;
+                    })
+                    ->modalCancelActionLabel(__('filament-knowledge-base::translations.close'))
+                    ->modalSubmitAction(false)
                     ->when(
                         KnowledgeBase::companion()->hasSlideOverPreviews(),
                         fn (HelpAction $action) => $action->slideOver()

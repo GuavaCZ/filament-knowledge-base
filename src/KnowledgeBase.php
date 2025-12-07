@@ -111,13 +111,19 @@ class KnowledgeBase
         return $url;
     }
 
-    public function documentable(Documentable | string $documentable): Documentable
+    public function documentable(Documentable | string $documentable, ?string $panelId = null): Documentable
     {
         if ($documentable instanceof Documentable) {
             return $documentable;
         }
 
-        if ($model = $this->model()::query()->find($this->panel()->getId() . '.' . $documentable)) {
+        $panelId ??= static::panel()->getId();
+
+        if (! Filament::getPanel($panelId)) {
+            throw new Exception('The provided panel does not exist.');
+        }
+
+        if ($model = $this->model()::query()->find($panelId . '.' . $documentable)) {
             return $model;
         }
 

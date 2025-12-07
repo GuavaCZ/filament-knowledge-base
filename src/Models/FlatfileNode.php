@@ -36,7 +36,7 @@ class FlatfileNode extends Model implements Documentable
         'title' => 'string',
         'order' => 'integer',
         'active' => 'boolean',
-        'data' => 'string',
+        'data' => 'json',
         'parent_id' => 'string',
         'panel_id' => 'string',
     ];
@@ -196,7 +196,8 @@ class FlatfileNode extends Model implements Documentable
 
         $canHaveIcon = $this
             ->children()->where(fn (FlatfileNode $child) => $child->children()->isNotEmpty())
-            ->isEmpty();
+            ->isEmpty()
+        ;
 
         return NavigationGroup::make($this->getTitle())
             ->icon($canHaveIcon ? $this->getIcon() : null)
