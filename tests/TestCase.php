@@ -2,7 +2,7 @@
 
 namespace Guava\FilamentKnowledgeBase\Tests;
 
-use Guava\FilamentKnowledgeBase\FilamentKnowledgeBaseServiceProvider;
+use Guava\FilamentKnowledgeBase\KnowledgeBaseServiceProvider;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Orchestra\Testbench\TestCase as Orchestra;
 
@@ -20,7 +20,7 @@ class TestCase extends Orchestra
     protected function getPackageProviders($app)
     {
         return [
-            FilamentKnowledgeBaseServiceProvider::class,
+            KnowledgeBaseServiceProvider::class,
         ];
     }
 
