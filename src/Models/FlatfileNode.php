@@ -36,7 +36,7 @@ class FlatfileNode extends Model implements Documentable
         'title' => 'string',
         'order' => 'integer',
         'active' => 'boolean',
-        'data' => 'string',
+        'data' => 'json',
         'parent_id' => 'string',
         'panel_id' => 'string',
     ];

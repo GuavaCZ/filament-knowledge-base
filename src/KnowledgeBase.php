@@ -119,6 +119,10 @@ class KnowledgeBase
 
         $panelId ??= static::panel()->getId();
 
+        if (! Filament::getPanel($panelId)) {
+            throw new Exception('The provided panel does not exist.');
+        }
+
         if ($model = $this->model()::query()->find($panelId . '.' . $documentable)) {
             return $model;
         }
