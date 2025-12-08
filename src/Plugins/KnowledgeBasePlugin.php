@@ -6,7 +6,6 @@ use Filament\Contracts\Plugin;
 use Filament\Facades\Filament;
 use Filament\Panel;
 use Filament\Support\Concerns\EvaluatesClosures;
-use Filament\View\PanelsRenderHook;
 use Guava\FilamentKnowledgeBase\Concerns\CanConfigureCommonMark;
 use Guava\FilamentKnowledgeBase\Concerns\CanDisableBreadcrumbs;
 use Guava\FilamentKnowledgeBase\Concerns\CanDisableFilamentStyles;
