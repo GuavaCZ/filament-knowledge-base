@@ -52,20 +52,11 @@ class KnowledgeBasePlugin implements Plugin
 
     public function register(Panel $panel): void
     {
-        $this->docsPath ??= base_path("docs/{$panel->getId()}");
+        $this->docsPath ??= base_path('docs' . DIRECTORY_SEPARATOR . $panel->getId());
 
         $panel->resources([
             DocumentationResource::class,
         ]);
-
-        //            ->when(
-        //                ! $this->shouldDisableBackToDefaultPanelButton(),
-        //                fn (Panel $panel) => $panel
-        //                    ->renderHook(
-        //                        PanelsRenderHook::SIDEBAR_FOOTER,
-        //                        fn (): string => $this->getBackToDefaultPanelButton()->render()->render(),
-        //                    )
-        //            )
 
         app(KnowledgeBaseRegistry::class)->docsPath($panel->getId(), $this->getDocsPath());
 
