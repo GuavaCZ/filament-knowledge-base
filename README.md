@@ -364,6 +364,15 @@ Below is a list of currently available options in the front matter.
 
 
 
+#### Order
+Allows you to define the sort order of the documentation page. Lower numbers appear first.
+
+```md
+---
+order: 1
+---
+```
+
 #### Group
 Allows you to define the group (and it's title) of the documentation page.
 
@@ -383,6 +392,14 @@ parent: my-parent
 ```
 
 So for a file in `docs/en/prologue/getting-started/intro.md`, the parent would be `getting-started`.
+
+You can also use the **ID** of another documentation page to nest it under that page, regardless of directory structure. The ID is the path relative to the locale directory, separated by dots (e.g. `fleet.intro` for `fleet/intro.md`).
+
+```md
+---
+parent: fleet.intro
+---
+```
 
 
 
