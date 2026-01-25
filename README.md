@@ -481,7 +481,7 @@ file.
 For example, the `What is a slug?` help was added using the following:
 
 ```php
-use Guava\FilamentKnowledgeBase\Actions\Forms\Components\HelpAction;
+use Guava\FilamentKnowledgeBase\Actions\HelpAction;
 ->hintAction(HelpAction::forDocumentable('projects.creating-projects.slug')
     ->label('What is a slug?')
     ->slideOver(false)

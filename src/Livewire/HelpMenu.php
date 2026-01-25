@@ -38,6 +38,9 @@ class HelpMenu extends Component implements HasActions, HasForms
         });
     }
 
+    /**
+     * @return Collection<Documentable>
+     */
     public function getDocumentation(): Collection
     {
         return collect($this->documentation)
@@ -51,6 +54,7 @@ class HelpMenu extends Component implements HasActions, HasForms
             ->map(
                 fn (Documentable $documentable) => HelpAction::forDocumentable($documentable)
                     ->openUrlInNewTab(fn () => $this->shouldOpenKnowledgeBasePanelInNewTab)
+                    ->alpineClickHandler("\$dispatch('open-modal', { id: '{$documentable->getId()}' })")
             )
             ->all()
         ;
@@ -63,9 +67,12 @@ class HelpMenu extends Component implements HasActions, HasForms
 
     public function getSingleAction(): HelpAction
     {
-        return HelpAction::forDocumentable($this->getDocumentation()->first())
+        $documentable = $this->getDocumentation()->first();
+
+        return HelpAction::forDocumentable($documentable)
             ->generic()
             ->openUrlInNewTab(fn () => $this->shouldOpenKnowledgeBasePanelInNewTab)
+            ->alpineClickHandler("\$dispatch('open-modal', { id: '{$documentable->getId()}' })")
         ;
     }
 
