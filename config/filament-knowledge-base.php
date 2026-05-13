@@ -2,9 +2,10 @@
 
 // config for Guava/KnowledgeBasePanel
 use Guava\FilamentKnowledgeBase\Enums\NodeType;
+use Guava\FilamentKnowledgeBase\Models\FlatfileNode;
 
 return [
-    'flatfile-model' => \Guava\FilamentKnowledgeBase\Models\FlatfileNode::class,
+    'flatfile-model' => FlatfileNode::class,
 
     'cache' => [
         'prefix' => env('FILAMENT_KB_CACHE_PREFIX', 'filament_kb_'),
