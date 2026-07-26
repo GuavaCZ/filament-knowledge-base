@@ -1,4 +1,4 @@
-![filament-knowledge-base Banner](https://github.com/GuavaCZ/filament-knowledge-base/raw/main/docs/images/banner.jpg)
+![filament-knowledge-base Banner](https://github.com/GuavaCZ/filament-knowledge-base/raw/main/.github/banner.jpg)
 
 # A filament plugin that adds a knowledge base and documentation to your filament panel(s).
 
@@ -23,16 +23,16 @@ and give your users a comprehensive knowledge base tailored for your product. Ri
 
 ## Showcase
 
-![Showcase 01](https://github.com/GuavaCZ/filament-knowledge-base/raw/main/docs/images/screenshot_01.jpeg)
-![Showcase 02](https://github.com/GuavaCZ/filament-knowledge-base/raw/main/docs/images/screenshot_02.jpeg)
-![Showcase 03](https://github.com/GuavaCZ/filament-knowledge-base/raw/main/docs/images/screenshot_03.png)
-![Modal Slideover Example](https://github.com/GuavaCZ/filament-knowledge-base/raw/main/docs/images/screenshot_modal_slideovers.jpeg)
-![Modal Previews Example](https://github.com/GuavaCZ/filament-knowledge-base/raw/main/docs/images/screenshot_modal_previews.jpeg)
+![Showcase 01](https://github.com/GuavaCZ/filament-knowledge-base/raw/main/docs/assets/screenshot_01.jpeg)
+![Showcase 02](https://github.com/GuavaCZ/filament-knowledge-base/raw/main/docs/assets/screenshot_02.jpeg)
+![Showcase 03](https://github.com/GuavaCZ/filament-knowledge-base/raw/main/docs/assetes/screenshot_03.png)
+![Modal Slideover Example](https://github.com/GuavaCZ/filament-knowledge-base/raw/main/docs/assets/screenshot_modal_slideovers.jpeg)
+![Modal Previews Example](https://github.com/GuavaCZ/filament-knowledge-base/raw/main/docs/assets/screenshot_modal_previews.jpeg)
 
 For a better understanding of how it works, please have a look at the video showcase:
 
 <video width="320" height="240" controls>
-  <source src="https://github.com/GuavaCZ/filament-knowledge-base/raw/main/docs/images/demo_preview.mp4" type="video/mp4">
+  <source src="https://github.com/GuavaCZ/filament-knowledge-base/raw/main/docs/assets/demo_preview.mp4" type="video/mp4">
 </video>
 
 
@@ -400,7 +400,7 @@ And that's it! You've created a simple knowledge base inside Filament.
 In every panel you registered the Knowledge Base plugin, we automatically inject a documentation button at the very
 bottom of the sidebar.
 
-![Documentation button example](https://github.com/GuavaCZ/filament-knowledge-base/raw/main/docs/images/screenshot_documentation_button.png)
+![Documentation button example](https://github.com/GuavaCZ/filament-knowledge-base/raw/main/docs/assets/screenshot_documentation_button.png)
 
 But we offer a deeper integration to your panels.
 
@@ -440,7 +440,7 @@ This will render a `Help menu` button at the end of the top navbar.
 If you add more than one documentation file, it will render a dropdown menu, otherwise the `help` button will directly
 reference the documentation you linked.
 
-![Documentation button example](https://github.com/GuavaCZ/filament-knowledge-base/raw/main/docs/images/screenshot_help_menu.png)
+![Documentation button example](https://github.com/GuavaCZ/filament-knowledge-base/raw/main/docs/assets/screenshot_help_menu.png)
 
 #### Opening documentations in modals
 
@@ -474,7 +474,7 @@ As long as a documentation with that ID exists (/docs/en/intro/getting-started.m
 
 You can even share the URL with someone and it will automatically open the modal upon opening!
 
-![Modal links example](https://github.com/GuavaCZ/filament-knowledge-base/raw/main/docs/images/screenshot_modal_links.gif)
+![Modal links example](https://github.com/GuavaCZ/filament-knowledge-base/raw/main/docs/assets/screenshot_modal_links.gif)
 
 #### Disabling Modal Links
 
@@ -607,7 +607,7 @@ enable it like this:
 $plugin->modalPreviews();
 ```
 
-![Modal Previews Example](https://github.com/GuavaCZ/filament-knowledge-base/raw/main/docs/images/screenshot_modal_previews.jpeg)
+![Modal Previews Example](https://github.com/GuavaCZ/filament-knowledge-base/raw/main/docs/assets/screenshot_modal_previews.jpeg)
 
 #### Slide overs
 
@@ -617,7 +617,7 @@ If you prefer to use slide overs, you can additionally also enable them:
 $plugin->slideOverPreviews();
 ```
 
-![Modal Slideover Example](/docs/images/screenshot_modal_slideovers.jpeg)
+![Modal Slideover Example](/docs/assets/screenshot_modal_slideovers.jpeg)
 
 
 #### Enable breadcrumbs in modal preview titles
@@ -630,7 +630,7 @@ If you'd rather show the full breadcrumb to the documentation page, you may enab
 $plugin->modalTitleBreadcrumbs();
 ```
 
-![Modal Breadcrumbs Example](https://github.com/GuavaCZ/filament-knowledge-base/raw/main/docs/images/screenshot_modal_breadcrumbs.jpeg)
+![Modal Breadcrumbs Example](https://github.com/GuavaCZ/filament-knowledge-base/raw/main/docs/assets/screenshot_modal_breadcrumbs.jpeg)
 
 #### Hide the "Open documentation" button
 
@@ -672,7 +672,7 @@ In this example, ==this text== will be marked.
 
 The result looks like this, depending on your primary color:
 
-![Marker example](https://github.com/GuavaCZ/filament-knowledge-base/raw/main/docs/images/screenshot_marker.png)
+![Marker example](https://github.com/GuavaCZ/filament-knowledge-base/raw/main/docs/assets/screenshot_marker.png)
 
 ### Tables support
 
@@ -685,7 +685,7 @@ You can use the regular markdown syntax to render tables styled to match filamen
 | Paragraphs |  First paragraph. <br><br> Second paragraph.  | First paragraph | First paragraph |
 ```
 
-![Tables example](https://github.com/GuavaCZ/filament-knowledge-base/raw/main/docs/images/screenshot_tables.png)
+![Tables example](https://github.com/GuavaCZ/filament-knowledge-base/raw/main/docs/assets/screenshot_tables.png)
 
 ### Quotes support
 
@@ -695,7 +695,7 @@ Using the regular markdown syntax for quotes, you can render neat banners such a
 > ⚠️ **Warning:** Make sure that the slug is unique!
 ```
 
-![Quotes example](https://github.com/GuavaCZ/filament-knowledge-base/raw/main/docs/images/screenshot_quotes.png)
+![Quotes example](https://github.com/GuavaCZ/filament-knowledge-base/raw/main/docs/assets/screenshot_quotes.png)
 
 ### Syntax Highlighting
 
@@ -711,7 +711,7 @@ To turn it off:
 $plugin->disableSyntaxHighlighting();
 ```
 
-![Syntax highlighting example](https://github.com/GuavaCZ/filament-knowledge-base/raw/main/docs/images/screenshot_syntax_highlighting.png)
+![Syntax highlighting example](https://github.com/GuavaCZ/filament-knowledge-base/raw/main/docs/assets/screenshot_syntax_highlighting.png)
 
 ### Vite assets support
 

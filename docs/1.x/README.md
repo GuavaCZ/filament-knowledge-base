@@ -574,7 +574,7 @@ If you prefer to use slide overs, you can additionally also enable them:
 $plugin->slideOverPreviews();
 ```
 
-![Modal Slideover Example](/docs/images/screenshot_modal_slideovers.jpeg)
+![Modal Slideover Example](/docs/assets/screenshot_modal_slideovers.jpeg)
 
 ### Breadcrubs
 
