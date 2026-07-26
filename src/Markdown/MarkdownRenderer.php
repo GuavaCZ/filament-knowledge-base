@@ -18,10 +18,11 @@ use League\CommonMark\Extension\CommonMark\Node\Block\Heading;
 use League\CommonMark\Extension\CommonMark\Node\Inline\Image;
 use League\CommonMark\Extension\DefaultAttributes\DefaultAttributesExtension;
 use League\CommonMark\Extension\FrontMatter\FrontMatterExtension;
-use League\CommonMark\Extension\FrontMatter\Output\RenderedContentWithFrontMatter;
+use League\CommonMark\Extension\FrontMatter\FrontMatterProviderInterface;
 use League\CommonMark\Extension\HeadingPermalink\HeadingPermalinkExtension;
 use League\CommonMark\Extension\Table\TableExtension;
 use League\CommonMark\MarkdownConverter;
+use League\CommonMark\Node\Block\Document;
 use League\CommonMark\Output\RenderedContentInterface;
 use N0sz\CommonMark\Marker\Marker;
 use N0sz\CommonMark\Marker\MarkerExtension;
@@ -164,17 +165,36 @@ class MarkdownRenderer
 
     public function convert(string $input): RenderedContentInterface
     {
-        $ttl = config('filament-knowledge-base.cache.ttl');
+        $ttl = $this->getCacheTtl();
+        $key = $this->getCacheKey($input);
+
+        // A miss, or an object cached by an older version: re-rendered below.
+        if (is_array($cached = cache()->get($key))) {
+            return new CachedRenderedContent(
+                content: $cached['content'],
+                frontMatter: $cached['front-matter'],
+                documentResolver: fn (): Document => $this->getMarkdownConverter()->convert($input)->getDocument(),
+            );
+        }
+
+        $result = $this->getMarkdownConverter()->convert($input);
+
+        // Plain data only: caching the object serializes the AST with it, which
+        // can come back as an __PHP_Incomplete_Class.
+        $payload = [
+            'content' => $result->getContent(),
+            'front-matter' => $result instanceof FrontMatterProviderInterface
+                ? $result->getFrontMatter()
+                : null,
+        ];
 
         if ($ttl === 'forever') {
-            return cache()->rememberForever($this->getCacheKey($input), fn () => $this->getMarkdownConverter()->convert($input));
+            cache()->forever($key, $payload);
+        } else {
+            cache()->put($key, $payload, $ttl);
         }
 
-        if (! is_int($ttl) || $ttl < 1) {
-            throw new InvalidArgumentException('The cache.ttl configuration must be an integer greater than 0 or the string "forever".');
-        }
-
-        return cache()->remember($this->getCacheKey($input), $ttl, fn () => $this->getMarkdownConverter()->convert($input));
+        return $result;
     }
 
     public function convertAndReturnFluent(string $input): Fluent
@@ -182,11 +202,29 @@ class MarkdownRenderer
         $result = $this->convert($input);
 
         $frontMatter = [];
-        if ($result instanceof RenderedContentWithFrontMatter) {
-            $frontMatter = $result->getFrontMatter();
+        if ($result instanceof FrontMatterProviderInterface) {
+            $frontMatter = $result->getFrontMatter() ?? [];
         }
 
         return fluent(['html' => $result->getContent(), 'front-matter' => $frontMatter]);
+    }
+
+    /**
+     * @return int|'forever'
+     */
+    protected function getCacheTtl(): int | string
+    {
+        $ttl = config('filament-knowledge-base.cache.ttl');
+
+        if ($ttl === 'forever') {
+            return $ttl;
+        }
+
+        if (! is_int($ttl) || $ttl < 1) {
+            throw new InvalidArgumentException('The cache.ttl configuration must be an integer greater than 0 or the string "forever".');
+        }
+
+        return $ttl;
     }
 
     protected function getCacheKey(string $input): string
