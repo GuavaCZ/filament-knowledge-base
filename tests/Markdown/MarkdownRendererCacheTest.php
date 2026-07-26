@@ -1,23 +1,12 @@
 <?php
 
-use Filament\Panel;
-use Guava\FilamentKnowledgeBase\KnowledgeBase;
 use Guava\FilamentKnowledgeBase\Markdown\MarkdownRenderer;
-use Guava\FilamentKnowledgeBase\Plugins\KnowledgeBasePlugin;
 use Illuminate\Support\Facades\Cache;
 use League\CommonMark\Node\Block\Document;
 use League\CommonMark\Output\RenderedContentInterface;
 
 beforeEach(function () {
-    // The renderer reads its options off the current panel's plugin, and these
-    // tests deliberately don't boot a panel, so hand it a bare plugin instead.
-    app()->instance(KnowledgeBase::class, new class extends KnowledgeBase
-    {
-        public function plugin(Panel | string | null $panel = null): KnowledgeBasePlugin
-        {
-            return KnowledgeBasePlugin::make();
-        }
-    });
+    fakeKnowledgeBasePlugin();
 
     config()->set('cache.default', 'array');
     Cache::flush();

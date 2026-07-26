@@ -20,7 +20,10 @@ class FlatfileParser
     public function __construct(
         protected string $panelId,
         protected string $path
-    ) {}
+    ) {
+        // Ids are cut from getRealPath(), so both sides must be canonical.
+        $this->path = realpath($path) ?: $path;
+    }
 
     public function get(): Collection
     {

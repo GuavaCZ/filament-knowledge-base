@@ -20,6 +20,7 @@ use Guava\FilamentKnowledgeBase\Filament\Resources\DocumentationResource;
 use Guava\FilamentKnowledgeBase\KnowledgeBaseRegistry;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\View\ComponentAttributeBag;
+use RuntimeException;
 
 class KnowledgeBasePlugin implements Plugin
 {
@@ -39,7 +40,9 @@ class KnowledgeBasePlugin implements Plugin
 
     public function __construct(?string $docsPath = null)
     {
-        $this->docsPath = $docsPath;
+        $this->docsPath = $docsPath === null
+            ? null
+            : static::normalizeDocsPath($docsPath);
     }
 
     public function getId(): string
@@ -49,7 +52,28 @@ class KnowledgeBasePlugin implements Plugin
 
     public function getDocsPath(): string
     {
-        return $this->docsPath;
+        // Set in register(), which Filament always runs before the panel is used.
+        return $this->docsPath ?? throw new RuntimeException(
+            'The knowledge base docs path is only available once the plugin has been registered on a panel.'
+        );
+    }
+
+    /**
+     * Normalizes separators and resolves a relative path against the app root.
+     */
+    protected static function normalizeDocsPath(string $path): string
+    {
+        $path = rtrim(
+            str_replace(['/', '\\'], DIRECTORY_SEPARATOR, trim($path)),
+            DIRECTORY_SEPARATOR,
+        );
+
+        return match (true) {
+            str_starts_with($path, DIRECTORY_SEPARATOR) => $path,
+            // Windows drive letters and UNC paths are already absolute.
+            (bool) preg_match('/^[A-Za-z]:/', $path) => $path,
+            default => base_path($path),
+        };
     }
 
     public function register(Panel $panel): void
