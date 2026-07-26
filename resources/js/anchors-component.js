@@ -23,10 +23,10 @@ export default function anchorsComponent() {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     let section = '#' + entry.target.id;
-                    document.querySelectorAll('.fi-sidebar-item-button .fi-sidebar-item-label')
+                    document.querySelectorAll('.fi-sidebar-item-btn .fi-sidebar-item-label')
                         .forEach((el) => el.classList.remove(...classes));
-                    let el = document.querySelector('.fi-sidebar-item-button[href=\'' + section + '\'] .fi-sidebar-item-label');
-                    el.classList.add(...classes);
+                    let el = document.querySelector('.fi-sidebar-item-btn[href=\'' + section + '\'] .fi-sidebar-item-label');
+                    el?.classList.add(...classes);
                 }
             });
         }
