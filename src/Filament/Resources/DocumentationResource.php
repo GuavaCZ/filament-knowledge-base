@@ -8,7 +8,6 @@ use Guava\FilamentKnowledgeBase\Contracts\Documentable;
 use Guava\FilamentKnowledgeBase\Facades\KnowledgeBase;
 use Guava\FilamentKnowledgeBase\Filament\Pages\ViewDocumentation;
 use Illuminate\Contracts\Support\Htmlable;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class DocumentationResource extends Resource
