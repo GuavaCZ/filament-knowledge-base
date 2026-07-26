@@ -4,7 +4,7 @@
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/guava/filament-knowledge-base.svg?style=flat-square)](https://packagist.org/packages/guava/filament-knowledge-base)
 [![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/guavaCZ/filament-knowledge-base/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/guavaCZ/filament-knowledge-base/actions?query=workflow%3Arun-tests+branch%3Amain)
-[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/guavaCZ/filament-knowledge-base/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/guavaCZ/filament-knowledge-base/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
+[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/guavaCZ/filament-knowledge-base/code-style.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/guavaCZ/filament-knowledge-base/actions?query=workflow%3A"Code+style"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/guava/filament-knowledge-base.svg?style=flat-square)](https://packagist.org/packages/guava/filament-knowledge-base)
 
 Did your filament panel ever get complex real quick? Ever needed a place to document all your features in one place?
@@ -100,9 +100,9 @@ return [
 ```
 
 ## Prerequisites
- - PHP 8.1+
- - Laravel 10+
- - Filament 3.2+
+ - PHP 8.2+
+ - Laravel 12+
+ - Filament 5.0+
 
 ## Introduction
 
@@ -529,29 +529,20 @@ A lot of the functionalities can be customized to a certain extent.
 
 ### Customize the knowledge base panel
 
-You can customize the knowledge base panel to your liking using:
+The knowledge base panel is a regular Filament panel, so you customize it in its own panel provider like any other:
 
 ```php
-use Guava\FilamentKnowledgeBase\Filament\Panels\KnowledgeBasePanel;
-
-KnowledgeBasePanel::configureUsing(
-    fn(KnowledgeBasePanel $panel) => $panel
-        // Your options here
-);
-```
-
-#### Change brand name
-
-For example to change the default brand name/title (displayed in the top left) of the panel, you can do:
-
-```php
-use Guava\FilamentKnowledgeBase\Filament\Panels\KnowledgeBasePanel;
-
-KnowledgeBasePanel::configureUsing(
-    fn(KnowledgeBasePanel $panel) => $panel
+public function panel(Panel $panel): Panel
+{
+    return $panel
+        ->id('knowledge-base')
+        ->path('kb')
         ->brandName('My Docs')
-);
+        ->plugin(KnowledgeBasePlugin::make());
+}
 ```
+
+Everything below is configured on the plugin itself, so it applies wherever you registered it.
 
 ### Custom classes on documentation article
 
@@ -559,25 +550,19 @@ By default, the documentation article (the container where the markdown content 
 also add your own class(es) using:
 
 ```php
-use Guava\FilamentKnowledgeBase\Filament\Panels\KnowledgeBasePanel;
-
-KnowledgeBasePanel::configureUsing(
-    fn(KnowledgeBasePanel $panel) => $panel
-        ->articleClass('max-w-2xl')
-);
+$plugin->articleClass('max-w-2xl');
 ```
 
-#### Disable default classes
+#### Disable the Filament styling
 
-To disable the default styling altogether, you can use:
+Tables and blockquotes are styled to match Filament by default. To render them unstyled:
 
 ```php
-use Guava\FilamentKnowledgeBase\Filament\Panels\KnowledgeBasePanel;
+$plugin->disableFilamentStyles();
 
-KnowledgeBasePanel::configureUsing(
-    fn(KnowledgeBasePanel $panel) => $panel
-        ->disableDefaultClasses()
-);
+// Or individually
+$plugin->disableFilamentStyledTables();
+$plugin->disableFilamentStyledBlockquotes();
 ```
 
 ### Disable the knowledge base panel button
@@ -586,22 +571,21 @@ When in a panel where the Knowledge Base plugin is enabled, we render by default
 it if you like:
 
 ```php
-use \Filament\View\PanelsRenderHook;
-
 $plugin->disableKnowledgeBasePanelButton();
 ```
 
-### Disable the back to default panel button
+### Disable the back button
 
 When in the knowledge base panel, a similar button is rendered to go back to the default filament panel. You can disable it likewise:
 
 ```php
-use Guava\FilamentKnowledgeBase\Filament\Panels\KnowledgeBasePanel;
+$plugin->disableBackButton();
+```
 
-KnowledgeBasePanel::configureUsing(
-    fn(KnowledgeBasePanel $panel) => $panel
-        ->disableBackToDefaultPanelButton()
-);
+You can also point it somewhere else instead:
+
+```php
+$plugin->backUrl('/admin');
 ```
 
 ### Customize the help menu/button render hook
@@ -664,7 +648,7 @@ When you open a documentation, by default it will be opened in the same tab.
 To change this, you can customize your plugin:
 
 ```php
-$plugin->openDocumentationInNewTab()
+$plugin->openKnowledgeBasePanelInNewTab();
 ```
 
 
@@ -715,51 +699,16 @@ Using the regular markdown syntax for quotes, you can render neat banners such a
 
 ### Syntax Highlighting
 
-We offer syntax highlighting through shiki (requires NodeJS on the server)
+Syntax highlighting is powered by [Phiki](https://github.com/phikiphp/phiki), which ships with the package and runs in
+PHP. There is nothing to install and no NodeJS required on the server.
 
-- [ShikiJS](https://shiki.style/)
-- [Spatie ShikiPHP](https://github.com/spatie/shiki-php)
+It is **enabled by default**. Highlighting happens when the markdown is rendered, so the result is cached along with the
+rest of the document.
 
-**Note:** Because of the additional installation steps, syntax highlighting is disabled by default.
-
-To enable it, you MUST have both the npm package `shiki` and `spatie/shiki-php` installed.
-
-Which versions of the shiki packages to choose depends on you. I **highly recommend going with the latest versions**,
-but if you encounter some issues due to incompatibility with other packages, you might need to downgrade.
-
-Check the table below for compatible versions.
-
-| Shiki PHP Version | Shiki JS Version |
-|-------------------|------------------|
-| ^2.0              | ^1.0             |
-| ^1.3              | ^0.14            |
-
-#### Installing spatie/shiki-php:
-
-```bash
-composer require spatie/shiki-php:"^2.0"
-```
-
-#### Installing shiki:
-
-```bash
-npm install shiki@^1.0
-```
-
-#### When using a Node Version Manager:
-
-If you use Herd or another NVM, you will most likely need to create a symlink to your node version. Please follow the
-instructions [here](https://github.com/spatie/shiki-php?tab=readme-ov-file#using-node-version-manager).
-
-Then you can enable syntax highlighting using:
+To turn it off:
 
 ```php
-use Guava\FilamentKnowledgeBase\Filament\Panels\KnowledgeBasePanel;
-
-KnowledgeBasePanel::configureUsing(
-    fn(KnowledgeBasePanel $panel) => $panel
-        ->syntaxHighlighting()
-);
+$plugin->disableSyntaxHighlighting();
 ```
 
 ![Syntax highlighting example](https://github.com/GuavaCZ/filament-knowledge-base/raw/main/docs/images/screenshot_syntax_highlighting.png)
@@ -814,7 +763,8 @@ Please review [our security policy](../../security/policy) on how to report secu
 - [All Contributors](../../contributors)
 - Spatie - Our package skeleton is a modified version
   of [Spatie's Package Tools](https://github.com/spatie/laravel-package-tools)
-- Spatie shiki and markdown packages
+- [Phiki](https://github.com/phikiphp/phiki) - syntax highlighting
+- [league/commonmark](https://commonmark.thephpleague.com/) - markdown parsing
 
 ## License
 
