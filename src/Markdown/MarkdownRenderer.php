@@ -138,7 +138,12 @@ class MarkdownRenderer
             ->addRenderer(Image::class, new ImageRenderer, 5)
         ;
 
-        return KnowledgeBase::plugin()->configureCommonMarkEnvironment($environment);
+        $environment = KnowledgeBase::plugin()->configureCommonMarkEnvironment($environment);
+
+        // The hook returns the builder interface; rendering needs the full environment.
+        assert($environment instanceof EnvironmentInterface);
+
+        return $environment;
     }
 
     protected function getEnvironment(): EnvironmentInterface

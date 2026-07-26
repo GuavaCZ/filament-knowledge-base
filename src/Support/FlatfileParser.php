@@ -107,7 +107,8 @@ class FlatfileParser
             'active' => true,
             'parent_id' => null,
             'panel_id' => $this->panelId,
-            ...$this->parseGroupFile($dir, $id, new Fluent([]), $depth > 1),
+            // $depth is always 1 here — the guard above throws for anything deeper.
+            ...$this->parseGroupFile($dir, $id, new Fluent([])),
         ];
 
         $this->results[$id->toString()] = $result;

@@ -7,13 +7,17 @@ use Filament\Contracts\Plugin;
 use Filament\Facades\Filament;
 use Filament\Panel;
 use Guava\FilamentKnowledgeBase\Contracts\Documentable;
+use Guava\FilamentKnowledgeBase\Models\FlatfileNode;
 use Guava\FilamentKnowledgeBase\Plugins\KnowledgeBaseCompanionPlugin;
 use Guava\FilamentKnowledgeBase\Plugins\KnowledgeBasePlugin;
 use Illuminate\Support\HtmlString;
 
 class KnowledgeBase
 {
-    public function model(): Documentable | string
+    /**
+     * @return class-string<FlatfileNode>
+     */
+    public function model(): string
     {
         return config('filament-knowledge-base.flatfile-model');
     }
@@ -23,11 +27,9 @@ class KnowledgeBase
      *
      * @param  Panel|string|null  $panel  Panel to get the plugin from. If null, the current panel is used.
      *
-     * @returns KnowledgeBasePlugin<Plugin>
-     *
      * @throws Exception
      */
-    public function plugin(Panel | string | null $panel = null): Plugin
+    public function plugin(Panel | string | null $panel = null): KnowledgeBasePlugin
     {
         $panel = match (true) {
             $panel instanceof Panel => $panel,
@@ -40,27 +42,31 @@ class KnowledgeBase
         }
 
         if ($panel->hasPlugin(KnowledgeBasePlugin::ID)) {
-            return $panel->getPlugin(KnowledgeBasePlugin::ID);
+            $plugin = $panel->getPlugin(KnowledgeBasePlugin::ID);
+
+            if ($plugin instanceof KnowledgeBasePlugin) {
+                return $plugin;
+            }
         }
 
         // Attempt to load the main plugin via the companion plugin
         if ($panel->hasPlugin(KnowledgeBaseCompanionPlugin::ID)) {
-            return Filament::getPanel(
+            $plugin = Filament::getPanel(
                 $this->companion($panel)->getKnowledgeBasePanelId()
-            )
-                ->getPlugin(KnowledgeBasePlugin::ID)
-            ;
+            )->getPlugin(KnowledgeBasePlugin::ID);
+
+            if ($plugin instanceof KnowledgeBasePlugin) {
+                return $plugin;
+            }
         }
 
         throw new Exception('The requested panel does not have the knowledge base main plugin.');
     }
 
     /**
-     * @return KnowledgeBaseCompanionPlugin<Plugin>
-     *
      * @throws Exception
      */
-    public function companion(Panel | string | null $panel = null): Plugin
+    public function companion(Panel | string | null $panel = null): KnowledgeBaseCompanionPlugin
     {
         $panel = match (true) {
             $panel instanceof Panel => $panel,
@@ -73,7 +79,11 @@ class KnowledgeBase
         }
 
         if ($panel->hasPlugin(KnowledgeBaseCompanionPlugin::ID)) {
-            return $panel->getPlugin(KnowledgeBaseCompanionPlugin::ID);
+            $plugin = $panel->getPlugin(KnowledgeBaseCompanionPlugin::ID);
+
+            if ($plugin instanceof KnowledgeBaseCompanionPlugin) {
+                return $plugin;
+            }
         }
 
         throw new Exception('The requested panel does not have the knowledge base companion plugin.');
@@ -89,7 +99,7 @@ class KnowledgeBase
 
         if ($panel->hasPlugin(KnowledgeBaseCompanionPlugin::ID)) {
             $panel = Filament::getPanel(
-                $panel->getPlugin(KnowledgeBaseCompanionPlugin::ID)->getKnowledgeBasePanelId()
+                $this->companion($panel)->getKnowledgeBasePanelId()
             );
         }
 
@@ -119,7 +129,8 @@ class KnowledgeBase
 
         $panelId ??= static::panel()->getId();
 
-        if (! Filament::getPanel($panelId)) {
+        // getPanel() throws for unknown ids, so it can't be used as an existence check.
+        if (! array_key_exists($panelId, Filament::getPanels())) {
             throw new Exception('The provided panel does not exist.');
         }
 

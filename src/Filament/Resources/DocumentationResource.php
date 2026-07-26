@@ -4,6 +4,7 @@ namespace Guava\FilamentKnowledgeBase\Filament\Resources;
 
 use Filament\Panel;
 use Filament\Resources\Resource;
+use Guava\FilamentKnowledgeBase\Contracts\Documentable;
 use Guava\FilamentKnowledgeBase\Facades\KnowledgeBase;
 use Guava\FilamentKnowledgeBase\Filament\Pages\ViewDocumentation;
 use Illuminate\Contracts\Support\Htmlable;
@@ -24,14 +25,6 @@ class DocumentationResource extends Resource
             'data',
         ];
     }
-
-    //    public static function modifyGlobalSearchQuery(Builder $query, string $search): void
-    //    {
-    // //        $query->orWhereRaw("
-    // //           json_extract(data, '$.content') LIKE '%$search%';
-    // //        ");
-    //        $query->orWhereLike('data', "%$search%");
-    //    }
 
     protected static string | null | \BackedEnum $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -56,9 +49,9 @@ class DocumentationResource extends Resource
 
     public static function getGlobalSearchResultTitle(Model $record): string | Htmlable
     {
-        return $record->title;
-        //        return str($record->slug)
-        //            ->replace('/', ' -> ');
+        assert($record instanceof Documentable);
+
+        return $record->getTitle() ?? '';
     }
 
     public static function resolveRecordRouteBinding(int | string $key, ?\Closure $modifyQuery = null): ?Model
@@ -66,7 +59,7 @@ class DocumentationResource extends Resource
         // TODO: First try to load it from a standalone (App/Docs) class
         $record = parent::resolveRecordRouteBinding($key);
 
-        if (! $record?->isActive()) {
+        if (! $record instanceof Documentable || ! $record->isActive()) {
             return null;
         }
 

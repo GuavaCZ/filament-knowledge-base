@@ -21,6 +21,22 @@ use League\CommonMark\Extension\HeadingPermalink\HeadingPermalink;
 use League\CommonMark\Output\RenderedContentInterface;
 use Sushi\Sushi;
 
+/**
+ * Sushi model — rows come from getRows(), so larastan cannot discover the
+ * attributes from a real table. Keep in sync with $schema below.
+ *
+ * @property string $id
+ * @property string $slug
+ * @property NodeType $type
+ * @property string $path
+ * @property string|null $icon
+ * @property string $title
+ * @property int|null $order
+ * @property bool $active
+ * @property array|null $data
+ * @property string|null $parent_id
+ * @property string $panel_id
+ */
 class FlatfileNode extends Model implements Documentable
 {
     use Sushi;
@@ -62,7 +78,9 @@ class FlatfileNode extends Model implements Documentable
 
     public function getContent(): string
     {
-        return $this->content;
+        // There is no 'content' column — the rendered HTML lives in the data JSON,
+        // see FlatfileParser::processDocumentationFile().
+        return data_get($this->data, 'content', '');
     }
 
     public function parent(): ?FlatfileNode
@@ -74,8 +92,12 @@ class FlatfileNode extends Model implements Documentable
         ;
     }
 
+    /**
+     * @return Collection<int, Model&Documentable>
+     */
     public function children(): Collection
     {
+        /** @var Collection<int, Model&Documentable> Widening static to the contract type — Collection's template is invariant. */
         return static::query()
             ->where('panel_id', $this->getPanelId())
             ->where('parent_id', $this->getId())
