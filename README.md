@@ -648,6 +648,15 @@ $plugin->modalTitleBreadcrumbs();
 
 ![Modal Breadcrumbs Example](https://github.com/GuavaCZ/filament-knowledge-base/raw/main/docs/images/screenshot_modal_breadcrumbs.jpeg)
 
+#### Hide the "Open documentation" button
+
+Modal previews have a footer button linking to the full documentation page. If you only use the modal previews and
+don't expose the knowledge base panel to your users, you can remove it:
+
+```php
+$plugin->disableOpenDocumentationButton();
+```
+
 ### Open documentation links in new tab
 
 When you open a documentation, by default it will be opened in the same tab.
