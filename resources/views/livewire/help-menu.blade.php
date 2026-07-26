@@ -1,5 +1,6 @@
 @php
     use Filament\Facades\Filament;
+    use Filament\View\PanelsRenderHook;
     use Guava\FilamentKnowledgeBase\Facades\KnowledgeBase;
 
     $plugin = KnowledgeBase::plugin();
@@ -10,9 +11,12 @@
     $hasModalTitleBreadcrumbs = $companion->hasModalTitleBreadcrumbs();
     $target = $companion->shouldOpenKnowledgeBasePanelInNewTab() ? '_blank' : '_self';
     $articleClass = $plugin->getArticleClass();
+
+    $needsTopbarSpacing = $companion->getHelpMenuRenderHook() === PanelsRenderHook::TOPBAR_END;
 @endphp
 
 <div @class([
+    'ms-4' => $needsTopbarSpacing,
     'hidden' => empty($documentation),
 ])
 >
