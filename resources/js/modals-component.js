@@ -13,9 +13,7 @@ export default function modalsComponent() {
             if (fragment.startsWith(prefix)) {
                 const modal = fragment.substring(fragment.indexOf(prefix) + prefix.length);
 
-                console.log('Open modal via wire: ', modal);
                 this.$wire.showDocumentation(modal);
-                // window.dispatchEvent(new CustomEvent('open-modal', {detail: {id: modal}}));
                 history.replaceState(null, null, ' ');
             }
         },

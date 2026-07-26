@@ -9,6 +9,7 @@ use Filament\Panel;
 use Filament\Support\Concerns\EvaluatesClosures;
 use Filament\View\PanelsRenderHook;
 use Guava\FilamentKnowledgeBase\Concerns\CanDisableModalLinks;
+use Guava\FilamentKnowledgeBase\Concerns\CanDisableOpenDocumentationButton;
 use Guava\FilamentKnowledgeBase\Concerns\HasKnowledgeBasePanelButton;
 use Guava\FilamentKnowledgeBase\Concerns\HasModalPreviews;
 use Illuminate\Support\Facades\Blade;
@@ -18,6 +19,7 @@ use Illuminate\View\ComponentAttributeBag;
 class KnowledgeBaseCompanionPlugin implements Plugin
 {
     use CanDisableModalLinks;
+    use CanDisableOpenDocumentationButton;
     use EvaluatesClosures;
     use HasKnowledgeBasePanelButton;
     use HasModalPreviews;

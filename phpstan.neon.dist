@@ -1,6 +1,5 @@
 includes:
     - phpstan-baseline.neon
-    - vendor/larastan/larastan/extension.neon
 
 parameters:
     level: 4
@@ -11,3 +10,15 @@ parameters:
     tmpDir: build/phpstan
     checkOctaneCompatibility: true
     checkModelProperties: true
+
+    ignoreErrors:
+        # This IS a config file, but larastan only recognizes the app's config
+        # directory, not a package's — false positive for packages.
+        -
+            identifier: larastan.noEnvCallsOutsideOfConfig
+            path: config/filament-knowledge-base.php
+        # Part of the public Concerns namespace for users to opt into; nothing
+        # in the package itself uses it, so PHPStan sees it as unused.
+        -
+            identifier: trait.unused
+            path: src/Concerns/HasDocumentable.php

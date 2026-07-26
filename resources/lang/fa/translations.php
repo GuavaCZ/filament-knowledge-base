@@ -5,4 +5,5 @@ return [
     'help' => 'راهنما',
     'open-documentation' => 'گشودن مستند',
     'close' => 'بستن',
+    'back' => 'بازگشت',
 ];

@@ -5,6 +5,8 @@ namespace Guava\FilamentKnowledgeBase\Contracts;
 use Filament\Navigation\NavigationGroup;
 use Filament\Navigation\NavigationItem;
 use Guava\FilamentKnowledgeBase\Enums\NodeType;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 
 interface Documentable
 {
@@ -27,6 +29,18 @@ interface Documentable
     public function getData(): array;
 
     public function getPanelId(): string;
+
+    public function getUrl(): string;
+
+    /**
+     * @return array<string, string> Map of anchor id => label.
+     */
+    public function getAnchors(): array;
+
+    /**
+     * @return Collection<int, Model&Documentable>
+     */
+    public function children(): Collection;
 
     public function toNavigationItem(): NavigationItem;
 

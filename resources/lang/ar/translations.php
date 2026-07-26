@@ -5,5 +5,5 @@ return [
     'help' => 'مساعدة',
     'open-documentation' => 'فتح التوثيق',
     'close' => 'إغلاق',
-    'back-to-default-panel' => 'رجوع',
+    'back' => 'رجوع',
 ];

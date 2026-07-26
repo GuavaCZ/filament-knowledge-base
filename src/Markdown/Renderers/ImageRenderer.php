@@ -19,7 +19,6 @@ use League\Config\ConfigurationInterface;
 
 final class ImageRenderer implements ConfigurationAwareInterface, NodeRendererInterface, XmlNodeRendererInterface
 {
-    /** @psalm-readonly-allow-private-mutation */
     private ConfigurationInterface $config;
 
     /**

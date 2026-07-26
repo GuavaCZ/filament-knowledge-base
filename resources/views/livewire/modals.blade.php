@@ -8,6 +8,7 @@
     $hasModalPreviews = $companion->hasModalPreviews();
     $hasSlideOverPreviews = $companion->hasSlideOverPreviews();
     $hasModalTitleBreadcrumbs = $companion->hasModalTitleBreadcrumbs();
+    $hasOpenDocumentationButton = ! $companion->shouldDisableOpenDocumentationButton();
     $target = $companion->shouldOpenKnowledgeBasePanelInNewTab() ? '_blank' : '_self';
     $articleClass = $plugin->getArticleClass();
 @endphp
@@ -44,11 +45,13 @@
                 {!! $documentable->getSimpleHtml() !!}
             </x-filament-knowledge-base::content>
             <x-slot name="footerActions">
-                <x-filament::button tag="a"
-                                    :href="$documentable->getUrl()"
-                                    :target="$target">
-                    {{ __('filament-knowledge-base::translations.open-documentation') }}
-                </x-filament::button>
+                @if($hasOpenDocumentationButton)
+                    <x-filament::button tag="a"
+                                        :href="$documentable->getUrl()"
+                                        :target="$target">
+                        {{ __('filament-knowledge-base::translations.open-documentation') }}
+                    </x-filament::button>
+                @endif
                 <x-filament::button color="gray"
                                     x-on:click.prevent="$dispatch('close-modal', { id: 'kb-custom-modal' })">
 

@@ -112,6 +112,50 @@ KnowledgeBasePlugin::make()
         ->disableBreadcrumbs();
 ```
 
+### Back button
+
+At the bottom of the knowledge base sidebar, a "Back" button is rendered to send the user back to your app, mirroring the "Documentation" button rendered by the `KnowledgeBaseCompanionPlugin`.
+
+By default, it links to your default panel.
+
+#### Customizing the URL
+
+If your users should be sent back to a different panel (or any other URL), you can customize it using the `backUrl` option:
+
+```php
+use Filament\Facades\Filament;
+use Guava\FilamentKnowledgeBase\Facades\KnowledgeBase;
+use Guava\FilamentKnowledgeBase\Plugins\KnowledgeBasePlugin;
+
+KnowledgeBasePlugin::make()
+    ->backUrl(fn () => KnowledgeBase::url(Filament::getPanel('app')));
+```
+
+#### Customizing the button
+
+If you want to modify the button itself (label, icon, ...), you can do so using the `modifyBackButtonUsing` option:
+
+```php
+use Filament\Navigation\NavigationItem;
+use Guava\FilamentKnowledgeBase\Plugins\KnowledgeBasePlugin;
+
+KnowledgeBasePlugin::make()
+    ->modifyBackButtonUsing(fn (NavigationItem $item) => $item
+        ->label('Back to app')
+        ->icon('heroicon-o-arrow-left'));
+```
+
+#### Disabling the back button
+
+If you don't want the back button, you can disable it using the `disableBackButton` option:
+
+```php
+use Guava\FilamentKnowledgeBase\Plugins\KnowledgeBasePlugin;
+
+KnowledgeBasePlugin::make()
+    ->disableBackButton();
+```
+
 ### Guest Access
 
 Previously in version 1.x, guest access had to be enabled specifically via a plugin option.

@@ -85,6 +85,7 @@ class HelpMenu extends Component implements HasActions, HasForms
             ->iconSize('lg')
             ->color('gray')
             ->button()
+            ->dropdownTeleport()
         ;
     }
 
