@@ -5,7 +5,7 @@ return [
     'help' => 'Допомога',
     'open-documentation' => 'Відкрити документацію',
     'close' => 'Закрити',
-    'back-to-default-panel' => 'Назад',
+    'back' => 'Назад',
     'url-copied' => 'URL скопійовано у буфер обміну.',
     'code-copied' => 'Код скопійовано у буфер обміну.',
 ];

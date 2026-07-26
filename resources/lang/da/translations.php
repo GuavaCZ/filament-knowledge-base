@@ -5,7 +5,7 @@ return [
     'help' => 'Vejledning',
     'open-documentation' => 'Åben dokumentation',
     'close' => 'Luk',
-    'back-to-default-panel' => 'Tilbage',
+    'back' => 'Tilbage',
     'url-copied' => 'URL blev kopieret.',
     'code-copied' => 'Kode blev kopieret.',
 ];
