@@ -1,8 +1,12 @@
 {
+    "scripts": {
+        "build:theme": "tailwindcss -i workbench/resources/css/theme.css -o workbench/dist/theme.css --minify"
+    },
     "devDependencies": {
-        "conventional-changelog-conventionalcommits": "^7.0.2",
-        "esbuild": "^0.21.1",
-        "semantic-release": "^22.0.5"
+        "@tailwindcss/cli": "^4.3.3",
+        "@tailwindcss/typography": "^0.5.20",
+        "esbuild": "^0.21.3",
+        "tailwindcss": "^4.3.3"
     },
     "type": "module"
 }
