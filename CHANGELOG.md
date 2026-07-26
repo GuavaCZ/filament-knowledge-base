@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.3.1](https://github.com/GuavaCZ/filament-knowledge-base/compare/3.3.0...3.3.1) (2026-07-26)
+
+
+### Documentation
+
+* update README for the v3 API ([d7147ab](https://github.com/GuavaCZ/filament-knowledge-base/commit/d7147ab54b38b17419730e8e79f957f1ca44fbc0)), closes [#94](https://github.com/GuavaCZ/filament-knowledge-base/issues/94)
+
 ## [3.3.0](https://github.com/GuavaCZ/filament-knowledge-base/compare/3.2.0...3.3.0) (2026-07-26)
 
 
