@@ -4,6 +4,9 @@ namespace Guava\FilamentKnowledgeBase\Tests;
 
 use BladeUI\Heroicons\BladeHeroiconsServiceProvider;
 use BladeUI\Icons\BladeIconsServiceProvider;
+use Filament\Actions\ActionsServiceProvider;
+use Filament\FilamentServiceProvider;
+use Filament\Schemas\SchemasServiceProvider;
 use Filament\Support\SupportServiceProvider;
 use Guava\FilamentKnowledgeBase\KnowledgeBaseServiceProvider;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -25,11 +28,16 @@ class TestCase extends Orchestra
     {
         // The package provider registers Livewire components and Filament assets
         // during boot, so Livewire and Filament's support layer must come first.
+        // The panels, actions and schemas providers are what supply the blade
+        // component namespaces the packaged views render into.
         return [
             LivewireServiceProvider::class,
             SupportServiceProvider::class,
             BladeIconsServiceProvider::class,
             BladeHeroiconsServiceProvider::class,
+            ActionsServiceProvider::class,
+            SchemasServiceProvider::class,
+            FilamentServiceProvider::class,
             KnowledgeBaseServiceProvider::class,
         ];
     }
