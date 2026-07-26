@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.3.2](https://github.com/GuavaCZ/filament-knowledge-base/compare/3.3.1...3.3.2) (2026-07-26)
+
+
+### Bug Fixes
+
+* add polish translation ([#103](https://github.com/GuavaCZ/filament-knowledge-base/issues/103)) ([5917fce](https://github.com/GuavaCZ/filament-knowledge-base/commit/5917fceeeb11ca8aa9f4d31ddc112f5bfc417560))
+
 ## [3.3.1](https://github.com/GuavaCZ/filament-knowledge-base/compare/3.3.0...3.3.1) (2026-07-26)
 
 
