@@ -220,11 +220,13 @@ class MarkdownRenderer
             return $ttl;
         }
 
-        if (! is_int($ttl) || $ttl < 1) {
-            throw new InvalidArgumentException('The cache.ttl configuration must be an integer greater than 0 or the string "forever".');
+        // env() leaves numeric strings uncast, so FILAMENT_KB_CACHE_TTL=3600
+        // reaches us as '3600'.
+        if (is_numeric($ttl) && (int) $ttl >= 1) {
+            return (int) $ttl;
         }
 
-        return $ttl;
+        throw new InvalidArgumentException('The cache.ttl configuration must be an integer greater than 0 or the string "forever".');
     }
 
     protected function getCacheKey(string $input): string

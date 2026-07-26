@@ -112,11 +112,34 @@ it('discards a value cached by an older version of the package', function () {
     ;
 });
 
-it('rejects an invalid cache ttl', function () {
-    config()->set('filament-knowledge-base.cache.ttl', 0);
+it('rejects an invalid cache ttl', function (mixed $ttl) {
+    config()->set('filament-knowledge-base.cache.ttl', $ttl);
 
     (new MarkdownRenderer)->convert('# Heading');
-})->throws(InvalidArgumentException::class);
+})->throws(InvalidArgumentException::class)->with([
+    'zero' => 0,
+    'negative' => -1,
+    'zero as a string' => '0',
+    'not a number' => 'soon',
+    'null' => null,
+    'true' => true,
+]);
+
+it('accepts a numeric string cache ttl', function (mixed $ttl) {
+    // env() doesn't cast numeric strings, so a .env FILAMENT_KB_CACHE_TTL
+    // arrives as a string.
+    config()->set('filament-knowledge-base.cache.ttl', $ttl);
+
+    $renderer = new MarkdownRenderer;
+    $input = "# Heading\n";
+
+    $renderer->convert($input);
+
+    expect(Cache::get(cacheKeyFor($renderer, $input)))->toBeArray();
+})->with([
+    'int' => 3600,
+    'string' => '3600',
+]);
 
 it('supports caching forever', function () {
     config()->set('filament-knowledge-base.cache.ttl', 'forever');
