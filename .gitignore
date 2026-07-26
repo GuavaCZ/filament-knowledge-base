@@ -5,6 +5,7 @@ composer.lock
 coverage
 phpunit.xml
 phpstan.neon
-testbench.yaml
 vendor
 node_modules
+
+# testbench.yaml is intentionally tracked, it defines the panels the workbench boots.

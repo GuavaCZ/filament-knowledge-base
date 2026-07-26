@@ -1,0 +1,7 @@
+@import '../../../vendor/filament/filament/resources/css/theme.css';
+
+@plugin "@tailwindcss/typography";
+
+@source '../../../src/**/*';
+@source '../../../resources/views/**/*';
+@source '../../app/**/*';
