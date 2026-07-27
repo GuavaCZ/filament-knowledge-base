@@ -43,6 +43,13 @@ class FlatfileNode extends Model implements Documentable
 
     public $incrementing = false;
 
+    protected static function booted(): void
+    {
+        static::addGlobalScope('locale', function (Builder $builder) {
+            $builder->where('locale', App::getLocale());
+        });
+    }
+
     protected $schema = [
         'id' => 'string',
         'slug' => 'string',
@@ -55,6 +62,7 @@ class FlatfileNode extends Model implements Documentable
         'data' => 'json',
         'parent_id' => 'string',
         'panel_id' => 'string',
+        'locale' => 'string',
     ];
 
     protected function casts(): array
@@ -63,6 +71,7 @@ class FlatfileNode extends Model implements Documentable
             'type' => NodeType::class,
             'data' => 'array',
             'active' => 'boolean',
+            'locale' => 'string',
         ];
     }
 
@@ -187,6 +196,7 @@ class FlatfileNode extends Model implements Documentable
 
     public function toNavigationItem(): NavigationItem
     {
+
         if ($this->type === NodeType::Group) {
             throw new \Exception('Cannot convert a group to a navigation item');
         }
@@ -195,16 +205,20 @@ class FlatfileNode extends Model implements Documentable
             ->icon($this->getIcon())
             ->sort($this->getOrder())
             ->url($this->getUrl())
-            ->isActiveWhen(fn () => url()->current() === $this->getUrl())
+            ->isActiveWhen(fn() => url()->current() === $this->getUrl())
         ;
 
         if ($parent = $this->parent()) {
+
+
             match ($parent->getType()) {
                 NodeType::Group => $item->group($parent->getTitle()),
                 default => $item
                     ->parentItem($parent->getTitle())
-                    ->group($parent->parent()?->getTitle()),
+                    ->group($parent->parent()?->getTitle() ?? $parent->getData()['group'] ?? null),
             };
+        } elseif ($group = ($this->getData()['group'] ?? null)) {
+            $item->group($group);
         }
 
         return $item;
@@ -217,7 +231,7 @@ class FlatfileNode extends Model implements Documentable
         }
 
         $canHaveIcon = $this
-            ->children()->where(fn (FlatfileNode $child) => $child->children()->isNotEmpty())
+            ->children()->where(fn(FlatfileNode $child) => $child->children()->isNotEmpty())
             ->isEmpty()
         ;
 
@@ -238,7 +252,7 @@ class FlatfileNode extends Model implements Documentable
                 $slug = $node->getSlug();
                 $next = $node->next();
 
-                if (! method_exists($next, 'getLiteral')) {
+                if (!method_exists($next, 'getLiteral')) {
                     continue;
                 }
 
@@ -256,28 +270,45 @@ class FlatfileNode extends Model implements Documentable
         $paths = app(KnowledgeBaseRegistry::class)->getDocsPaths();
 
         foreach ($paths as $panelId => $path) {
-            // Get localized docs path
-            $localizedPath = str($path)
-                ->rtrim(DIRECTORY_SEPARATOR)
-                ->append(DIRECTORY_SEPARATOR)
-                ->append($this->getLocale())
+            // Scan for all locale directories
+            $locales = collect(File::directories($path))
+                ->map(fn(string $dir) => basename($dir))
             ;
 
-            // Get fallback locale docs path
-            if (! File::exists($localizedPath)) {
+            foreach ($locales as $locale) {
                 $localizedPath = str($path)
                     ->rtrim(DIRECTORY_SEPARATOR)
                     ->append(DIRECTORY_SEPARATOR)
-                    ->append($this->getFallbackLocale())
+                    ->append($locale)
                 ;
-            }
 
-            // No docs present
-            if (! File::exists($localizedPath)) {
-                continue;
-            }
+                if (!File::exists($localizedPath)) {
+                    continue;
+                }
 
-            $rows->push(...FlatfileParser::make($panelId, $localizedPath)->get());
+                $localeRows = FlatfileParser::make($panelId, $localizedPath)->get();
+
+                // Filter out auto-generated directory groups
+                $localeRows = $localeRows->reject(fn(array $row) => $row['type'] === NodeType::Group);
+
+                // Namespace IDs with locale to prevents collision and add locale data
+                $localeRows = $localeRows->map(function (array $row) use ($locale, $panelId) {
+                    $row['id'] = "$locale.{$row['id']}";
+                    $row['locale'] = $locale;
+
+                    // Fix parent linkage from frontmatter
+                    $data = json_decode($row['data'], true);
+                    if (isset($data['parent'])) {
+                        $row['parent_id'] = "$locale.{$panelId}.{$data['parent']}";
+                    } elseif ($row['parent_id']) {
+                        $row['parent_id'] = "$locale.{$row['parent_id']}";
+                    }
+
+                    return $row;
+                });
+
+                $rows->push(...$localeRows);
+            }
         }
 
         return $rows->toArray();
@@ -286,7 +317,7 @@ class FlatfileNode extends Model implements Documentable
     public function scopeType(Builder $query, NodeType ...$types): Builder
     {
         return $query->where(
-            fn (Builder $query) => collect($types)->each(fn (NodeType $type) => $query->orWhere('type', $type))
+            fn(Builder $query) => collect($types)->each(fn(NodeType $type) => $query->orWhere('type', $type))
         );
     }
 
@@ -294,6 +325,7 @@ class FlatfileNode extends Model implements Documentable
     {
         return parent::resolveRouteBindingQuery($query, $value, $field)
             ->where('panel_id', KnowledgeBase::panel()->getId())
+            ->where('locale', App::getLocale())
         ;
     }
 
