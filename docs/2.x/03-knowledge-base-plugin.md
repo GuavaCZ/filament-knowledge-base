@@ -1,4 +1,8 @@
-# Knowledge Base Plugin
+---
+title: Knowledge base plugin
+---
+
+# Knowledge base plugin
 
 ## Introduction
 
@@ -11,8 +15,9 @@ It is currently **required** to use a custom, separate panel for your knowledge 
 ## Usage
 
 If you don't have a separate panel yet for your knowledge base, please create one using the built in filament command:
+
 ```bash
-php artisan filament:panel
+php artisan make:filament-panel
 ```
 
 For example, you might create a panel named `knowledge-base`.
@@ -22,8 +27,9 @@ Next, add the `KnowledgeBasePlugin` plugin to your panel service provider:
 ```php
 use Guava\FilamentKnowledgeBase\Plugins\KnowledgeBasePlugin;
 
-$panel->plugin(KnowledgeBasePlugin::make())
+$panel->plugin(KnowledgeBasePlugin::make());
 ```
+
 ## Customization
 
 There are a lot of customization options available for your knowledge base. All options are configured via the `KnowledgeBasePlugin` added to your knowledge base panel.
@@ -55,13 +61,15 @@ The available options are:
 - `TableOfContentsPosition::End` (default)
 
 ```php
+use Guava\FilamentKnowledgeBase\Enums\TableOfContentsPosition;
 use Guava\FilamentKnowledgeBase\Plugins\KnowledgeBasePlugin;
 
 KnowledgeBasePlugin::make()
-        ->tableOfContentsPosition(TableOfContentsPosition::Start);
+    ->tableOfContentsPosition(TableOfContentsPosition::Start);
 ```
 
 #### Disabling the table of contents
+
 If you don't want to use the table of contents, you can disable it using the `disableTableOfContents` option:
 
 ```php
@@ -83,7 +91,7 @@ By default, we use the `#` symbol. You can customize the symbol using:
 use Guava\FilamentKnowledgeBase\Plugins\KnowledgeBasePlugin;
 
 KnowledgeBasePlugin::make()
-        ->anchorSymbol('¶');
+    ->anchorSymbol('¶');
 ```
 
 #### Disabling anchors
@@ -94,27 +102,27 @@ If you don't want to use anchors, you can disable them using the `disableAnchors
 use Guava\FilamentKnowledgeBase\Plugins\KnowledgeBasePlugin;
 
 KnowledgeBasePlugin::make()
-        ->disableAnchors();
+    ->disableAnchors();
 ```
 
-### Breadcrubs
+### Breadcrumbs
 
 Each documentation page has a breadcrumb navigation at the top of the page. This is especially useful for nested documentation pages to navigate back to previous pages.
 
-#### Disable breadcrumbs
+#### Disabling breadcrumbs
 
 If you don't want the breadcrumb navigation, you can disable it if you wish:
 
 ```php
-use \Guava\FilamentKnowledgeBase\Plugins\KnowledgeBasePlugin;
+use Guava\FilamentKnowledgeBase\Plugins\KnowledgeBasePlugin;
 
 KnowledgeBasePlugin::make()
-        ->disableBreadcrumbs();
+    ->disableBreadcrumbs();
 ```
 
 ### Back button
 
-At the bottom of the knowledge base sidebar, a "Back" button is rendered to send the user back to your app, mirroring the "Documentation" button rendered by the `KnowledgeBaseCompanionPlugin`.
+At the bottom of the knowledge base sidebar, a "Back" button is rendered to send the user back to your app, mirroring the "Knowledge base" button rendered by the `KnowledgeBaseCompanionPlugin`.
 
 By default, it links to your default panel.
 
@@ -156,16 +164,16 @@ KnowledgeBasePlugin::make()
     ->disableBackButton();
 ```
 
-### Guest Access
+### Guest access
 
 Previously in version 1.x, guest access had to be enabled specifically via a plugin option.
 
 In version 2.x and up, you have full control over your knowledge base panel and thus can enable guest access just like you would for any other panel.
 
-Please [visit the filament documentation](https://filamentphp.com/docs/3.x/panels/users#setting-up-guest-access-to-a-panel) to learn how to enable guest access.
+Please [visit the filament documentation](https://filamentphp.com/docs/4.x/users/overview#setting-up-guest-access-to-a-panel) to learn how to enable guest access.
 
 ### Authorization
 
 Similarly, authorization is handled just like any other panel. In your `User` model, you can implement the `FilamentUser` interface to control access to different knowledge base panels.
 
-More information in the [filament documentation](https://filamentphp.com/docs/3.x/panels/users#authorizing-access-to-the-panel).
+More information in the [filament documentation](https://filamentphp.com/docs/4.x/users/overview#authorizing-access-to-the-panel).

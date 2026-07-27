@@ -1,4 +1,8 @@
-# Upgrade guide
+---
+title: Upgrading
+---
+
+# Upgrading
 
 There are a few major changes in filament knowledge base 2. In this guide we try to cover all changes that need to be done in order to upgrade from 1.x to 2.x.
 
@@ -8,7 +12,7 @@ A major change in filament knowledge base 2 is that you can now have multiple kn
 
 ### Change old `KnowledgeBasePlugin` to `KnowledgeBaseCompanionPlugin` imports
 
-This means you will have a plugin `KnowledgeBasePlugin` in your **regular filament panels**. Please change this import to the new plugin `KnowledgeBaseCompanionPlugin`, which is specifically there to bridge the gap between regular filament panels and knowledge base panels. 
+This means you will have a plugin `KnowledgeBasePlugin` in your **regular filament panels**. Please change this import to the new plugin `KnowledgeBaseCompanionPlugin`, which is specifically there to bridge the gap between regular filament panels and knowledge base panels.
 
 ### Knowledge base configuration
 
@@ -16,27 +20,23 @@ You used to configure your single knowledge base panel using the `KnowledgeBaseP
 
 The `KnowledgeBasePanel` class has been removed completely in favor of custom filament panels.
 
-Please generate a new filament panel for your knowledge base using `php artisan make:filament-panel` and following the instructions. For detailed information on how to do this, please see the [filament documentation here](https://filamentphp.com/docs/3.x/panels/configuration#creating-a-new-panel).
+Please generate a new filament panel for your knowledge base using `php artisan make:filament-panel` and following the instructions. For detailed information on how to do this, please see the [filament documentation here](https://filamentphp.com/docs/4.x/panel-configuration#creating-a-new-panel).
 
-When you are done, also create a custom theme for your knowledge base panel. Similarly, if you don't know how to do this, follow the [filament documentation here](https://filamentphp.com/docs/3.x/panels/themes#creating-a-custom-theme).
+When you are done, also create a custom theme for your knowledge base panel. Similarly, if you don't know how to do this, follow the [filament documentation here](https://filamentphp.com/docs/4.x/styling/overview#creating-a-custom-theme).
 
-In the newly generated theme for your knowledge base, add the following to the `content` option of your `tailwind.config.js`:
+In the newly generated theme for your knowledge base, add the following to your **theme.css** file:
 
-```js
-module.exports = {
-    content: [
-        // ...
-        './vendor/guava/filament-knowledge-base/src/**/*.php',
-        './vendor/guava/filament-knowledge-base/resources/**/*.blade.php',
-    ],
-};
+```css
+@plugin "@tailwindcss/typography";
+@source '../../../../vendor/guava/filament-knowledge-base/src/**/*';
+@source '../../../../vendor/guava/filament-knowledge-base/resources/views/**/*';
 ```
 
 ### Move your markdown docs
 
 As we now support multiple knowledge bases, you need to create a new directory inside your `docs` folder for each knowledge base. The name of the folder needs to correspond with the ID of the panel, so if your knowledge base panel ID is `kb`, create a folder `/docs/kb` and move all your documentation files (including the directories for each locale) inside this folder.
 
-An example of your new directory structure culd look like this:
+An example of your new directory structure could look like this:
 
 ```
 /docs
@@ -51,12 +51,14 @@ An example of your new directory structure culd look like this:
 
 Additionally, the way relationships are defined in markdown files has changed.
 
-Groups and parent no longer need to be defined using a `group` or `parent` key in the front matter. Instead, they are automatically resolved from the directory structure.
+Groups and parents no longer need to be defined using a `group` or `parent` key in the front matter. Instead, they are automatically resolved from the directory structure.
 
 ### Parent
-For parent files, you should not have to do anything. Just make sure that for each parent item you have a directory with it's children.
 
-For example, if `parent.md` is your parent, all it's child documentation belong to `parent/` directory, such as:
+For parent files, you should not have to do anything. Just make sure that for each parent item you have a directory with its children.
+
+For example, if `parent.md` is your parent, all its child documentation belongs to the `parent/` directory, such as:
+
 ```
 /docs/kb/en/parent.md
 /docs/kb/en/parent/child-1.md
@@ -64,7 +66,8 @@ For example, if `parent.md` is your parent, all it's child documentation belong 
 ```
 
 ### Group
-For groups, you need to create a markdown file for each group that serves as it's config.
+
+For groups, you need to create a markdown file for each group that serves as its config.
 
 Then all child items of the group belong to a directory of the same name as the config file.
 
@@ -80,9 +83,9 @@ The config file of the group (in this example `advanced.md`) should look like th
 
 ```markdown
 ---
-type: group // This is how you define this item to be a group
-title: 'Advanced' // This is the title of the group, if ommited the file name will be used
-icon: 'heroicon-o-user' // This is the icon that will be used for this group, it's optional
+type: group
+title: 'Advanced'
+icon: 'heroicon-o-user'
 ---
 ```
 
@@ -90,11 +93,11 @@ icon: 'heroicon-o-user' // This is the icon that will be used for this group, it
 
 We replaced `shiki.js` by a PHP based solution called `phiki`. Phiki is a PHP port of `shiki.js` and is much easier to work with in a PHP environment.
 
-Syntax highlighting is now enabled.
+Syntax highlighting is now enabled by default.
 
-You can also safely remove your NPM `shiki.js` and `tm-grammar` dependencies and your composer dependency `shikiphp`.
+You can also safely remove your NPM `shiki` and `tm-grammars` dependencies and your composer dependency `spatie/shiki-php`.
 
-## Documentation Styles
+## Documentation styles
 
 We removed all our custom styling and replaced it with tailwinds `prose` utility class. This means your documentation will look a bit different, but it will be much easier to customize and extend.
 
@@ -110,7 +113,7 @@ Please adjust your imports and references accordingly.
 
 Configuration option `filament-knowledge-base.model` has been renamed to `filament-knowledge-base.flatfile-model`.
 
-Configuration options `filament-knowledge-base.panel` and `filament-knowledge-base.docs-path` have been completely removed. 
+Configuration options `filament-knowledge-base.panel` and `filament-knowledge-base.docs-path` have been completely removed.
 
 Please adjust your config file accordingly.
 
