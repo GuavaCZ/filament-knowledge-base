@@ -4,7 +4,6 @@ namespace Workbench\App\Providers;
 
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
-use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
@@ -15,6 +14,7 @@ use Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Workbench\App\Filament\Pages\Dashboard;
 use Workbench\App\Http\Middleware\AutoLogin;
 
 class AdminPanelProvider extends PanelProvider
