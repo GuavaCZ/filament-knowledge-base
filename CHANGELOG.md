@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.3.3](https://github.com/GuavaCZ/filament-knowledge-base/compare/3.3.2...3.3.3) (2026-07-27)
+
+
+### Chore
+
+* link sample docs to the workbench dashboard for manual testing ([86f5823](https://github.com/GuavaCZ/filament-knowledge-base/commit/86f5823a900735f33b57acdf65008eb86720d356))
+* move assets/docs ([88ee737](https://github.com/GuavaCZ/filament-knowledge-base/commit/88ee737f59eb02099c7813ca6e0eefe9a48302b1))
+
 ## [3.3.2](https://github.com/GuavaCZ/filament-knowledge-base/compare/3.3.1...3.3.2) (2026-07-26)
 
 
