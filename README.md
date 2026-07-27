@@ -1,4 +1,4 @@
-![filament-knowledge-base Banner](https://github.com/GuavaCZ/filament-knowledge-base/raw/main/.github/banner.jpg)
+![filament-knowledge-base Banner](https://github.com/GuavaCZ/filament-knowledge-base/raw/main/.github/banner.png)
 
 # Knowledge Base for your filament panels
 
