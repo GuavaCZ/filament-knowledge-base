@@ -13,7 +13,7 @@ A companion plugin integrates the knowledge base into your regular panels: a hel
 
 ## Documentation
 
-The full documentation is available at [guava.cz](https://guava.cz/developers/packages/filament-knowledge-base).
+The full documentation is available at [guava.cz](https://guava.cz/developers/packages/filament-knowledge-base?ref=github&utm_campaign=knowledge-base).
 
 ## Version compatibility
 
@@ -53,7 +53,7 @@ Finally, make sure you have a **custom filament theme** (read [here](https://fil
 @source '../../../../vendor/guava/filament-knowledge-base/resources/views/**/*';
 ```
 
-For the remaining setup steps, please see the [installation docs](https://guava.cz/developers/packages/filament-knowledge-base/3.x/installation).
+For the remaining setup steps, please see the [installation docs](https://guava.cz/developers/packages/filament-knowledge-base/3.x/installation?ref=github&utm_campaign=knowledge-base).
 
 ## Usage
 
@@ -81,7 +81,7 @@ Then create your first documentation page:
 php artisan docs:make
 ```
 
-Everything else, including the markdown features, modal previews, help menus and help actions, is covered in the [documentation]([docs/3.x/01-introduction.md](https://guava.cz/developers/packages/filament-knowledge-base)).
+Everything else, including the markdown features, modal previews, help menus and help actions, is covered in the [documentation](https://guava.cz/developers/packages/filament-knowledge-base?ref=github&utm_campaign=knowledge-base).
 
 ## Testing
 
