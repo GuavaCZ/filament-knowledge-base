@@ -78,7 +78,14 @@ class KnowledgeBaseCompanionPlugin implements Plugin
         $panel
             ->renderHook(
                 $this->getHelpMenuRenderHook(),
-                fn (): string => Blade::render('@livewire(\'help-menu\')'),
+                fn (): string => in_array($this->getHelpMenuRenderHook(), [
+                    PanelsRenderHook::GLOBAL_SEARCH_BEFORE,
+                    PanelsRenderHook::GLOBAL_SEARCH_AFTER,
+                    PanelsRenderHook::USER_MENU_BEFORE,
+                    PanelsRenderHook::USER_MENU_AFTER,
+                ], true)
+                    ? view('filament-knowledge-base::help-menu-teleport')->render()
+                    : Blade::render('@livewire(\'help-menu\')'),
             )
             ->when(
                 ! $this->shouldDisableModalLinks(),
