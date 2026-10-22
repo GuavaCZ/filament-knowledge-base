@@ -45,6 +45,8 @@ use Filament\View\PanelsRenderHook;
 $plugin->helpMenuRenderHook(PanelsRenderHook::TOPBAR_START);
 ```
 
+The `GLOBAL_SEARCH_BEFORE`, `GLOBAL_SEARCH_AFTER`, `USER_MENU_BEFORE` and `USER_MENU_AFTER` hooks also work with Filament's SPA mode. The menu and its modal previews update to match the current page when navigating with `wire:navigate`, while the rest of the topbar stays persisted.
+
 ## What clicking does
 
 By default, a help menu item sends the user to the full documentation page in the knowledge base panel. If you enable [modal previews](03-modal-previews.md), the documentation opens in a modal instead, without leaving the page.
